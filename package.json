@@ -1,0 +1,30 @@
+{
+  "name": "moxygen",
+  "version": "0.5.0",
+  "description": "Doxygen XML to Markdown documentation converter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "doxygen2md": "./bin/moxygen.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sourcey/moxygen.git"
+  },
+  "keywords": [
+    "doxygen",
+    "markdown",
+    "documentation"
+  ],
+  "author": "Kam Low",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "handlebars": "^4.0.5",
+    "object-assign": "^4.1.0",
+    "winston": "^2.2.0",
+    "xml2js": "^0.4.16"
+  }
+}

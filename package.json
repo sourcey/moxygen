@@ -1,6 +1,6 @@
 {
   "name": "moxygen",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Doxygen XML to Markdown documentation converter",
   "main": "index.js",
   "scripts": {

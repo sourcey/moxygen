@@ -19,7 +19,7 @@ namespace transport
 	class MountainBike : public Bicycle
 	{
 	public:
-		/* Set suspension stiffness.
+		/** Set suspension stiffness.
 		 * @stiffness the suspension stiffness.
 		 *
 		 * SetSuspension changes the stiffness of the suspension
@@ -31,7 +31,7 @@ namespace transport
 		 */
 		bool SetSuspension(double stiffness);
 
-		/* Change the break type.
+		/** Change the break type.
 		 * @BreakType the break type.
 		 * @breakType the type of the break.
 		 *

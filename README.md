@@ -21,7 +21,7 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
     -V, --version          output the version number
     -v, --verbose          verbose mode
     -a, --anchors          add anchors to internal links
-    -g, --groups           output doxygen modules into separate files
+    -g, --groups           output doxygen groups into separate files
     -l, --language <lang>  programming language
     -t, --templates <dir>  custom templates directory
     -o, --output <file>    output file (must contain %s when using modules)
@@ -29,7 +29,7 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
 
 ## Multi Page Output
 
-Moxygen supports the doxygen [modules](http://www.stack.nl/~dimitri/doxygen/manual/grouping.html#modules) syntax for generating multi page documentation. iEvery [\defgroup](http://www.stack.nl/~dimitri/doxygen/manual/commands.html#cmddefgroup) in your source code will be parsed and output into a separate markdown file, with internal reference updated accordingly.
+Moxygen supports the doxygen [modules](http://www.stack.nl/~dimitri/doxygen/manual/grouping.html#modules) syntax for generating multi page documentation. Every [\defgroup](http://www.stack.nl/~dimitri/doxygen/manual/commands.html#cmddefgroup) in your source code will be parsed and output into a separate markdown file, with internal reference updated accordingly.
 
 Example:
 

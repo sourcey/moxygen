@@ -16,7 +16,7 @@ namespace transport
 	class Bicycle
 	{
 	public:
-		// PedalHarder makes you go faster (usually).
+		/// PedalHarder makes you go faster (usually).
 		virtual void PedalHarder();
 
 		/** Ring bell on the bike.
@@ -26,7 +26,7 @@ namespace transport
      */
 		virtual void RingBell();
 
-		// Default destructor.
+		/// Default destructor.
 		virtual ~Bicycle();
 	};
 }

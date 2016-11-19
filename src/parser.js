@@ -228,21 +228,21 @@ module.exports = {
 
   assignNamespaceToGroup: function (compound, child) {
 
-    // if child is a namespace just add a simple reference
+    // add the namespace to the group
     compound.compounds[child.name] = child;
 
     // remove namespace clildren from direct group children
-    child.compounds.forEach(function (member) {
-      delete compound.compounds[compound.id];
+    Object.keys(child.compounds).forEach(function(id) {
+      delete compound.compounds[id];
     });
   },
 
   assignClassToGroup: function (compound, child) {
 
-    // add a reference unless the child already belongs to a child namespace
-    // if ((!child.namespace || child.namespace.length == 0) ||
-    //   !compound.compounds[child.namespace])
-      compound.compounds[child.name] = child;
+    // add the namespace to the group
+    // if the child already belongs to a child namespace it will be removed
+    // on the call to `assignNamespaceToGroup`
+    compound.compounds[child.name] = child;
 
     // add a groupid and reference to the compound and all it's members
     child.groupid = compound.id;

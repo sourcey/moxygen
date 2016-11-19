@@ -35,7 +35,7 @@
 <codeline lineno="8"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="9"><highlight class="normal"></highlight></codeline>
 <codeline lineno="10"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="11"><highlight class="normal">RacingBike::PedalHarder()</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><ref refid="classtransport_1_1RacingBike_1ab557c5727daa07a5001782d5dcd46c5b" kindref="member">RacingBike::PedalHarder</ref>()</highlight></codeline>
 <codeline lineno="12"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="13"><highlight class="normal">}</highlight></codeline>
     </programlisting>

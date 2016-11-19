@@ -19,37 +19,37 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
 
     -h, --help             output usage information
     -V, --version          output the version number
-    -v, --verbose          verbose mode
     -a, --anchors          add anchors to internal links
     -g, --groups           output doxygen groups into separate files
+    -o, --output <file>    output file (must contain %s when using groups)
     -l, --language <lang>  programming language
     -t, --templates <dir>  custom templates directory
-    -o, --output <file>    output file (must contain %s when using modules)
+    -q, --quiet            quiet mode
   ```
 
 ## Multi Page Output
 
-Moxygen supports the doxygen [modules](http://www.stack.nl/~dimitri/doxygen/manual/grouping.html#modules) syntax for generating multi page documentation. Every [\defgroup](http://www.stack.nl/~dimitri/doxygen/manual/commands.html#cmddefgroup) in your source code will be parsed and output into a separate markdown file, with internal reference updated accordingly.
+Moxygen supports the doxygen [groups](http://www.stack.nl/~dimitri/doxygen/manual/grouping.html#modules) syntax for generating multi page documentation. Every [\defgroup](http://www.stack.nl/~dimitri/doxygen/manual/commands.html#cmddefgroup) in your source code will be parsed and output into a separate markdown file, with internal reference updated accordingly.
 
 Example:
 
 ```
-moxygen --verbose --anchors --modules --output api-%s.md /path/to/doxygen/xml
+moxygen --anchors --groups --output api-%s.md /path/to/doxygen/xml
 ```
 
 ## Example
 
-To get a feel for how Moxygen works you can play with the example which is located in the `example` folder. The example contains:
+To get a feel for how Moxygen works you can play with the example which is located in the [example](/example) folder. The example contains:
 
 * Documented C++ example code
 * A `Doxyfile` file (for doxygen 1.8.13)
-* Pre-generated XML output in `example/xml`
-* Pre-generated output Markdown files in `example/doc`.
+* Pre-generated XML output in [example/xml](/example/xml)
+* Pre-generated output Markdown files in [example/doc](/example/doc)
 
 The rebuild the example XML you can run `doxygen` from within the example folder.
 
 Now you can build the example documentation with the following command from within the example folder:
 
 ```
-moxygen --verbose --groups --output=doc/api-%s.md xml
+moxygen --anchors --groups --output=doc/api-%s.md xml
 ```

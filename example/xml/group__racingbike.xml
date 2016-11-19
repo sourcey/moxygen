@@ -3,6 +3,7 @@
   <compounddef id="group__racingbike" kind="group">
     <compoundname>racingbike</compoundname>
     <title>Racing bike module</title>
+    <innerclass refid="classtransport_1_1RacingBike" prot="public">transport::RacingBike</innerclass>
     <briefdescription>
     </briefdescription>
     <detaileddescription>

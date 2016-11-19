@@ -3,6 +3,7 @@
   <compounddef id="classtransport_1_1RacingBike" kind="class" language="C++" prot="public">
     <compoundname>transport::RacingBike</compoundname>
     <basecompoundref refid="classtransport_1_1Bicycle" prot="public" virt="non-virtual">transport::Bicycle</basecompoundref>
+    <includes refid="racingbike_8h" local="no">racingbike.h</includes>
       <sectiondef kind="public-func">
       <memberdef kind="function" id="classtransport_1_1RacingBike_1ab557c5727daa07a5001782d5dcd46c5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -11,7 +12,7 @@
         <name>PedalHarder</name>
         <reimplements refid="classtransport_1_1Bicycle_1a7df6cce8f18012fb07bef5be9dadd8ef">PedalHarder</reimplements>
         <briefdescription>
-        </briefdescription>
+<para>PedalHarder makes you go faster (usually). </para>        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
@@ -36,7 +37,7 @@
     <briefdescription>
     </briefdescription>
     <detaileddescription>
-    </detaileddescription>
+<para>Racing bike class.</para><para><ref refid="classtransport_1_1RacingBike" kindref="compound">RacingBike</ref> is a special kind of bike which can go much faster on the road, with much less effort (even uphill!). It doesn&apos;t make sense to call <computeroutput>RingBell</computeroutput> on a racing bike for they don&apos;t have bells. </para>    </detaileddescription>
     <inheritancegraph>
       <node id="9">
         <label>transport::Bicycle</label>

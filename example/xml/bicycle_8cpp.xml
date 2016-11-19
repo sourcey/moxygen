@@ -24,7 +24,7 @@
 <codeline lineno="2"><highlight class="normal"></highlight></codeline>
 <codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacetransport" kindref="compound">transport</ref>;</highlight></codeline>
 <codeline lineno="4"><highlight class="normal"></highlight></codeline>
-<codeline lineno="5"><highlight class="normal">Bicycle::~Bicycle()</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><ref refid="classtransport_1_1Bicycle_1a5f62d09b772a7705634bfb3551803c25" kindref="member">Bicycle::~Bicycle</ref>()</highlight></codeline>
 <codeline lineno="6"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="7"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="8"><highlight class="normal"></highlight></codeline>
@@ -34,7 +34,7 @@
 <codeline lineno="12"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="13"><highlight class="normal"></highlight></codeline>
 <codeline lineno="14"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="15"><highlight class="normal">Bicycle::PedalHarder()</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><ref refid="classtransport_1_1Bicycle_1a7df6cce8f18012fb07bef5be9dadd8ef" kindref="member">Bicycle::PedalHarder</ref>()</highlight></codeline>
 <codeline lineno="16"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="17"><highlight class="normal">}</highlight></codeline>
     </programlisting>

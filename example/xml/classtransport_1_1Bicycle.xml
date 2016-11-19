@@ -13,7 +13,7 @@
         <name>PedalHarder</name>
         <reimplementedby refid="classtransport_1_1RacingBike_1ab557c5727daa07a5001782d5dcd46c5b">PedalHarder</reimplementedby>
         <briefdescription>
-        </briefdescription>
+<para>PedalHarder makes you go faster (usually). </para>        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
@@ -40,7 +40,7 @@
         <argsstring>()</argsstring>
         <name>~Bicycle</name>
         <briefdescription>
-        </briefdescription>
+<para>Default destructor. </para>        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>

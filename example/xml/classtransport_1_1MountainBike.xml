@@ -17,7 +17,8 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-        </detaileddescription>
+<para>Set suspension stiffness.  the suspension stiffness.</para><para>SetSuspension changes the stiffness of the suspension on the bike. The method will return false if the stiffness could not be adjusted.</para><para><simplesect kind="return"><para>true if the suspension was adjusted successfully, false otherwise. </para></simplesect>
+</para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
         <location file="src/mountainbike.h" line="32" column="1" bodyfile="src/mountainbike.cpp" bodystart="6" bodyend="9"/>
@@ -39,7 +40,8 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-        </detaileddescription>
+<para>Change the break type.  the break type.  the type of the break.</para><para>ChangesBreak changes the type of break fitted to the bike. The method will return false if the break type could not be fitted.</para><para><simplesect kind="return"><para>true if the break was adjusted successfully. false otherise </para></simplesect>
+</para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
         <location file="src/mountainbike.h" line="46" column="1" bodyfile="src/mountainbike.h" bodystart="46" bodyend="54"/>

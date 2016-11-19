@@ -30,7 +30,7 @@
 <codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacetransport" kindref="compound">transport</ref>;</highlight></codeline>
 <codeline lineno="4"><highlight class="normal"></highlight></codeline>
 <codeline lineno="5"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="6"><highlight class="normal">MountainBike::SetSuspension(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>stiffness)</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><ref refid="classtransport_1_1MountainBike_1a04caecd7e5ff7572b6ac1dc283510301" kindref="member">MountainBike::SetSuspension</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>stiffness)</highlight></codeline>
 <codeline lineno="7"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="9"><highlight class="normal">}</highlight></codeline>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.12">
+  <compound refid="classtransport_1_1Bicycle" kind="class"><name>transport::Bicycle</name>
+    <member refid="classtransport_1_1Bicycle_1a7df6cce8f18012fb07bef5be9dadd8ef" kind="function"><name>PedalHarder</name></member>
+    <member refid="classtransport_1_1Bicycle_1a7d2be572f09c78b4d4ae38ef22f3e98b" kind="function"><name>RingBell</name></member>
+    <member refid="classtransport_1_1Bicycle_1a5f62d09b772a7705634bfb3551803c25" kind="function"><name>~Bicycle</name></member>
+  </compound>
+  <compound refid="classtransport_1_1MountainBike" kind="class"><name>transport::MountainBike</name>
+    <member refid="classtransport_1_1MountainBike_1a04caecd7e5ff7572b6ac1dc283510301" kind="function"><name>SetSuspension</name></member>
+    <member refid="classtransport_1_1MountainBike_1afd02513876a196e98acaacdc555aeb52" kind="function"><name>ChangeBreak</name></member>
+  </compound>
+  <compound refid="classtransport_1_1RacingBike" kind="class"><name>transport::RacingBike</name>
+    <member refid="classtransport_1_1RacingBike_1ab557c5727daa07a5001782d5dcd46c5b" kind="function"><name>PedalHarder</name></member>
+    <member refid="classtransport_1_1RacingBike_1ad32dc3b06a453fba3e20329842bb318b" kind="function"><name>RingBell</name></member>
+  </compound>
+  <compound refid="namespacetransport" kind="namespace"><name>transport</name>
+  </compound>
+  <compound refid="bicycle_8cpp" kind="file"><name>bicycle.cpp</name>
+  </compound>
+  <compound refid="bicycle_8h" kind="file"><name>bicycle.h</name>
+  </compound>
+  <compound refid="mountainbike_8cpp" kind="file"><name>mountainbike.cpp</name>
+  </compound>
+  <compound refid="mountainbike_8h" kind="file"><name>mountainbike.h</name>
+  </compound>
+  <compound refid="racingbike_8cpp" kind="file"><name>racingbike.cpp</name>
+  </compound>
+  <compound refid="racingbike_8h" kind="file"><name>racingbike.h</name>
+  </compound>
+  <compound refid="transport_8h" kind="file"><name>transport.h</name>
+  </compound>
+  <compound refid="group__bicycle" kind="group"><name>bicycle</name>
+  </compound>
+  <compound refid="group__racingbike" kind="group"><name>racingbike</name>
+  </compound>
+  <compound refid="group__mountainbike" kind="group"><name>mountainbike</name>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+</doxygenindex>

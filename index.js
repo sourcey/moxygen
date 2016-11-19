@@ -22,7 +22,7 @@ module.exports = {
 
     directory: null,            /** Location of the doxygen files **/
     anchors: true,              /** Generate anchors for internal links **/
-    groups: true,               /** Output doxygen groups separately **/
+    groups: false,              /** Output doxygen groups separately **/
     language: 'cpp',            /** Programming language **/
     templates: 'templates',     /** Templates directory **/
     output: 'api.md',           /** Output file **/
@@ -51,7 +51,7 @@ module.exports = {
 
     // Sanitize options
     if (options.groups == options.output.indexOf('%s') === -1)
-      throw "The `output` file parameter must contain an '%s' for group name" +
+      throw "The `output` file parameter must contain an '%s' for group name " +
         "substitution when `groups` are enabled."
 
     if (options.templates == this.defaultOptions.templates)
@@ -66,7 +66,12 @@ module.exports = {
 
       // Output groups
       if (options.groups) {
-        root.toArray('compounds', 'group').forEach(function (group) {
+        var groups = root.toArray('compounds', 'group');
+        if (!groups.length)
+          throw "You have enabled `groups` output, but no groups were " +
+            "located in your doxygen XML files."
+
+        groups.forEach(function (group) {
           group.filterChildren(options.filters, group.id);
 
           var compounds = group.toFilteredArray('compounds');

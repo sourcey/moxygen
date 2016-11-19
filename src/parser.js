@@ -15,7 +15,6 @@ var Compound = require('./compound');
 var helpers = require('./helpers');
 var markdown = require('./markdown');
 
-
 function toMarkdown(element, context) {
   var s = '';
   context = context || [];

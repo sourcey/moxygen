@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="classtransport_1_1Bicycle" kind="class" language="C++" prot="public">
+    <compoundname>transport::Bicycle</compoundname>
+    <derivedcompoundref refid="classtransport_1_1MountainBike" prot="public" virt="non-virtual">transport::MountainBike</derivedcompoundref>
+    <derivedcompoundref refid="classtransport_1_1RacingBike" prot="public" virt="non-virtual">transport::RacingBike</derivedcompoundref>
+    <includes refid="bicycle_8h" local="no">bicycle.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classtransport_1_1Bicycle_1a7df6cce8f18012fb07bef5be9dadd8ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Bicycle::PedalHarder</definition>
+        <argsstring>()</argsstring>
+        <name>PedalHarder</name>
+        <reimplementedby refid="classtransport_1_1RacingBike_1ab557c5727daa07a5001782d5dcd46c5b">PedalHarder</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/bicycle.h" line="20" column="1" bodyfile="src/bicycle.cpp" bodystart="15" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classtransport_1_1Bicycle_1a7d2be572f09c78b4d4ae38ef22f3e98b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Bicycle::RingBell</definition>
+        <argsstring>()</argsstring>
+        <name>RingBell</name>
+        <reimplementedby refid="classtransport_1_1RacingBike_1ad32dc3b06a453fba3e20329842bb318b">RingBell</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Ring bell on the bike.</para><para>RingBell rings the bell on the bike. Note that not all bikes have bells. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/bicycle.h" line="27" column="1" bodyfile="src/bicycle.cpp" bodystart="10" bodyend="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classtransport_1_1Bicycle_1a5f62d09b772a7705634bfb3551803c25" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>Bicycle::~Bicycle</definition>
+        <argsstring>()</argsstring>
+        <name>~Bicycle</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/bicycle.h" line="30" column="1" bodyfile="src/bicycle.cpp" bodystart="5" bodyend="7"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Standard bicycle class.</para><para><ref refid="classtransport_1_1Bicycle" kindref="compound">Bicycle</ref> implements a standard bicycle. Bicycles are a useful way of transporting oneself, without too much effort (unless you go uphill or against the wind). If there are a lot of people on the road, you can use <computeroutput>RingBell</computeroutput> to ring your bell (<bold>note</bold>, not all bicycles have bells!). </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="0">
+        <label>transport::Bicycle</label>
+        <link refid="classtransport_1_1Bicycle"/>
+      </node>
+      <node id="2">
+        <label>transport::RacingBike</label>
+        <link refid="classtransport_1_1RacingBike"/>
+        <childnode refid="0" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>transport::MountainBike</label>
+        <link refid="classtransport_1_1MountainBike"/>
+        <childnode refid="0" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="src/bicycle.h" line="17" column="1" bodyfile="src/bicycle.h" bodystart="16" bodyend="31"/>
+    <listofallmembers>
+      <member refid="classtransport_1_1Bicycle_1a7df6cce8f18012fb07bef5be9dadd8ef" prot="public" virt="virtual"><scope>transport::Bicycle</scope><name>PedalHarder</name></member>
+      <member refid="classtransport_1_1Bicycle_1a7d2be572f09c78b4d4ae38ef22f3e98b" prot="public" virt="virtual"><scope>transport::Bicycle</scope><name>RingBell</name></member>
+      <member refid="classtransport_1_1Bicycle_1a5f62d09b772a7705634bfb3551803c25" prot="public" virt="virtual"><scope>transport::Bicycle</scope><name>~Bicycle</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

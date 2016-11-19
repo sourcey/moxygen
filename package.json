@@ -1,13 +1,13 @@
 {
   "name": "moxygen",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Doxygen XML to Markdown documentation converter",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "doxygen2md": "./bin/moxygen.js"
+    "moxygen": "./bin/moxygen.js"
   },
   "repository": {
     "type": "git",

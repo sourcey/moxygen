@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir">
+    <compoundname>src</compoundname>
+    <innerfile refid="bicycle_8cpp">bicycle.cpp</innerfile>
+    <innerfile refid="bicycle_8h">bicycle.h</innerfile>
+    <innerfile refid="mountainbike_8cpp">mountainbike.cpp</innerfile>
+    <innerfile refid="mountainbike_8h">mountainbike.h</innerfile>
+    <innerfile refid="racingbike_8cpp">racingbike.cpp</innerfile>
+    <innerfile refid="racingbike_8h">racingbike.h</innerfile>
+    <innerfile refid="transport_8h">transport.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/"/>
+  </compounddef>
+</doxygen>

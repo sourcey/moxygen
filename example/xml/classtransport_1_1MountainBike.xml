@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="classtransport_1_1MountainBike" kind="class" language="C++" prot="public">
+    <compoundname>transport::MountainBike</compoundname>
+    <basecompoundref refid="classtransport_1_1Bicycle" prot="public" virt="non-virtual">transport::Bicycle</basecompoundref>
+    <includes refid="mountainbike_8h" local="no">mountainbike.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classtransport_1_1MountainBike_1a04caecd7e5ff7572b6ac1dc283510301" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MountainBike::SetSuspension</definition>
+        <argsstring>(double stiffness)</argsstring>
+        <name>SetSuspension</name>
+        <param>
+          <type>double</type>
+          <declname>stiffness</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/mountainbike.h" line="32" column="1" bodyfile="src/mountainbike.cpp" bodystart="6" bodyend="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classtransport_1_1MountainBike_1afd02513876a196e98acaacdc555aeb52" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename BreakType</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool transport::MountainBike::ChangeBreak</definition>
+        <argsstring>(BreakType breakType)</argsstring>
+        <name>ChangeBreak</name>
+        <param>
+          <type>BreakType</type>
+          <declname>breakType</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/mountainbike.h" line="46" column="1" bodyfile="src/mountainbike.h" bodystart="46" bodyend="54"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Mountain bike implementation of a <computeroutput><ref refid="classtransport_1_1Bicycle" kindref="compound">Bicycle</ref></computeroutput>.</para><para><ref refid="classtransport_1_1MountainBike" kindref="compound">MountainBike</ref> is an implementation of a <ref refid="classtransport_1_1Bicycle" kindref="compound">Bicycle</ref> providing a bike for cycling on rough terrain. Mountain bikes are pretty cool because they have stuff like <bold>Suspension</bold> (and you can even adjust it using SetSuspension). If you&apos;re looking for a bike for use on the road, you might be better off using a <ref refid="classtransport_1_1RacingBike" kindref="compound">RacingBike</ref> though. </para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="5">
+        <label>transport::Bicycle</label>
+        <link refid="classtransport_1_1Bicycle"/>
+      </node>
+      <node id="4">
+        <label>transport::MountainBike</label>
+        <link refid="classtransport_1_1MountainBike"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="7">
+        <label>transport::Bicycle</label>
+        <link refid="classtransport_1_1Bicycle"/>
+      </node>
+      <node id="6">
+        <label>transport::MountainBike</label>
+        <link refid="classtransport_1_1MountainBike"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="src/mountainbike.h" line="20" column="1" bodyfile="src/mountainbike.h" bodystart="19" bodyend="55"/>
+    <listofallmembers>
+      <member refid="classtransport_1_1MountainBike_1afd02513876a196e98acaacdc555aeb52" prot="public" virt="non-virtual"><scope>transport::MountainBike</scope><name>ChangeBreak</name></member>
+      <member refid="classtransport_1_1Bicycle_1a7df6cce8f18012fb07bef5be9dadd8ef" prot="public" virt="virtual"><scope>transport::MountainBike</scope><name>PedalHarder</name></member>
+      <member refid="classtransport_1_1Bicycle_1a7d2be572f09c78b4d4ae38ef22f3e98b" prot="public" virt="virtual"><scope>transport::MountainBike</scope><name>RingBell</name></member>
+      <member refid="classtransport_1_1MountainBike_1a04caecd7e5ff7572b6ac1dc283510301" prot="public" virt="non-virtual"><scope>transport::MountainBike</scope><name>SetSuspension</name></member>
+      <member refid="classtransport_1_1Bicycle_1a5f62d09b772a7705634bfb3551803c25" prot="public" virt="virtual"><scope>transport::MountainBike</scope><name>~Bicycle</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

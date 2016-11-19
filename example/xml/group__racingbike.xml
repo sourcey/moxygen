@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="group__racingbike" kind="group">
+    <compoundname>racingbike</compoundname>
+    <title>Racing bike module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Racing bike module contains the <computeroutput>RacingBike</computeroutput> class. Racing bikes are a special kind of bike which can go much faster on the road, with much less effort. </para>    </detaileddescription>
+  </compounddef>
+</doxygen>

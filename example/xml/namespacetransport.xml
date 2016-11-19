@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="namespacetransport" kind="namespace" language="C++">
+    <compoundname>transport</compoundname>
+    <innerclass refid="classtransport_1_1Bicycle" prot="public">transport::Bicycle</innerclass>
+    <innerclass refid="classtransport_1_1MountainBike" prot="public">transport::MountainBike</innerclass>
+    <innerclass refid="classtransport_1_1RacingBike" prot="public">transport::RacingBike</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/bicycle.h" line="5" column="1"/>
+  </compounddef>
+</doxygen>

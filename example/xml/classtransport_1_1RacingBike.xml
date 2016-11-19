@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+  <compounddef id="classtransport_1_1RacingBike" kind="class" language="C++" prot="public">
+    <compoundname>transport::RacingBike</compoundname>
+    <basecompoundref refid="classtransport_1_1Bicycle" prot="public" virt="non-virtual">transport::Bicycle</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classtransport_1_1RacingBike_1ab557c5727daa07a5001782d5dcd46c5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void RacingBike::PedalHarder</definition>
+        <argsstring>()</argsstring>
+        <name>PedalHarder</name>
+        <reimplements refid="classtransport_1_1Bicycle_1a7df6cce8f18012fb07bef5be9dadd8ef">PedalHarder</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/racingbike.h" line="20" column="1" bodyfile="src/racingbike.cpp" bodystart="11" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classtransport_1_1RacingBike_1ad32dc3b06a453fba3e20329842bb318b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void RacingBike::RingBell</definition>
+        <argsstring>()</argsstring>
+        <name>RingBell</name>
+        <reimplements refid="classtransport_1_1Bicycle_1a7d2be572f09c78b4d4ae38ef22f3e98b">RingBell</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Ring bell on the bike.</para><para>RingBell rings the bell on the bike. Note that not all bikes have bells. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/racingbike.h" line="23" column="1" bodyfile="src/racingbike.cpp" bodystart="6" bodyend="8"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="9">
+        <label>transport::Bicycle</label>
+        <link refid="classtransport_1_1Bicycle"/>
+      </node>
+      <node id="8">
+        <label>transport::RacingBike</label>
+        <link refid="classtransport_1_1RacingBike"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="11">
+        <label>transport::Bicycle</label>
+        <link refid="classtransport_1_1Bicycle"/>
+      </node>
+      <node id="10">
+        <label>transport::RacingBike</label>
+        <link refid="classtransport_1_1RacingBike"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="src/racingbike.h" line="17" column="1" bodyfile="src/racingbike.h" bodystart="16" bodyend="24"/>
+    <listofallmembers>
+      <member refid="classtransport_1_1RacingBike_1ab557c5727daa07a5001782d5dcd46c5b" prot="public" virt="virtual"><scope>transport::RacingBike</scope><name>PedalHarder</name></member>
+      <member refid="classtransport_1_1RacingBike_1ad32dc3b06a453fba3e20329842bb318b" prot="public" virt="virtual"><scope>transport::RacingBike</scope><name>RingBell</name></member>
+      <member refid="classtransport_1_1Bicycle_1a5f62d09b772a7705634bfb3551803c25" prot="public" virt="virtual"><scope>transport::RacingBike</scope><name>~Bicycle</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

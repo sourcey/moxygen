@@ -79,7 +79,7 @@ function toMarkdown(element, context) {
             break;
 
           default:
-            console.assert(false, element['#name'] + ': not yet supported.');
+            console.error(false, element['#name'] + ': not yet supported.');
         }
 
         // recurse on children elements

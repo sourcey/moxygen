@@ -63,7 +63,9 @@ module.exports = {
     var stream = fs.createWriteStream(filepath);
     stream.once('open', function(fd) {
       contents.forEach(function (content) {
-        stream.write(content);
+        if ( content ) {
+          stream.write(content);
+        }
       });
       stream.end();
     });

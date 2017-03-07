@@ -1,5 +1,7 @@
 # {{name}}
 
+Defined in <`{{ location }}`>
+
 {{proto}}
 
 ## Summary

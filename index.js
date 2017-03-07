@@ -94,11 +94,19 @@ module.exports = {
           return comp.members.find(member => member.name == "make_binary_tree")
         })
 
+        // Fixing absolute location
+        compounds.forEach(comp => {
+          comp.members.forEach(member => {
+            if (member.location)
+              member.location = member.location.substring(26)
+          })
+        })
+
         compounds.forEach(comp => {
           comp.members.forEach(member => {
             console.log("filtered member", member)
             var contents = templates.render(member);
-            helpers.writeFile(util.format(options.output, member.name), [contents]);
+            helpers.writeFile(util.format(options.output, member.refid), [contents]);
           })
         })
 

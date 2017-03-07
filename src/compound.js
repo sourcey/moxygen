@@ -35,7 +35,7 @@ Compound.prototype = {
       return this[key];
     }.bind(this[type]));
 
-    console.log("toArray found compounds ", arr)
+    //console.log("toArray found compounds ", arr)
 
     if (type == 'compounds') {
       var all = new Array();

@@ -36,7 +36,7 @@ function toMarkdown(element, context) {
           case 'ref': return s + markdown.link(toMarkdown(element.$$), '#' + element.$.refid, true);
           case '__text__': s = element._; break;
           case 'emphasis': s = '*'; break;
-          case 'bold': s = '**'; break;
+          case 'bold': s = '#### '; break;
           case 'parametername': s = '*'; break;
           case 'computeroutput': s = '`'; break;
           case 'parameterlist': s = '\n#### Parameters\n'; break;
@@ -92,7 +92,7 @@ function toMarkdown(element, context) {
           case 'parameterlist':
           case 'para': s += '\n\n'; break;
           case 'emphasis': s += '*'; break;
-          case 'bold': s += '**'; break;
+          case 'bold': s += ''; break;
           case 'parameteritem': s += '\n'; break;
           case "computeroutput": s += '`'; break;
           case 'parametername': s += '*: '; break;
@@ -212,6 +212,8 @@ module.exports = {
     }
 
     member.proto = '```c++\n' + m.join("") + '\n```'
+    member.location = memberdef.location[0].$.file
+    console.log("memberdef location", memberdef.location)
   },
 
   assignToNamespace: function (compound, child) {

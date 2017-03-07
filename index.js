@@ -84,8 +84,20 @@ module.exports = {
       // Output single file
       else {
         root.filterChildren(options.filters);
+        console.log("root stapl members");
+        root.compounds.stapl.members.forEach(mem => {
+          console.log("member", mem);
+        })
 
-        var compounds = root.toFilteredArray('compounds');
+        var compounds = root.toArray('compounds');
+        compounds = compounds.filter(comp => {
+          return comp.members.find(member => member.name == "make_binary_tree")
+        })
+
+        compounds.forEach(comp => {
+          console.log("filtered compound", comp)
+        })
+
         var contents = templates.renderArray(compounds);
         helpers.writeFile(options.output, contents);
       }

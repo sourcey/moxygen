@@ -28,6 +28,8 @@ module.exports = {
         noEscape: true,
         strict: true
       });
+      let match = filename.match(/(.*)\.md$/)
+      console.log("trying to match ", filename, match)
       this.templates[filename.match(/(.*)\.md$/)[1]] = template;
     }.bind(this));
   },
@@ -50,7 +52,11 @@ module.exports = {
       case 'struct':
         template = 'class';
         break;
+      case 'dir':
+        template = 'dir';
+        break;
       default:
+        console.log("No template for kind ",compound.kind)
         return undefined;
     }
 

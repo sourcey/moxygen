@@ -274,6 +274,7 @@ module.exports = {
 
     if (compounddef.sectiondef) {
       compounddef.sectiondef.forEach(function (section) {
+        console.log("WTF: found section", section);
         switch (section.$['kind']) {
           case 'friend':
           case 'public-attrib':
@@ -282,6 +283,7 @@ module.exports = {
           case 'protected-func':
           case 'private-attrib':
           case 'private-func':
+          case 'func':
             if (section.memberdef) {
               section.memberdef.forEach(function (memberdef) {
                 var member = this.references[memberdef.$.id];
@@ -345,7 +347,7 @@ module.exports = {
         }
         break;
       default:
-        console.assert(true);
+        console.log("WARN -- Not supported kind:", compound.kind);
     }
 
     return;

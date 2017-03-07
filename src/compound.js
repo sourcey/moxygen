@@ -35,6 +35,8 @@ Compound.prototype = {
       return this[key];
     }.bind(this[type]));
 
+    console.log("toArray found compounds ", arr)
+
     if (type == 'compounds') {
       var all = new Array();
       arr.forEach(function (compound) {
@@ -79,19 +81,19 @@ Compound.prototype = {
       if (item) {
 
         // skip empty namespaces
-        if (item.kind == 'namespace') {
+        /*if (item.kind == 'namespace') {
           if ((!item.filtered.compounds || !item.filtered.compounds.length) &&
             (!item.filtered.members || !item.filtered.members.length)) {
             // log.verbose('Skip empty namespace', item.name);
             return;
           }
-        }
+        }*/
 
         // skip items not belonging to current group
-        else if (groupid && item.groupid != groupid) {
+        /*else if (groupid && item.groupid != groupid) {
           // log.verbose('Skip item from foreign group', item.kind, item.name, item.groupid, group.id);
           return;
-        }
+        }*/
 
         (categories[item[key]] || (categories[item[key]] = [])).push(item);
       }

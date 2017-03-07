@@ -37,7 +37,7 @@ function toMarkdown(element, context) {
           case '__text__': s = element._; break;
           case 'emphasis': s = '*'; break;
           case 'bold': s = '**'; break;
-          case 'parametername':
+          case 'parametername': s = '*'; break;
           case 'computeroutput': s = '`'; break;
           case 'parameterlist': s = '\n#### Parameters\n'; break;
           case 'parameteritem': s = '* '; break;
@@ -95,7 +95,7 @@ function toMarkdown(element, context) {
           case 'bold': s += '**'; break;
           case 'parameteritem': s += '\n'; break;
           case "computeroutput": s += '`'; break;
-          case 'parametername': s += '` '; break;
+          case 'parametername': s += '*: '; break;
           case 'entry': s = markdown.escape.cell(s) + '|'; break;
           case 'programlisting': s += '```\n'; break;
           case 'codeline': s += '\n'; break;
@@ -168,7 +168,6 @@ module.exports = {
 
     switch (member.kind) {
       case 'function':
-        m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         if (memberdef.templateparamlist) {
           m.push('template<');
           memberdef.templateparamlist[0].param.forEach(function (param, argn) {
@@ -212,7 +211,7 @@ module.exports = {
         break;
     }
 
-    member.proto = helpers.inline(m);
+    member.proto = '```c++\n' + m.join("") + '\n```'
   },
 
   assignToNamespace: function (compound, child) {

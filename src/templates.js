@@ -55,6 +55,9 @@ module.exports = {
       case 'dir':
         template = 'dir';
         break;
+      case 'function':
+        template = 'function';
+        break;
       default:
         console.log("No template for kind ",compound.kind)
         return undefined;

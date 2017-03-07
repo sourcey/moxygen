@@ -95,11 +95,15 @@ module.exports = {
         })
 
         compounds.forEach(comp => {
-          console.log("filtered compound", comp)
+          comp.members.forEach(member => {
+            console.log("filtered member", member)
+            var contents = templates.render(member);
+            helpers.writeFile(util.format(options.output, member.name), [contents]);
+          })
         })
 
-        var contents = templates.renderArray(compounds);
-        helpers.writeFile(options.output, contents);
+        //var contents = templates.renderArray(compounds);
+        //helpers.writeFile(options.output, contents);
       }
     });
   }

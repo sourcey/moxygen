@@ -36,8 +36,8 @@ function toMarkdown(element, context) {
           case 'ref': return s + markdown.link(toMarkdown(element.$$), '#' + element.$.refid, true);
           case '__text__': s = element._; break;
           case 'emphasis': s = '*'; break;
-          case 'bold': s = '**'; break;
-          case 'parametername':
+          case 'bold': s = '#### '; break;
+          case 'parametername': s = '*'; break;
           case 'computeroutput': s = '`'; break;
           case 'parameterlist': s = '\n#### Parameters\n'; break;
           case 'parameteritem': s = '* '; break;
@@ -92,10 +92,10 @@ function toMarkdown(element, context) {
           case 'parameterlist':
           case 'para': s += '\n\n'; break;
           case 'emphasis': s += '*'; break;
-          case 'bold': s += '**'; break;
+          case 'bold': s += ''; break;
           case 'parameteritem': s += '\n'; break;
           case "computeroutput": s += '`'; break;
-          case 'parametername': s += '` '; break;
+          case 'parametername': s += '*: '; break;
           case 'entry': s = markdown.escape.cell(s) + '|'; break;
           case 'programlisting': s += '```\n'; break;
           case 'codeline': s += '\n'; break;
@@ -168,7 +168,6 @@ module.exports = {
 
     switch (member.kind) {
       case 'function':
-        m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         if (memberdef.templateparamlist) {
           m.push('template<');
           memberdef.templateparamlist[0].param.forEach(function (param, argn) {
@@ -212,7 +211,9 @@ module.exports = {
         break;
     }
 
-    member.proto = helpers.inline(m);
+    member.proto = '```c++\n' + m.join("") + '\n```'
+    member.location = memberdef.location[0].$.file
+    console.log("memberdef location", memberdef.location)
   },
 
   assignToNamespace: function (compound, child) {
@@ -274,6 +275,7 @@ module.exports = {
 
     if (compounddef.sectiondef) {
       compounddef.sectiondef.forEach(function (section) {
+        console.log("WTF: found section", section);
         switch (section.$['kind']) {
           case 'friend':
           case 'public-attrib':
@@ -282,6 +284,7 @@ module.exports = {
           case 'protected-func':
           case 'private-attrib':
           case 'private-func':
+          case 'func':
             if (section.memberdef) {
               section.memberdef.forEach(function (memberdef) {
                 var member = this.references[memberdef.$.id];
@@ -345,7 +348,7 @@ module.exports = {
         }
         break;
       default:
-        console.assert(true);
+        console.log("WARN -- Not supported kind:", compound.kind);
     }
 
     return;

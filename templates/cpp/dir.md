@@ -1,18 +1,15 @@
 # {{kind}} `{{name}}` {{anchor refid}}
 
-{{briefdescription}}
-
-
 {{#each members}}
 
-# {{name}}
+{{name}}
 
 {{proto}}
-
-## Summary
 
 {{briefdescription}}
 
 {{detaileddescription}}
 
 {{/each}}
+
+YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO

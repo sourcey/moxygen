@@ -28,6 +28,11 @@
   <compound refid="racingbike_8h" kind="file"><name>racingbike.h</name>
   </compound>
   <compound refid="transport_8h" kind="file"><name>transport.h</name>
+    <member refid="transport_8h_1afbbb18ca59257b9b19eced9dcb7c7973" kind="define"><name>PEDAL_POWER_MODIFIER</name></member>
+    <member refid="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9" kind="enum"><name>TransportType</name></member>
+    <member refid="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9a8e8125cebd24bc06c2dbc178336da70f" kind="enumvalue"><name>Bycicle</name></member>
+    <member refid="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9ac34fdf94888bac1e847f369e76c9d15b" kind="enumvalue"><name>RacingBike</name></member>
+    <member refid="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9ac34fdf94888bac1e847f369e76c9d15b" kind="enumvalue"><name>RacingBike</name></member>
   </compound>
   <compound refid="group__bicycle" kind="group"><name>bicycle</name>
   </compound>

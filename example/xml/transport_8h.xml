@@ -26,6 +26,52 @@
         <label>transport/bicycle.h</label>
       </node>
     </incdepgraph>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="transport_8h_1afbbb18ca59257b9b19eced9dcb7c7973" prot="public" static="no">
+        <name>PEDAL_POWER_MODIFIER</name>
+        <initializer>9000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The modifier value if pedal power is used.</para><para>This definition exists in the default namespace and is ungrouped. It will <emphasis>not</emphasis> be displayed if the <computeroutput>groups</computeroutput> options is used. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/transport.h" line="47" column="9" bodyfile="src/transport.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9" prot="public" static="no">
+        <name>TransportType</name>
+        <enumvalue id="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9a8e8125cebd24bc06c2dbc178336da70f" prot="public">
+          <name>Bycicle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Bycicle type </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9ac34fdf94888bac1e847f369e76c9d15b" prot="public">
+          <name>RacingBike</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Racing bike type </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9ac34fdf94888bac1e847f369e76c9d15b" prot="public">
+          <name>RacingBike</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Mountain bike type </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Enum class for transport types.</para><para>This definition exists in the default namespace and is ungrouped. It will <emphasis>not</emphasis> be displayed if the <computeroutput>groups</computeroutput> options is used. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/transport.h" line="35" column="1" bodyfile="src/transport.h" bodystart="35" bodyend="39"/>
+      </memberdef>
+      </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
@@ -40,7 +86,15 @@
 <codeline lineno="20"><highlight class="normal"></highlight></codeline>
 <codeline lineno="27"><highlight class="preprocessor">#include<sp/>&lt;transport/mountainbike.h&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="28"><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>__TRANSPORT_H__<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+<codeline lineno="35"><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/>TransportType<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/>Bycicle,<sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/>RacingBike,<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/>RacingBike<sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="preprocessor">#define<sp/>PEDAL_POWER_MODIFIER<sp/>9000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>__TRANSPORT_H__<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
     <location file="src/transport.h"/>
   </compounddef>

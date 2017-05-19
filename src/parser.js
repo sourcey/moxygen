@@ -132,10 +132,27 @@ function copy(dest, property, def) {
   dest[property] = trim(toMarkdown(def[property]));
 }
 
+function summary(dest, def) {
+  // set from briefdescription or first paragraph of detaileddescription
+  var summary = trim(toMarkdown(def['briefdescription']));
+  if (!summary) {
+    summary = trim(toMarkdown(def['detaileddescription']));
+    if (summary) {
+      var firstSentence = summary.split('\n', 1)[0]; //.split('. ').first;
+      if (firstSentence)
+        summary = firstSentence;
+    }
+  }
+  dest['summary'] = summary;
+}
+
 module.exports = {
 
   // All references indexed by refid
   references: {},
+
+  // The root compound
+  root: new Compound(),
 
   parseMembers: function (compound, props, membersdef) {
 
@@ -159,13 +176,13 @@ module.exports = {
   },
 
   parseMember: function (member, section, memberdef) {
-    log.verbose('Processing member ' + member.name);
+    log.verbose('Processing member ' + member.kind + ' ' + member.name);
     member.section = section;
     copy(member, 'briefdescription', memberdef);
     copy(member, 'detaileddescription', memberdef);
+    summary(member, memberdef);
 
     var m = [];
-
     switch (member.kind) {
       case 'function':
         m = m.concat(memberdef.$.prot, ' '); // public, private, ...
@@ -183,7 +200,9 @@ module.exports = {
         m = m.concat(memberdef.$.virt == 'virtual' ? ['virtual', ' '] : []);
         m = m.concat(toMarkdown(memberdef.type), ' ');
         m = m.concat(memberdef.$.explicit  == 'yes' ? ['explicit', ' '] : []);
-        m = m.concat(memberdef.name[0]._, '(');
+        // m = m.concat(memberdef.name[0]._);
+        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        m = m.concat('(');
         if (memberdef.param) {
           memberdef.param.forEach(function (param, argn) {
             m = m.concat(argn == 0 ? [] : ',');
@@ -204,11 +223,29 @@ module.exports = {
         m = m.concat(memberdef.$.static == 'yes' ? ['static', ' '] : []);
         m = m.concat(memberdef.$.mutable == 'yes' ? ['mutable', ' '] : []);
         m = m.concat(toMarkdown(memberdef.type), ' ');
-        m = m.concat(memberdef.name[0]._);
+        // m = m.concat(memberdef.name[0]._);
+        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        break;
+
+      case 'enum':
+        member.enumvalue = [];
+        if (memberdef.enumvalue) {
+          memberdef.enumvalue.forEach(function (param, argn) {
+            var enumvalue = {}
+            copy(enumvalue, 'name', param);
+            copy(enumvalue, 'briefdescription', param);
+            copy(enumvalue, 'detaileddescription', param);
+            summary(enumvalue, param);
+            member.enumvalue.push(enumvalue);
+          });
+        }
+        // m.push(member.kind + ' ' + member.name);
+        m = m.concat([member.kind, ' ', markdown.link(member.name, '#' + member.refid, true)]);
         break;
 
       default:
-        m.push(member.name);
+        // m.push(member.kind + ' ' + member.name);
+        m = m.concat([member.kind, ' ', markdown.link(member.name, '#' + member.refid, true)]);
         break;
     }
 
@@ -262,6 +299,7 @@ module.exports = {
     compound.fullname = compounddef.compoundname[0]._;
     copy(compound, 'briefdescription', compounddef);
     copy(compound, 'detaileddescription', compounddef);
+    summary(compound, compounddef);
 
     if (compounddef.basecompoundref) {
       compounddef.basecompoundref.forEach(function (basecompoundref) {
@@ -274,28 +312,36 @@ module.exports = {
 
     if (compounddef.sectiondef) {
       compounddef.sectiondef.forEach(function (section) {
-        switch (section.$['kind']) {
-          case 'friend':
-          case 'public-attrib':
-          case 'public-func':
-          case 'protected-attrib':
-          case 'protected-func':
-          case 'private-attrib':
-          case 'private-func':
+        // switch (section.$['kind']) {
+        //   case 'define':
+        //   case 'enum':
+        //   case 'friend':
+        //   case 'public-attrib':
+        //   case 'public-func':
+        //   case 'protected-attrib':
+        //   case 'protected-func':
+        //   case 'private-attrib':
+        //   case 'private-func':
             if (section.memberdef) {
               section.memberdef.forEach(function (memberdef) {
                 var member = this.references[memberdef.$.id];
+
                 if (compound.kind == 'group') {
                   member.groupid = compound.id;
+                }
+                else if (compound.kind == 'file') {
+                  // add free members defined inside files in the default
+                  // namespace to the root compound
+                  this.root.members.push(member);
                 }
                 this.parseMember(member, section.$['kind'], memberdef);
               }.bind(this));
             }
-            break;
-
-          default:
-            console.assert(true);
-        }
+        //     break;
+        //
+        //   default:
+        //     console.assert(true);
+        // }
       }.bind(this));
     }
 
@@ -311,6 +357,11 @@ module.exports = {
         // set namespace reference
         var nsp = compound.name.split('::');
         compound.namespace = nsp.splice(0, nsp.length - 1).join('::');
+        break;
+
+      case 'file':
+        // NOTE: to handle free functions in the default namespace we would
+        // parse add all contained members to the root compound.
         break;
 
       case 'namespace':
@@ -359,7 +410,7 @@ module.exports = {
 
       this.parseMembers(compound, element.$, element.member);
 
-      if (compound.kind !== 'page' && compound.kind !== 'file') {
+      if (compound.kind !== 'page') { // && compound.kind !== 'file'
         log.verbose('Parsing ' + path.join(options.directory, compound.refid + '.xml'));
         doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
         xmlParser.parseString(doxygen, function (err, data) {
@@ -373,11 +424,19 @@ module.exports = {
   loadIndex: function (options, callback) {
     log.verbose('Parsing ' + path.join(options.directory, 'index.xml'));
     fs.readFile(path.join(options.directory, 'index.xml'), 'utf8', function(err, data) {
+      if (err) {
+        callback('Failed to load Doxygen XML: ' + err);
+        return;
+      }
       var xmlParser = new xml2js.Parser();
       xmlParser.parseString(data, function (err, result) {
-        var root = new Compound();
-        this.parseIndex(root, result.doxygenindex.compound, options);
-        callback(null, root); // TODO: return errors properly
+        if (err) {
+          callback('Failed to parse Doxygen XML: ' + err);
+          return;
+        }
+        this.root.kind = 'index';
+        this.parseIndex(this.root, result.doxygenindex.compound, options);
+        callback(null, this.root); // TODO: return errors properly
       }.bind(this));
     }.bind(this));
   }

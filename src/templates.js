@@ -10,6 +10,7 @@ var fs = require('fs');
 var log = require('winston');
 var path = require('path');
 var handlebars = require('handlebars');
+// var tidyMarkdown = require('tidy-markdown');
 
 var doxyparser = require('./parser');
 var helpers = require('./helpers');
@@ -35,7 +36,13 @@ module.exports = {
   render: function (compound) {
     var template;
 
+    log.verbose('Rendering ' + compound.kind + ' ' + compound.fullname);
+
     switch (compound.kind) {
+      case 'index':
+        template = 'index';
+        break;
+      case 'group':
       case 'namespace':
         if (Object.keys(compound.compounds).length === 1
           && compound.compounds[Object.keys(compound.compounds)[0]].kind == 'namespace') {
@@ -43,24 +50,21 @@ module.exports = {
         }
         template = 'namespace';
         break;
-      case 'group':
-        template = 'group';
-        break;
       case 'class':
       case 'struct':
         template = 'class';
         break;
       default:
+        log.warn('Cannot render ' + compound.kind + ' ' + compound.fullname);
+        console.log('Skipping ', compound);
         return undefined;
     }
 
-    log.verbose('Rendering ' + compound.kind + ' ' + compound.fullname);
-
-    return this.templates[template](compound);
+    return this.templates[template](compound).replace(/(\r\n|\r|\n){2,}/g, '$1\n');
   },
 
   renderArray: function (compounds) {
-    return compounds.map(function (compound) {
+    return compounds.map(function(compound) {
       return this.render(compound);
     }.bind(this));
   },

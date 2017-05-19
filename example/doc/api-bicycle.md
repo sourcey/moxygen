@@ -1,16 +1,14 @@
-# Module <!-- group --> `bicycle`
+# group `bicycle` {#group__bicycle}
 
-Bicycle module contains the bycicle class. Bicycles are a useful way of transporting oneself, without too much effort).
+Bicycle module contains the bycicle class. Bicycles are a useful way of transporting oneself, without too much effort.
 
 ## Summary
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`class `[`transport::Bicycle`](#classtransport_1_1Bicycle)    | 
-# class `transport::Bicycle` 
+`class `[`transport::Bicycle`](doc/api-bicycle.md#classtransport_1_1Bicycle) | Standard bicycle class.
 
-
-
+# class `transport::Bicycle` {#classtransport_1_1Bicycle}
 
 Standard bicycle class.
 
@@ -20,29 +18,23 @@ Standard bicycle class.
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`public virtual void PedalHarder()` | PedalHarder makes you go faster (usually).
-`public virtual void RingBell()` | 
-`public virtual  ~Bicycle()` | Default destructor.
+`public virtual void `[`PedalHarder`](#classtransport_1_1Bicycle_1a7df6cce8f18012fb07bef5be9dadd8ef)`()` | PedalHarder makes you go faster (usually).
+`public virtual void `[`RingBell`](#classtransport_1_1Bicycle_1a7d2be572f09c78b4d4ae38ef22f3e98b)`()` | Ring bell on the bike.
+`public virtual  `[`~Bicycle`](#classtransport_1_1Bicycle_1a5f62d09b772a7705634bfb3551803c25)`()` | Default destructor.
 
 ## Members
 
-#### `public virtual void PedalHarder()` 
+#### `public virtual void `[`PedalHarder`](#classtransport_1_1Bicycle_1a7df6cce8f18012fb07bef5be9dadd8ef)`()` {#classtransport_1_1Bicycle_1a7df6cce8f18012fb07bef5be9dadd8ef}
 
 PedalHarder makes you go faster (usually).
 
-
-
-#### `public virtual void RingBell()` 
-
-
+#### `public virtual void `[`RingBell`](#classtransport_1_1Bicycle_1a7d2be572f09c78b4d4ae38ef22f3e98b)`()` {#classtransport_1_1Bicycle_1a7d2be572f09c78b4d4ae38ef22f3e98b}
 
 Ring bell on the bike.
 
 RingBell rings the bell on the bike. Note that not all bikes have bells.
 
-#### `public virtual  ~Bicycle()` 
+#### `public virtual  `[`~Bicycle`](#classtransport_1_1Bicycle_1a5f62d09b772a7705634bfb3551803c25)`()` {#classtransport_1_1Bicycle_1a5f62d09b772a7705634bfb3551803c25}
 
 Default destructor.
-
-
 

@@ -4,7 +4,7 @@
 /** @defgroup bicycle Bycicle module
  *
  * Bicycle module contains the bycicle class. Bicycles are a useful way of
- * transporting oneself, without too much effort).
+ * transporting oneself, without too much effort.
  */
 
 #include <transport/bicycle.h>
@@ -25,5 +25,25 @@
  */
 
 #include <transport/mountainbike.h>
+
+/**
+ * Enum class for transport types.
+ *
+ * This definition exists in the default namespace and is ungrouped.
+ * It will *not* be displayed if the `groups` options is used.
+ */
+enum class TransportType {
+  Bycicle, /*!< Bycicle type */
+  RacingBike, /*!< Racing bike type */
+  RacingBike /*!< Mountain bike type */
+};
+
+/**
+ * The modifier value if pedal power is used.
+ *
+ * This definition exists in the default namespace and is ungrouped.
+ * It will *not* be displayed if the `groups` options is used.
+ */
+#define PEDAL_POWER_MODIFIER 9000
 
 #endif /* __TRANSPORT_H__ */

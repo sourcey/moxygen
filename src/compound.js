@@ -67,6 +67,7 @@ Compound.prototype = {
       compound.filtered.members = compound.filter(compound.members, 'section', filters.members, groupid);
       compound.filtered.compounds = compound.filter(compound.compounds, 'kind', filters.compounds, groupid);
     });
+    this.filtered.members = this.filter(this.members, 'section', filters.members, groupid);
     this.filtered.compounds = this.filter(this.compounds, 'kind', filters.compounds, groupid);
   },
 

@@ -9,9 +9,10 @@ var app = require('../index.js');
 
 program.version(pjson.version)
   .usage('[options] <doxygen directory>')
-  .option('-a, --anchors', 'add anchors to internal links', false)
-  .option('-g, --groups', 'output doxygen groups into separate files', false)
   .option('-o, --output <file>', 'output file (must contain %s when using groups)', String, 'api.md')
+  .option('-g, --groups', 'output doxygen groups into separate files', false)
+  .option('-n, --noindex', 'disable generation of the index (no effect with `groups` option', false)
+  .option('-a, --anchors', 'add anchors to internal links', false)
   .option('-l, --language <lang>', 'programming language', String, 'cpp')
   .option('-t, --templates <dir>', 'custom templates directory', String, 'templates')
   .option('-q, --quiet', 'quiet mode', false)
@@ -24,11 +25,12 @@ if (!program.quiet) {
 if (program.args.length) {
   app.run(assign({}, app.defaultOptions, {
     directory: program.args[0],
-    anchors: program.anchors,
+    output: program.output,
     groups: program.groups,
+    noindex: program.noindex,
+    anchors: program.anchors,
     language: program.language,
-    templates: program.templates,
-    output: program.output
+    templates: program.templates
   }));
 }
 else {

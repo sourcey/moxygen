@@ -21,14 +21,20 @@ module.exports = {
   defaultOptions: {
 
     directory: null,            /** Location of the doxygen files **/
-    anchors: true,              /** Generate anchors for internal links **/
+    output: 'api.md',           /** Output file **/
     groups: false,              /** Output doxygen groups separately **/
+    noindex: false,             /** Disable generation of the index. Does not work with `groups` option **/
+    anchors: true,              /** Generate anchors for internal links **/
     language: 'cpp',            /** Programming language **/
     templates: 'templates',     /** Templates directory **/
-    output: 'api.md',           /** Output file **/
 
     filters: {
       members: [
+        'define',
+        'enum',
+        // 'enumvalue',
+        'func',
+        // 'variable',
         'public-attrib',
         'public-func',
         'protected-attrib',
@@ -39,7 +45,8 @@ module.exports = {
         'class',
         'struct',
         'union',
-        'typedef'
+        'typedef',
+        // 'file'
       ]
     }
   },
@@ -63,6 +70,8 @@ module.exports = {
 
     // Parse files
     doxyparser.loadIndex(options, function (err, root) {
+      if (err)
+        throw err;
 
       // Output groups
       if (options.groups) {
@@ -86,6 +95,8 @@ module.exports = {
         root.filterChildren(options.filters);
 
         var compounds = root.toFilteredArray('compounds');
+        if (!options.noindex)
+          compounds.unshift(root); // insert root at top if index is enabled
         var contents = templates.renderArray(compounds);
         helpers.writeFile(options.output, contents);
       }

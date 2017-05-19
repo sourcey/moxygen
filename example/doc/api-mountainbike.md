@@ -1,4 +1,4 @@
-# Module <!-- group --> `mountainbike`
+# group `mountainbike` {#group__mountainbike}
 
 Mountain bike module contains the `MountainBike` class. Mountain bikes are a kind of bike for cycling on rough terrain.
 
@@ -6,15 +6,14 @@ Mountain bike module contains the `MountainBike` class. Mountain bikes are a kin
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`class `[`transport::MountainBike`](#classtransport_1_1MountainBike)    | 
-# class `transport::MountainBike` 
+`class `[`transport::MountainBike`](doc/api-mountainbike.md#classtransport_1_1MountainBike) | Mountain bike implementation of a `[Bicycle](doc/api-bicycle.md#classtransport_1_1Bicycle)`.
+
+# class `transport::MountainBike` {#classtransport_1_1MountainBike}
 
 ```
 class transport::MountainBike
   : public transport::Bicycle
 ```  
-
-
 
 Mountain bike implementation of a `[Bicycle](#classtransport_1_1Bicycle)`.
 
@@ -24,31 +23,25 @@ Mountain bike implementation of a `[Bicycle](#classtransport_1_1Bicycle)`.
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`public bool SetSuspension(double stiffness)` | 
-`public template<typename BreakType>`  <br/>`inline bool ChangeBreak(BreakType breakType)` | 
+`public bool `[`SetSuspension`](#classtransport_1_1MountainBike_1a04caecd7e5ff7572b6ac1dc283510301)`(double stiffness)` | Set suspension stiffness.  the suspension stiffness.
+`public template<typename BreakType>`  <br/>`inline bool `[`ChangeBreak`](#classtransport_1_1MountainBike_1afd02513876a196e98acaacdc555aeb52)`(BreakType breakType)` | Change the break type.  the break type.  the type of the break.
 
 ## Members
 
-#### `public bool SetSuspension(double stiffness)` 
-
-
+#### `public bool `[`SetSuspension`](#classtransport_1_1MountainBike_1a04caecd7e5ff7572b6ac1dc283510301)`(double stiffness)` {#classtransport_1_1MountainBike_1a04caecd7e5ff7572b6ac1dc283510301}
 
 Set suspension stiffness.  the suspension stiffness.
 
 SetSuspension changes the stiffness of the suspension on the bike. The method will return false if the stiffness could not be adjusted.
 
-
 #### Returns
 true if the suspension was adjusted successfully, false otherwise.
 
-#### `public template<typename BreakType>`  <br/>`inline bool ChangeBreak(BreakType breakType)` 
-
-
+#### `public template<typename BreakType>`  <br/>`inline bool `[`ChangeBreak`](#classtransport_1_1MountainBike_1afd02513876a196e98acaacdc555aeb52)`(BreakType breakType)` {#classtransport_1_1MountainBike_1afd02513876a196e98acaacdc555aeb52}
 
 Change the break type.  the break type.  the type of the break.
 
 ChangesBreak changes the type of break fitted to the bike. The method will return false if the break type could not be fitted.
-
 
 #### Returns
 true if the break was adjusted successfully. false otherise

@@ -1,4 +1,4 @@
-# Module <!-- group --> `racingbike`
+# group `racingbike` {#group__racingbike}
 
 Racing bike module contains the `RacingBike` class. Racing bikes are a special kind of bike which can go much faster on the road, with much less effort.
 
@@ -6,15 +6,14 @@ Racing bike module contains the `RacingBike` class. Racing bikes are a special k
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`class `[`transport::RacingBike`](#classtransport_1_1RacingBike)    | 
-# class `transport::RacingBike` 
+`class `[`transport::RacingBike`](doc/api-racingbike.md#classtransport_1_1RacingBike) | Racing bike class.
+
+# class `transport::RacingBike` {#classtransport_1_1RacingBike}
 
 ```
 class transport::RacingBike
   : public transport::Bicycle
 ```  
-
-
 
 Racing bike class.
 
@@ -24,20 +23,16 @@ Racing bike class.
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`public virtual void PedalHarder()` | PedalHarder makes you go faster (usually).
-`public virtual void RingBell()` | 
+`public virtual void `[`PedalHarder`](#classtransport_1_1RacingBike_1ab557c5727daa07a5001782d5dcd46c5b)`()` | PedalHarder makes you go faster (usually).
+`public virtual void `[`RingBell`](#classtransport_1_1RacingBike_1ad32dc3b06a453fba3e20329842bb318b)`()` | Ring bell on the bike.
 
 ## Members
 
-#### `public virtual void PedalHarder()` 
+#### `public virtual void `[`PedalHarder`](#classtransport_1_1RacingBike_1ab557c5727daa07a5001782d5dcd46c5b)`()` {#classtransport_1_1RacingBike_1ab557c5727daa07a5001782d5dcd46c5b}
 
 PedalHarder makes you go faster (usually).
 
-
-
-#### `public virtual void RingBell()` 
-
-
+#### `public virtual void `[`RingBell`](#classtransport_1_1RacingBike_1ad32dc3b06a453fba3e20329842bb318b)`()` {#classtransport_1_1RacingBike_1ad32dc3b06a453fba3e20329842bb318b}
 
 Ring bell on the bike.
 

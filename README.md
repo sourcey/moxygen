@@ -2,6 +2,8 @@
 
 Moxygen is a Doxygen XML to Markdown converter for C++ developers who want a minimal and beautiful solution for documentating their projects.
 
+Moxygen is currently used in conjunction with GitBook to generate the API documentation for [LibSourcey](http://sourcey.com/libsourcey/).
+
 ## Features
 
 * **Multi file output**: Output single or multiple files
@@ -10,8 +12,6 @@ Moxygen is a Doxygen XML to Markdown converter for C++ developers who want a min
 * **Doxygen groups**: Doxygen [grouping](https://www.stack.nl/~dimitri/doxygen/manual/grouping.html) is supported for more organised documentation
 * **Custom templates**: Modify the core Markdown templates to add your own flavour
 * **Optional index**: Optionally render a top level index
-
-Moxygen is currently used in conjunction with GitBook to generate the API documentation for [LibSourcey](http://sourcey.com/libsourcey/).
 
 ## Usage
 

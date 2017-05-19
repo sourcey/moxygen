@@ -23,8 +23,10 @@ module.exports = {
           if (f.charAt(0) == '[') {
             // link
             var link = f.match(/\[(.*)\]\((.*)\)/);
-            isInline ? (s += '`') && (isInline = false) : null;
-            s += '[`' + link[1] + '`](' + link[2] + ')';
+            if (link) {
+              isInline ? (s += '`') && (isInline = false) : null;
+              s += '[`' + link[1] + '`](' + link[2] + ')';
+            }
           }
           else if (f == '\n' || f == '  \n') {
             // line break

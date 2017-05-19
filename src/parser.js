@@ -79,7 +79,7 @@ function toMarkdown(element, context) {
             break;
 
           default:
-            console.assert(false, element['#name'] + ': not yet supported.');
+            console.error(false, element['#name'] + ': not yet supported.');
         }
 
         // recurse on children elements
@@ -372,11 +372,14 @@ module.exports = {
           compounddef.innerclass.forEach(function (innerclassdef) {
               if (compound.kind == 'namespace') {
                 // log.verbose('Assign ' + innerclassdef.$.refid + ' to namespace ' + compound.name);
-                this.assignToNamespace(compound, this.references[innerclassdef.$.refid]);
+
+                if (this.references[innerclassdef.$.refid])
+                  this.assignToNamespace(compound, this.references[innerclassdef.$.refid]);
               }
               else if (compound.kind == 'group') {
                 // log.verbose('Assign ' + innerclassdef.$.refid + ' to group ' + compound.name);
-                this.assignClassToGroup(compound, this.references[innerclassdef.$.refid]);
+                if (this.references[innerclassdef.$.refid])
+                  this.assignClassToGroup(compound, this.references[innerclassdef.$.refid]);
               }
           }.bind(this));
         }
@@ -414,7 +417,11 @@ module.exports = {
         log.verbose('Parsing ' + path.join(options.directory, compound.refid + '.xml'));
         doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
         xmlParser.parseString(doxygen, function (err, data) {
-          this.parseCompound(compound, data.doxygen.compounddef[0]);
+          if (err) {
+            log.verbose('warning - parse error for file' , path.join(options.directory, compound.refid + '.xml'))
+            return;
+          }
+            this.parseCompound(compound, data.doxygen.compounddef[0]);
         }.bind(this));
       }
 

@@ -1,10 +1,17 @@
 # Moxygen
 
-Moxygen is a Doxygen XML to Markdown converter for C++ developers who want a minimal beautiful and  documentation solution for their projects.
+Moxygen is a Doxygen XML to Markdown converter for C++ developers who want a minimal and beautiful solution for documentating their projects.
 
-The code is based on `doxygen2md` with extra options for generating output files, custom templates, and generating multi page documentation.
+## Features
 
-Moxygen is currently used in conjunction with GitBook to generate the API documentation for LibSourcey, which can be viewed [here](http://sourcey.com/libsourcey/).
+* **Multi file output**: Output single or multiple files
+* **Internal linking**: Anchors in comments and function definitions are supported
+* **Markdown comments**: Markdown in Doxygen comments are rendered
+* **Doxygen groups**: Doxygen [grouping](https://www.stack.nl/~dimitri/doxygen/manual/grouping.html) is supported for more organised documentation
+* **Custom templates**: Modify the core Markdown templates to add your own flavour
+* **Optional index**: Optionally render a top level index
+
+Moxygen is currently used in conjunction with GitBook to generate the API documentation for [LibSourcey](http://sourcey.com/libsourcey/).
 
 ## Usage
 
@@ -19,9 +26,10 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
 
     -h, --help             output usage information
     -V, --version          output the version number
-    -a, --anchors          add anchors to internal links
-    -g, --groups           output doxygen groups into separate files
     -o, --output <file>    output file (must contain %s when using groups)
+    -g, --groups           output doxygen groups into separate files
+    -n, --noindex          disable generation of the index (no effect with `groups` option
+    -a, --anchors          add anchors to internal links
     -l, --language <lang>  programming language
     -t, --templates <dir>  custom templates directory
     -q, --quiet            quiet mode
@@ -51,5 +59,5 @@ The rebuild the example XML you can run `doxygen` from within the example folder
 Now you can build the example documentation with the following command from within the example folder:
 
 ```
-moxygen --anchors --groups --output=doc/api-%s.md xml
+moxygen --anchors --groups --output=example/doc/api-%s.md example/xml
 ```

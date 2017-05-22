@@ -6,7 +6,7 @@ Racing bike module contains the `RacingBike` class. Racing bikes are a special k
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`class `[`transport::RacingBike`](doc/api-racingbike.md#classtransport_1_1RacingBike) | Racing bike class.
+`class `[`transport::RacingBike`](example/doc/api-racingbike.md#classtransport_1_1RacingBike) | Racing bike class.
 
 # class `transport::RacingBike` {#classtransport_1_1RacingBike}
 

@@ -6,7 +6,7 @@ Bicycle module contains the bycicle class. Bicycles are a useful way of transpor
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`class `[`transport::Bicycle`](doc/api-bicycle.md#classtransport_1_1Bicycle) | Standard bicycle class.
+`class `[`transport::Bicycle`](example/doc/api-bicycle.md#classtransport_1_1Bicycle) | Standard bicycle class.
 
 # class `transport::Bicycle` {#classtransport_1_1Bicycle}
 

@@ -6,7 +6,7 @@ Mountain bike module contains the `MountainBike` class. Mountain bikes are a kin
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`class `[`transport::MountainBike`](doc/api-mountainbike.md#classtransport_1_1MountainBike) | Mountain bike implementation of a `[Bicycle](doc/api-bicycle.md#classtransport_1_1Bicycle)`.
+`class `[`transport::MountainBike`](example/doc/api-mountainbike.md#classtransport_1_1MountainBike) | Mountain bike implementation of a `[Bicycle](example/doc/api-bicycle.md#classtransport_1_1Bicycle)`.
 
 # class `transport::MountainBike` {#classtransport_1_1MountainBike}
 

@@ -39,7 +39,15 @@ function toMarkdown(element, context) {
           case 'bold': s = '**'; break;
           case 'parametername':
           case 'computeroutput': s = '`'; break;
-          case 'parameterlist': s = '\n#### Parameters\n'; break;
+          case 'parameterlist':
+            if (element.$.kind == 'exception') {
+              s = '\n#### Exceptions\n'
+            }
+            else {
+              s = '\n#### Parameters\n'
+            }
+            break;
+
           case 'parameteritem': s = '* '; break;
           case 'programlisting': s = '\n```cpp\n'; break;
           case 'itemizedlist': s = '\n\n'; break;

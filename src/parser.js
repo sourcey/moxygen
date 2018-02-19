@@ -196,11 +196,13 @@ module.exports = {
         m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         if (memberdef.templateparamlist) {
           m.push('template<');
-          memberdef.templateparamlist[0].param.forEach(function (param, argn) {
-            m = m.concat(argn == 0 ? [] : ',');
-            m = m.concat([toMarkdown(param.type)]);
-            m = m.concat(param.declname ? [' ', toMarkdown(param.declname)] : []);
-          });
+          if (memberdef.templateparamlist.length > 0 && memberdef.templateparamlist.param) {
+            memberdef.templateparamlist[0].param.forEach(function (param, argn) {
+              m = m.concat(argn == 0 ? [] : ',');
+              m = m.concat([toMarkdown(param.type)]);
+              m = m.concat(param.declname ? [' ', toMarkdown(param.declname)] : []);
+            });
+          }
           m.push('>  \n');
         }
         m = m.concat(memberdef.$.inline == 'yes' ? ['inline', ' '] : []);

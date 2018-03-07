@@ -42,7 +42,8 @@ module.exports = {
         'protected-func',
         'signal',
         'public-slot',
-        'protected-slot'
+        'protected-slot',
+        'public-type'
       ],
       compounds: [
         'namespace',

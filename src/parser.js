@@ -192,6 +192,10 @@ module.exports = {
 
     var m = [];
     switch (member.kind) {
+      case 'signal':
+      case 'slot':
+        m = m.concat(['{', member.kind, '} ']);
+
       case 'function':
         m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         if (memberdef.templateparamlist) {

@@ -35,6 +35,7 @@ module.exports = {
         // 'enumvalue',
         'func',
         // 'variable',
+        'property',
         'public-attrib',
         'public-func',
         'protected-attrib',

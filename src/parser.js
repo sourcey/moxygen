@@ -241,6 +241,13 @@ module.exports = {
         m = m.concat(markdown.link(member.name, '#' + member.refid, true));
         break;
 
+      case 'property':
+        m = m.concat(['{', member.kind, '} ']);
+        m = m.concat(toMarkdown(memberdef.type), ' ');
+        // m = m.concat(memberdef.name[0]._);
+        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        break;
+
       case 'enum':
         member.enumvalue = [];
         if (memberdef.enumvalue) {

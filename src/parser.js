@@ -192,6 +192,10 @@ module.exports = {
 
     var m = [];
     switch (member.kind) {
+      case 'signal':
+      case 'slot':
+        m = m.concat(['{', member.kind, '} ']);
+
       case 'function':
         m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         if (memberdef.templateparamlist) {
@@ -232,6 +236,13 @@ module.exports = {
         m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         m = m.concat(memberdef.$.static == 'yes' ? ['static', ' '] : []);
         m = m.concat(memberdef.$.mutable == 'yes' ? ['mutable', ' '] : []);
+        m = m.concat(toMarkdown(memberdef.type), ' ');
+        // m = m.concat(memberdef.name[0]._);
+        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        break;
+
+      case 'property':
+        m = m.concat(['{', member.kind, '} ']);
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
         m = m.concat(markdown.link(member.name, '#' + member.refid, true));

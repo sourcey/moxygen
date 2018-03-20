@@ -1,10 +1,10 @@
 {
   "name": "moxygen",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "description": "Doxygen XML to Markdown documentation converter",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "release": "release-it"
   },
   "bin": {
     "moxygen": "./bin/moxygen.js"
@@ -16,7 +16,8 @@
   "keywords": [
     "doxygen",
     "markdown",
-    "documentation"
+    "documentation",
+    "generator"
   ],
   "author": "Kam Low",
   "license": "MIT",

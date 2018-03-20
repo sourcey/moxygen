@@ -192,15 +192,21 @@ module.exports = {
 
     var m = [];
     switch (member.kind) {
+      case 'signal':
+      case 'slot':
+        m = m.concat(['{', member.kind, '} ']);
+
       case 'function':
         m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         if (memberdef.templateparamlist) {
           m.push('template<');
-          memberdef.templateparamlist[0].param.forEach(function (param, argn) {
-            m = m.concat(argn == 0 ? [] : ',');
-            m = m.concat([toMarkdown(param.type)]);
-            m = m.concat(param.declname ? [' ', toMarkdown(param.declname)] : []);
-          });
+          if (memberdef.templateparamlist.length > 0 && memberdef.templateparamlist.param) {
+            memberdef.templateparamlist[0].param.forEach(function (param, argn) {
+              m = m.concat(argn == 0 ? [] : ',');
+              m = m.concat([toMarkdown(param.type)]);
+              m = m.concat(param.declname ? [' ', toMarkdown(param.declname)] : []);
+            });
+          }
           m.push('>  \n');
         }
         m = m.concat(memberdef.$.inline == 'yes' ? ['inline', ' '] : []);
@@ -230,6 +236,13 @@ module.exports = {
         m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         m = m.concat(memberdef.$.static == 'yes' ? ['static', ' '] : []);
         m = m.concat(memberdef.$.mutable == 'yes' ? ['mutable', ' '] : []);
+        m = m.concat(toMarkdown(memberdef.type), ' ');
+        // m = m.concat(memberdef.name[0]._);
+        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        break;
+
+      case 'property':
+        m = m.concat(['{', member.kind, '} ']);
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
         m = m.concat(markdown.link(member.name, '#' + member.refid, true));

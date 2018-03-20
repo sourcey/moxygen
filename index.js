@@ -35,10 +35,15 @@ module.exports = {
         // 'enumvalue',
         'func',
         // 'variable',
+        'property',
         'public-attrib',
         'public-func',
         'protected-attrib',
-        'protected-func'
+        'protected-func',
+        'signal',
+        'public-slot',
+        'protected-slot',
+        'public-type'
       ],
       compounds: [
         'namespace',

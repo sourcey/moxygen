@@ -42,6 +42,9 @@ module.exports = {
       case 'index':
         template = 'index';
         break;
+      case 'page':
+        template = 'page'
+        break;
       case 'group':
       case 'namespace':
         if (Object.keys(compound.compounds).length === 1

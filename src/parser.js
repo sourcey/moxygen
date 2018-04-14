@@ -434,7 +434,7 @@ module.exports = {
 
       this.parseMembers(compound, element.$, element.member);
 
-      if (compound.kind !== 'page') { // && compound.kind !== 'file'
+      if (compound.kind !== 'file') { // && compound.kind !== 'file'
         log.verbose('Parsing ' + path.join(options.directory, compound.refid + '.xml'));
         doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
         xmlParser.parseString(doxygen, function (err, data) {

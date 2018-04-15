@@ -42,6 +42,9 @@ module.exports = {
       case 'index':
         template = 'index';
         break;
+      case 'page':
+        template = 'page'
+        break;
       case 'group':
       case 'namespace':
         if (Object.keys(compound.compounds).length === 1
@@ -59,8 +62,8 @@ module.exports = {
         console.log('Skipping ', compound);
         return undefined;
     }
-
-    return this.templates[template](compound).replace(/(\r\n|\r|\n){2,}/g, '$1\n');
+    
+    return this.templates[template](compound).replace(/(\r\n|\r|\n){3,}/g, '$1\n');
   },
 
   renderArray: function (compounds) {

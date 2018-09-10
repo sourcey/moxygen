@@ -69,6 +69,12 @@ function toMarkdown(element, context) {
               console.assert(element.$.kind + ' not supported.');
             }
             break;
+          case 'formula':
+            s = trim(element._);
+            if (s.startsWith('$') && s.endsWith('$')) return s;
+            if (s.startsWith('\\[') && s.endsWith('\\]'))
+              s = trim(s.substring(2, s.length - 2));
+            return '\n$$\n' + s + '\n$$\n';
 
           case 'xreftitle':
           case 'entry':

@@ -11,6 +11,7 @@ program.version(pjson.version)
   .usage('[options] <doxygen directory>')
   .option('-o, --output <file>', 'output file (must contain %s when using groups)', String, 'api.md')
   .option('-g, --groups', 'output doxygen groups into separate files', false)
+  .option('-c, --classes', 'output doxygen groups into separate files', false)
   .option('-p, --pages', 'output doxygen pages into separate files', false)
   .option('-n, --noindex', 'disable generation of the index (no effect with `groups` option', false)
   .option('-a, --anchors', 'add anchors to internal links', false)
@@ -29,6 +30,7 @@ if (program.args.length) {
     output: program.output,
     groups: program.groups,
     pages: program.pages,
+    classes: program.classes,
     noindex: program.noindex,
     anchors: program.anchors,
     language: program.language,

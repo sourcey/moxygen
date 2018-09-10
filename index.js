@@ -28,6 +28,7 @@ module.exports = {
     language: 'cpp',            /** Programming language **/
     templates: 'templates',     /** Templates directory **/
     pages: false,               /** Output doxygen pages separately **/
+    classes: false,             /** Output doxygen classes separately **/
 
     filters: {
       members: [
@@ -94,7 +95,20 @@ module.exports = {
           helpers.writeFile(util.format(options.output, group.name), contents);
         });
       }
-
+      else if (options.classes) {
+        var rootCompounds = root.toArray('compounds');
+        if (!rootCompounds.length)
+          throw "You have enabled `classes` output, but no classes were " +
+            "located in your doxygen XML files."
+        rootCompounds.forEach(function (comp) {
+          var compounds = comp.toArray();
+          compounds.forEach(function (e) {
+            e.filterChildren(options.filters)
+            var contents = templates.render(e);
+            helpers.writeFile(util.format(options.output, e.name), [contents]);
+          });
+        });
+      }
       // Output single file
       else {
         root.filterChildren(options.filters);

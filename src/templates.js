@@ -96,6 +96,9 @@ module.exports = {
       if (options.anchors) {
         return '{#' + name + '}';
       }
+      else if (options.htmlAnchors) {
+        return '<a id="' + name + '"></a>';
+      }
       else {
         return '';
       }

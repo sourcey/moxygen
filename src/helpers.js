@@ -46,17 +46,15 @@ module.exports = {
     }
   },
 
-  // Replace group links to point to correct output file
-  replaceGroupReflink: function (outfile, references, str) {
-    var match = str.match(/\((#(.*))\)/),
-      anchor = match[1],
-      refid = match[2],
-      ref = references[refid];
-    if (ref && ref.groupname) {
-      var href = util.format(outfile, ref.groupname) + anchor;
-      str = str.replace(/\((#(.*))\)/, '(' + href + ')')
-    }
-    return str;
+  // Replace group and class links to point to correct output file if needed
+  resolveRef: function(options, compound, references) {
+    return function(refid) {
+      if ((options.groups || options.classes) && compound.refid !== refid && references[refid]) {
+        return util.format(options.output, options.groups ? references[refid].groupname : references[refid].name) + '#' + refid;
+      } else {
+        return '#' + refid;
+      }
+    };
   },
 
   // Write the output file

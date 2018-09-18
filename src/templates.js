@@ -77,17 +77,11 @@ module.exports = {
 
     // Escape the code for a table cell.
     handlebars.registerHelper('cell', function(code) {
-      if (options.groups && code.indexOf('(#') !== -1) {
-        code = helpers.replaceGroupReflink(options.output, doxyparser.references, code);
-      }
       return code.replace(/\|/g, '\\|').replace(/\n/g, '<br/>');
     });
 
     // Escape the code for a titles.
     handlebars.registerHelper('title', function(code) {
-      if (options.groups && code.indexOf('(#') !== -1) {
-        code = helpers.replaceGroupReflink(options.output, doxyparser.references, code);
-      }
       return code.replace(/\n/g, '<br/>');
     });
 

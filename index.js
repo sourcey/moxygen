@@ -94,12 +94,14 @@ module.exports = {
         });
       }
       else if (options.classes) {
-        var rootCompounds = root.toArray('compounds');
+        var rootCompounds = root.toArray('compounds', 'namespace');
         if (!rootCompounds.length)
           throw "You have enabled `classes` output, but no classes were " +
             "located in your doxygen XML files."
         rootCompounds.forEach(function (comp) {
-          var compounds = comp.toArray();
+          comp.filterChildren(options.filters);
+          var compounds = comp.toFilteredArray();
+          helpers.writeCompound(comp, [templates.render(comp)], doxyparser.references, options);
           compounds.forEach(function (e) {
             e.filterChildren(options.filters)
             helpers.writeCompound(e, [templates.render(e)], doxyparser.references, options);

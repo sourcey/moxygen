@@ -33,7 +33,7 @@ function toMarkdown(element, context) {
 
         // opening the element
         switch (element['#name']) {
-          case 'ref': return s + markdown.link(toMarkdown(element.$$), module.exports.resolveRef(element.$.refid), true);
+          case 'ref': return s + markdown.refLink(toMarkdown(element.$$), element.$.refid);
           case '__text__': s = element._; break;
           case 'emphasis': s = '*'; break;
           case 'bold': s = '**'; break;
@@ -179,7 +179,7 @@ module.exports = {
 
     if (membersdef) {
       membersdef.forEach(function (memberdef) {
-        var member = { name: memberdef.name[0] };
+        var member = { name: memberdef.name[0], parent: compound };
         compound.members.push(member);
         Object.keys(memberdef.$).forEach(function(prop) {
           member[prop] = memberdef.$[prop];
@@ -221,7 +221,7 @@ module.exports = {
         m = m.concat(toMarkdown(memberdef.type), ' ');
         m = m.concat(memberdef.$.explicit  == 'yes' ? ['explicit', ' '] : []);
         // m = m.concat(memberdef.name[0]._);
-        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        m = m.concat(markdown.refLink(member.name, member.refid));
         m = m.concat('(');
         if (memberdef.param) {
           memberdef.param.forEach(function (param, argn) {
@@ -244,14 +244,14 @@ module.exports = {
         m = m.concat(memberdef.$.mutable == 'yes' ? ['mutable', ' '] : []);
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
-        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        m = m.concat(markdown.refLink(member.name, member.refid));
         break;
 
       case 'property':
         m = m.concat(['{', member.kind, '} ']);
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
-        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        m = m.concat(markdown.refLink(member.name, member.refid));
         break;
 
       case 'enum':
@@ -267,12 +267,12 @@ module.exports = {
           });
         }
         // m.push(member.kind + ' ' + member.name);
-        m = m.concat([member.kind, ' ', markdown.link(member.name, '#' + member.refid, true)]);
+        m = m.concat([member.kind, ' ', markdown.refLink(member.name, member.refid)]);
         break;
 
       default:
         // m.push(member.kind + ' ' + member.name);
-        m = m.concat([member.kind, ' ', markdown.link(member.name, '#' + member.refid, true)]);
+        m = m.concat([member.kind, ' ', markdown.refLink(member.name, member.refid)]);
         break;
     }
 
@@ -320,9 +320,22 @@ module.exports = {
 
   parseCompound: function (compound, compounddef) {
     log.verbose('Processing compound ' + compound.name);
+    Object.keys(compounddef.$).forEach(function(prop) {
+      compound[prop] = compounddef.$[prop];
+    });
+    compound.fullname = compounddef.compoundname[0]._;
     copy(compound, 'briefdescription', compounddef);
     copy(compound, 'detaileddescription', compounddef);
     summary(compound, compounddef);
+
+    if (compounddef.basecompoundref) {
+      compounddef.basecompoundref.forEach(function (basecompoundref) {
+        compound.basecompoundref.push({
+          prot: basecompoundref.$.prot,
+          name: basecompoundref._,
+        });
+      });
+    }
 
     if (compounddef.sectiondef) {
       compounddef.sectiondef.forEach(function (section) {
@@ -342,6 +355,7 @@ module.exports = {
 
                 if (compound.kind == 'group') {
                   member.groupid = compound.id;
+                  member.groupname = compound.name;
                 }
                 else if (compound.kind == 'file') {
                   // add free members defined inside files in the default
@@ -359,25 +373,7 @@ module.exports = {
       }.bind(this));
     }
 
-    compound.proto = helpers.inline([compound.kind, ' ', markdown.link(compound.name, '#' + compound.refid, true)]);
-    return;
-  },
-
-  preprocessCompound: function (compound, compounddef) {
-    log.verbose('Preprocessing compound ' + compound.name);
-    Object.keys(compounddef.$).forEach(function(prop) {
-      compound[prop] = compounddef.$[prop];
-    });
-    compound.fullname = compounddef.compoundname[0]._;
-
-    if (compounddef.basecompoundref) {
-      compounddef.basecompoundref.forEach(function (basecompoundref) {
-        compound.basecompoundref.push({
-          prot: basecompoundref.$.prot,
-          name: basecompoundref._,
-        });
-      });
-    }
+    compound.proto = helpers.inline([compound.kind, ' ', markdown.refLink(compound.name, compound.refid)]);
 
     // kind specific parsing
     switch (compound.kind) {
@@ -398,6 +394,11 @@ module.exports = {
 
       case 'namespace':
       case 'group':
+
+        if (compound.kind == 'group') {
+          compound.groupid = compound.id;
+          compound.groupname = compound.name;
+        }
 
         // handle innerclass for groups and namespaces
         if (compounddef.innerclass) {
@@ -434,45 +435,29 @@ module.exports = {
     return;
   },
 
-  parseIndex: function (root, index, options, callback) {
-    var compounds = [], defs = [];
-    var processTogether = function(compound, def) {
-      this.preprocessCompound(compound, def);
-      defs.push([compound, def]);
-      if (compounds.length == defs.length) {
-        defs.forEach(function(item) {
-          this.resolveRef = helpers.resolveRef(options, item[0], this.references);
-          this.parseCompound(item[0], item[1]);
-        }.bind(this));
-        callback(null, this.root); // TODO: return errors properly
-      }
-    }.bind(this);
-
+  parseIndex: function (root, index, options) {
     index.forEach(function (element) {
-      var compound = root.find(element.name[0], true);
-      this.parseMembers(compound, element.$, element.member);
-      if (compound.kind !== 'file') { // && compound.kind !== 'file'
-        compounds.push(compound);
-      }
-    }.bind(this));
-
-    compounds.forEach(function (compound) {
-      var doxygen;
+      var doxygen, compound = root.find(element.name[0], true);
       var xmlParser = new xml2js.Parser({
         explicitChildren: true,
         preserveChildrenOrder: true,
         charsAsChildren: true
       });
 
-      log.verbose('Parsing ' + path.join(options.directory, compound.refid + '.xml'));
-      doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
-      xmlParser.parseString(doxygen, function (err, data) {
-        if (err) {
-          log.verbose('warning - parse error for file' , path.join(options.directory, compound.refid + '.xml'))
-          return;
-        }
-        processTogether(compound, data.doxygen.compounddef[0]);
-      }.bind(this));
+      this.parseMembers(compound, element.$, element.member);
+
+      if (compound.kind !== 'file') { // && compound.kind !== 'file'
+        log.verbose('Parsing ' + path.join(options.directory, compound.refid + '.xml'));
+        doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
+        xmlParser.parseString(doxygen, function (err, data) {
+          if (err) {
+            log.verbose('warning - parse error for file' , path.join(options.directory, compound.refid + '.xml'))
+            return;
+          }
+            this.parseCompound(compound, data.doxygen.compounddef[0]);
+        }.bind(this));
+      }
+
     }.bind(this));
   },
 
@@ -490,7 +475,8 @@ module.exports = {
           return;
         }
         this.root.kind = 'index';
-        this.parseIndex(this.root, result.doxygenindex.compound, options, callback);
+        this.parseIndex(this.root, result.doxygenindex.compound, options);
+        callback(null, this.root); // TODO: return errors properly
       }.bind(this));
     }.bind(this));
   }

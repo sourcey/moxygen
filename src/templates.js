@@ -87,15 +87,7 @@ module.exports = {
 
     // Generate an anchor for internal links
     handlebars.registerHelper('anchor', function(name) {
-      if (options.anchors) {
-        return '{#' + name + '}';
-      }
-      else if (options.htmlAnchors) {
-        return '<a id="' + name + '"></a>';
-      }
-      else {
-        return '';
-      }
+      return helpers.getAnchor(name, options);
     });
   }
 };

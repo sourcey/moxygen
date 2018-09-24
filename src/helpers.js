@@ -46,6 +46,18 @@ module.exports = {
     }
   },
 
+  getAnchor: function(name, options) {
+    if (options.anchors) {
+      return '{#' + name + '}';
+    }
+    else if (options.htmlAnchors) {
+      return '<a id="' + name + '"></a>';
+    }
+    else {
+      return '';
+    }
+  },
+
   findParent: function(compound, kinds) {
     while (compound) {
       if (kinds.includes(compound.kind))

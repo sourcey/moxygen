@@ -285,15 +285,15 @@ module.exports = {
 
     // namespaces take ownership of the child compound
     if (child.parent)
-        delete child.parent.compounds[child.name];
-    compound.compounds[child.name] = child;
+        delete child.parent.compounds[child.id];
+    compound.compounds[child.id] = child;
     child.parent = compound;
   },
 
   assignNamespaceToGroup: function (compound, child) {
 
     // add the namespace to the group
-    compound.compounds[child.name] = child;
+    compound.compounds[child.id] = child;
 
     // remove namespace clildren from direct group children
     Object.keys(child.compounds).forEach(function(id) {
@@ -306,7 +306,7 @@ module.exports = {
     // add the namespace to the group
     // if the child already belongs to a child namespace it will be removed
     // on the call to `assignNamespaceToGroup`
-    compound.compounds[child.name] = child;
+    compound.compounds[child.id] = child;
 
     // add a groupid and reference to the compound and all it's members
     child.groupid = compound.id;
@@ -437,7 +437,7 @@ module.exports = {
 
   parseIndex: function (root, index, options) {
     index.forEach(function (element) {
-      var doxygen, compound = root.find(element.name[0], true);
+      var doxygen, compound = root.find(element.$.refid, element.name[0], true);
       var xmlParser = new xml2js.Parser({
         explicitChildren: true,
         preserveChildrenOrder: true,

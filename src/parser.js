@@ -50,8 +50,14 @@ function toMarkdown(element, context) {
 
           case 'parameteritem': s = '* '; break;
           case 'programlisting': s = '\n```cpp\n'; break;
+          case 'orderedlist':
+            context.push(element);
+            s = '\n\n';
+            break;
           case 'itemizedlist': s = '\n\n'; break;
-          case 'listitem': s = '* '; break;
+          case 'listitem':
+            s = (context.length > 0 && context[context.length - 1]['#name'] == 'orderedlist') ? '1. ' : '* ';
+            break;
           case 'sp': s = ' '; break;
           case 'heading': s = '## '; break;
           case 'xrefsect': s += '\n> '; break;
@@ -63,7 +69,7 @@ function toMarkdown(element, context) {
               s = '\n#### Returns\n'
             }
             else if (element.$.kind == 'see') {
-              s = '\n**See also**: '
+              s = '**See also**: '
             }
             else {
               console.assert(element.$.kind + ' not supported.');
@@ -75,6 +81,7 @@ function toMarkdown(element, context) {
             if (s.startsWith('\\[') && s.endsWith('\\]'))
               s = trim(s.substring(2, s.length - 2));
             return '\n$$\n' + s + '\n$$\n';
+          case 'preformatted': s = '\n<pre>'; break;
 
           case 'sect1':
           case 'sect2':
@@ -86,6 +93,10 @@ function toMarkdown(element, context) {
             var level = '#'.repeat(context[context.length - 1]['#name'].slice(-1));
             s = '\n#' + level + ' ' + element._ + '\n';
             break;
+
+          case 'mdash': s = '&mdash;'; break;
+          case 'ndash': s = '&ndash;'; break;
+          case 'linebreak': s = '<br/>'; break;
 
           case 'xreftitle':
           case 'entry':
@@ -125,10 +136,15 @@ function toMarkdown(element, context) {
           case 'programlisting': s += '```\n'; break;
           case 'codeline': s += '\n'; break;
           case 'ulink': s = markdown.link(s, element.$.url); break;
+          case 'orderedlist':
+            context.pop();
+            s += '\n';
+            break;
           case 'itemizedlist': s += '\n'; break;
           case 'listitem': s += '\n'; break;
           case 'entry': s = ' | '; break;
           case 'xreftitle': s += ': '; break;
+          case 'preformatted': s += '</pre>\n'; break;
           case 'sect1':
           case 'sect2':
           case 'sect3':

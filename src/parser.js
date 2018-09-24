@@ -76,6 +76,17 @@ function toMarkdown(element, context) {
               s = trim(s.substring(2, s.length - 2));
             return '\n$$\n' + s + '\n$$\n';
 
+          case 'sect1':
+          case 'sect2':
+          case 'sect3':
+            context.push(element);
+            s = '\n' + helpers.getAnchor(element.$.id, module.exports.parserOptions) + '\n';
+            break;
+          case 'title':
+            var level = '#'.repeat(context[context.length - 1]['#name'].slice(-1));
+            s = '\n#' + level + ' ' + element._ + '\n';
+            break;
+
           case 'xreftitle':
           case 'entry':
           case 'row':
@@ -118,6 +129,12 @@ function toMarkdown(element, context) {
           case 'listitem': s += '\n'; break;
           case 'entry': s = ' | '; break;
           case 'xreftitle': s += ': '; break;
+          case 'sect1':
+          case 'sect2':
+          case 'sect3':
+            context.pop();
+            s += '\n';
+            break;
           case 'row':
             s = '\n' + markdown.escape.row(s);
             if (element.$$ && element.$$[0].$.thead == "yes") {
@@ -318,6 +335,19 @@ module.exports = {
     });
   },
 
+  extractPageSections: function(page, elements) {
+    elements.forEach(function(element) {
+      if (element['#name'] == 'sect1' || element['#name'] == 'sect2' || element['#name'] == 'sect3') {
+        var id = element.$.id;
+        var member = { section: element['#name'], id: id, name: id, refid: id, parent: page };
+        page.members.push(member);
+        this.references[member.refid] = member;
+      }
+      if (element.$$)
+        this.extractPageSections(page, element.$$);
+    }.bind(this));
+  },
+
   parseCompound: function (compound, compounddef) {
     log.verbose('Processing compound ' + compound.name);
     Object.keys(compounddef.$).forEach(function(prop) {
@@ -392,6 +422,10 @@ module.exports = {
         // parse add all contained members to the root compound.
         break;
 
+      case 'page':
+        this.extractPageSections(compound, compounddef.$$);
+        break;
+
       case 'namespace':
       case 'group':
 
@@ -462,6 +496,7 @@ module.exports = {
   },
 
   loadIndex: function (options, callback) {
+    this.parserOptions = options;
     log.verbose('Parsing ' + path.join(options.directory, 'index.xml'));
     fs.readFile(path.join(options.directory, 'index.xml'), 'utf8', function(err, data) {
       if (err) {

@@ -1,4 +1,4 @@
-# page `md_src_history` {#md_src_history}
+# page `changelog` {#changelog}
 
 ## Version 1.0.1
 

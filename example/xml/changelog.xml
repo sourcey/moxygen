@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
-  <compounddef id="md_src_history" kind="page">
-    <compoundname>md_src_history</compoundname>
+  <compounddef id="changelog" kind="page">
+    <compoundname>changelog</compoundname>
     <title>Changelog</title>
     <briefdescription>
     </briefdescription>

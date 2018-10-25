@@ -4,19 +4,19 @@
     <compoundname>mountainbike.cpp</compoundname>
     <includes refid="mountainbike_8h" local="yes">mountainbike.h</includes>
     <incdepgraph>
-      <node id="6">
+      <node id="8">
         <label>mountainbike.h</label>
         <link refid="mountainbike_8h_source"/>
-        <childnode refid="7" relation="include">
+        <childnode refid="9" relation="include">
         </childnode>
       </node>
-      <node id="7">
+      <node id="9">
         <label>transport/bicycle.h</label>
       </node>
-      <node id="5">
+      <node id="7">
         <label>src/mountainbike.cpp</label>
         <link refid="mountainbike_8cpp"/>
-        <childnode refid="6" relation="include">
+        <childnode refid="8" relation="include">
         </childnode>
       </node>
     </incdepgraph>

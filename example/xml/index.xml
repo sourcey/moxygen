@@ -19,6 +19,8 @@
   </compound>
   <compound refid="bicycle_8h" kind="file"><name>bicycle.h</name>
   </compound>
+  <compound refid="history_8md" kind="file"><name>history.md</name>
+  </compound>
   <compound refid="mountainbike_8cpp" kind="file"><name>mountainbike.cpp</name>
   </compound>
   <compound refid="mountainbike_8h" kind="file"><name>mountainbike.h</name>
@@ -41,6 +43,8 @@
   <compound refid="group__racingbike" kind="group"><name>racingbike</name>
   </compound>
   <compound refid="group__mountainbike" kind="group"><name>mountainbike</name>
+  </compound>
+  <compound refid="md_src_history" kind="page"><name>md_src_history</name>
   </compound>
   <compound refid="md_src_overview" kind="page"><name>md_src_overview</name>
   </compound>

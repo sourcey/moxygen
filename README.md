@@ -54,10 +54,23 @@ To get a feel for how Moxygen works you can play with the example which is locat
 * Pre-generated XML output in [example/xml](/example/xml)
 * Pre-generated output Markdown files in [example/doc](/example/doc)
 
-The rebuild the example XML you can run `doxygen` from within the example folder.
+To fully build the example, follow these steps (once you've installed `doxygen`. See **Development & Contribution**, below):
 
-Now you can build the example documentation with the following command from within the example folder:
+1. Rebuild the XML: run `doxygen` from within the example folder.
+2. Rebuild the Moxygen output: from within this directory,
 
 ```
-moxygen --anchors --groups --output=example/doc/api-%s.md example/xml
+node bin/moxygen.js --groups --pages --anchors --output=example/doc/api-%s.md example/xml
 ```
+
+## Development & Contribution
+
+You can develop this project as you would any other Node project:
+
+1. Clone this repo.
+2. `npm install` from this directory.
+
+This project is tested through integration, by building the `example/`. To quickly test this project:
+
+1. Install `doxygen` (`brew install doxygen`, `choco install doxygen`, for example). Only must be done once per computer.
+2. `npm test` from this directory. This will run Doxygen on the `example/` and build the output.

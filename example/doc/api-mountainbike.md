@@ -6,7 +6,7 @@ Mountain bike module contains the `MountainBike` class. Mountain bikes are a kin
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`class `[`transport::MountainBike`](#classtransport_1_1MountainBike) | Mountain bike implementation of a `[Bicycle](./api-bicycle.md#classtransport_1_1Bicycle)`.
+`class `[`transport::MountainBike`](#classtransport_1_1MountainBike) | Mountain bike implementation of a `[Bicycle](example/doc/api-bicycle.md#classtransport_1_1Bicycle)`.
 
 # class `transport::MountainBike` {#classtransport_1_1MountainBike}
 
@@ -15,9 +15,9 @@ class transport::MountainBike
   : public transport::Bicycle
 ```  
 
-Mountain bike implementation of a `[Bicycle](./api-bicycle.md#classtransport_1_1Bicycle)`.
+Mountain bike implementation of a `[Bicycle](example/doc/api-bicycle.md#classtransport_1_1Bicycle)`.
 
-[MountainBike](#classtransport_1_1MountainBike) is an implementation of a [Bicycle](./api-bicycle.md#classtransport_1_1Bicycle) providing a bike for cycling on rough terrain. Mountain bikes are pretty cool because they have stuff like **Suspension** (and you can even adjust it using SetSuspension). If you're looking for a bike for use on the road, you might be better off using a [RacingBike](./api-racingbike.md#classtransport_1_1RacingBike) though.
+[MountainBike](#classtransport_1_1MountainBike) is an implementation of a [Bicycle](example/doc/api-bicycle.md#classtransport_1_1Bicycle) providing a bike for cycling on rough terrain. Mountain bikes are pretty cool because they have stuff like **Suspension** (and you can even adjust it using SetSuspension). If you're looking for a bike for use on the road, you might be better off using a [RacingBike](example/doc/api-racingbike.md#classtransport_1_1RacingBike) though.
 
 ## Summary
 

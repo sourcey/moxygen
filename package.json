@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "release": "release-it",
-    "test": "cd example/ && doxygen && cd .. && node bin/moxygen.js --groups --pages --anchors --output=example/doc/api-%s.md example/xml"
+    "test": "npm run clean && cd example/ && doxygen && cd .. && node bin/moxygen.js --groups --pages --anchors --output=example/doc/api-%s.md example/xml",
+    "clean": "rm -rf example/doc/*.md example/xml/"
   },
   "bin": {
     "moxygen": "./bin/moxygen.js"

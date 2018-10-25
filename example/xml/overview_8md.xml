@@ -9,11 +9,11 @@
     <programlisting>
 <codeline><highlight class="normal">#<sp/>Transport</highlight></codeline>
 <codeline></codeline>
-<codeline><highlight class="normal">This<sp/>is<sp/>an<sp/>overview<sp/>of<sp/>`transport::Bicycle`,<sp/>the<sp/>greatest<sp/>new<sp/>CPP<sp/>program.</highlight></codeline>
+<codeline><highlight class="normal">The<sp/>`transport`<sp/>namespace<sp/>provides<sp/>several<sp/>differnt<sp/>types<sp/>of<sp/>bycicles,<sp/>including<sp/>transport::Bicycle,<sp/>transport::MountainBike<sp/>(designed<sp/>for<sp/>rough<sp/>terrain),<sp/>and<sp/>transport::RacingBike<sp/>(designed<sp/>specifically<sp/>for<sp/>challenging<sp/>races).</highlight></codeline>
 <codeline></codeline>
 <codeline><highlight class="normal">##<sp/>Changelog</highlight></codeline>
 <codeline></codeline>
-<codeline><highlight class="normal">See<sp/>[history](./history.md).</highlight></codeline>
+<codeline><highlight class="normal">See<sp/>[history](history.md).</highlight></codeline>
     </programlisting>
     <location file="src/overview.md"/>
   </compounddef>

@@ -6,7 +6,7 @@
     <briefdescription>
     </briefdescription>
     <detaileddescription>
-<para>This is an overview of <computeroutput><ref refid="classtransport_1_1Bicycle" kindref="compound">transport::Bicycle</ref></computeroutput>, the greatest new CPP program.</para><para><heading level="2">Changelog</heading>
-</para><para>See ./history.md &quot;history&quot;. </para>    </detaileddescription>
+<para>The <computeroutput>transport</computeroutput> namespace provides several differnt types of bycicles, including <ref refid="classtransport_1_1Bicycle" kindref="compound">transport::Bicycle</ref>, <ref refid="classtransport_1_1MountainBike" kindref="compound">transport::MountainBike</ref> (designed for rough terrain), and <ref refid="classtransport_1_1RacingBike" kindref="compound">transport::RacingBike</ref> (designed specifically for challenging races).</para><para><heading level="2">Changelog</heading>
+</para><para>See history. </para>    </detaileddescription>
   </compounddef>
 </doxygen>

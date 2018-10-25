@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "release": "release-it",
-    "test": "cd example/ && doxygen && cd .. && node bin/moxygen.js example/xml -o ./example/doc/api-%s.md --groups --pages"
+    "test": "cd example/ && doxygen && cd doc/ && node ../../bin/moxygen.js ../xml -o ./api-%s.md --groups --pages --anchors"
   },
   "bin": {
     "moxygen": "./bin/moxygen.js"

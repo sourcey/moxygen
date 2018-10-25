@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
   <compounddef id="bicycle_8cpp" kind="file" language="C++">
     <compoundname>bicycle.cpp</compoundname>
     <includes refid="bicycle_8h" local="yes">bicycle.h</includes>
     <incdepgraph>
+      <node id="1">
+        <label>bicycle.h</label>
+        <link refid="bicycle_8h_source"/>
+      </node>
       <node id="0">
         <label>src/bicycle.cpp</label>
         <link refid="bicycle_8cpp"/>
         <childnode refid="1" relation="include">
         </childnode>
-      </node>
-      <node id="1">
-        <label>bicycle.h</label>
-        <link refid="bicycle_8h_source"/>
       </node>
     </incdepgraph>
     <briefdescription>

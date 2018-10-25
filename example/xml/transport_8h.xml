@@ -1,28 +1,28 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
   <compounddef id="transport_8h" kind="file" language="C++">
     <compoundname>transport.h</compoundname>
     <includes local="no">transport/bicycle.h</includes>
     <includes local="no">transport/racingbike.h</includes>
     <includes local="no">transport/mountainbike.h</includes>
     <incdepgraph>
-      <node id="19">
-        <label>src/transport.h</label>
-        <link refid="transport_8h"/>
-        <childnode refid="20" relation="include">
-        </childnode>
-        <childnode refid="21" relation="include">
-        </childnode>
-        <childnode refid="22" relation="include">
-        </childnode>
-      </node>
-      <node id="21">
+      <node id="23">
         <label>transport/racingbike.h</label>
       </node>
-      <node id="22">
+      <node id="24">
         <label>transport/mountainbike.h</label>
       </node>
-      <node id="20">
+      <node id="21">
+        <label>src/transport.h</label>
+        <link refid="transport_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
         <label>transport/bicycle.h</label>
       </node>
     </incdepgraph>
@@ -40,7 +40,8 @@
       </memberdef>
       </sectiondef>
       <sectiondef kind="enum">
-      <memberdef kind="enum" id="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9" prot="public" static="no">
+      <memberdef kind="enum" id="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9" prot="public" static="no" strong="yes">
+        <type></type>
         <name>TransportType</name>
         <enumvalue id="transport_8h_1aca1e72535e7f260e54ed8bbf984dade9a8e8125cebd24bc06c2dbc178336da70f" prot="public">
           <name>Bycicle</name>

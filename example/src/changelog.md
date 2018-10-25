@@ -1,4 +1,4 @@
-# Changelog
+# Changelog {#changelog}
 
 ## Version 1.0.1
 

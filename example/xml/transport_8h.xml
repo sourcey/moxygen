@@ -6,23 +6,23 @@
     <includes local="no">transport/racingbike.h</includes>
     <includes local="no">transport/mountainbike.h</includes>
     <incdepgraph>
-      <node id="23">
+      <node id="25">
         <label>transport/racingbike.h</label>
       </node>
-      <node id="24">
+      <node id="26">
         <label>transport/mountainbike.h</label>
       </node>
-      <node id="21">
+      <node id="23">
         <label>src/transport.h</label>
         <link refid="transport_8h"/>
-        <childnode refid="22" relation="include">
-        </childnode>
-        <childnode refid="23" relation="include">
-        </childnode>
         <childnode refid="24" relation="include">
         </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
       </node>
-      <node id="22">
+      <node id="24">
         <label>transport/bicycle.h</label>
       </node>
     </incdepgraph>

@@ -9,7 +9,7 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
 * **Multi page output**: Output single or multiple files
 * **Internal linking**: Anchors in comments and function definitions are supported
 * **Markdown comments**: Markdown in Doxygen comments are rendered
-* **Doxygen groups**: Doxygen [grouping](https://www.stack.nl/~dimitri/doxygen/manual/grouping.html) is supported for more organised documentation
+* **Doxygen groups**: Doxygen [grouping](http://www.doxygen.nl/manual/grouping.html) is supported for more organised documentation
 * **Custom templates**: Modify the core Markdown templates to add your own flavour
 * **Optional index**: Optionally render a top level index
 
@@ -38,7 +38,7 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
 
 ## Multi-page Output
 
-Moxygen supports the doxygen [groups](http://www.stack.nl/~dimitri/doxygen/manual/grouping.html#modules) syntax for generating multi page documentation. Every [\defgroup](http://www.stack.nl/~dimitri/doxygen/manual/commands.html#cmddefgroup) in your source code will be parsed and output into a separate markdown file, with internal reference updated accordingly.
+Moxygen supports the doxygen [groups](http://www.doxygen.nl/manual/grouping.html#modules) syntax for generating multi page documentation. Every [\defgroup](http://www.doxygen.nl/manual/commands.html#cmddefgroup) in your source code will be parsed and output into a separate markdown file, with internal reference updated accordingly.
 
 Example:
 

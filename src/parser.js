@@ -33,7 +33,7 @@ function toMarkdown(element, context) {
 
         // opening the element
         switch (element['#name']) {
-          case 'ref': return s + markdown.link(toMarkdown(element.$$), module.exports.resolveRef(element.$.refid), true);
+          case 'ref': return s + markdown.refLink(toMarkdown(element.$$), element.$.refid);
           case '__text__': s = element._; break;
           case 'emphasis': s = '*'; break;
           case 'bold': s = '**'; break;
@@ -50,8 +50,14 @@ function toMarkdown(element, context) {
 
           case 'parameteritem': s = '* '; break;
           case 'programlisting': s = '\n```cpp\n'; break;
+          case 'orderedlist':
+            context.push(element);
+            s = '\n\n';
+            break;
           case 'itemizedlist': s = '\n\n'; break;
-          case 'listitem': s = '* '; break;
+          case 'listitem':
+            s = (context.length > 0 && context[context.length - 1]['#name'] == 'orderedlist') ? '1. ' : '* ';
+            break;
           case 'sp': s = ' '; break;
           case 'heading': s = '## '; break;
           case 'xrefsect': s += '\n> '; break;
@@ -63,7 +69,7 @@ function toMarkdown(element, context) {
               s = '\n#### Returns\n'
             }
             else if (element.$.kind == 'see') {
-              s = '\n**See also**: '
+              s = '**See also**: '
             }
             else {
               console.assert(element.$.kind + ' not supported.');
@@ -75,6 +81,22 @@ function toMarkdown(element, context) {
             if (s.startsWith('\\[') && s.endsWith('\\]'))
               s = trim(s.substring(2, s.length - 2));
             return '\n$$\n' + s + '\n$$\n';
+          case 'preformatted': s = '\n<pre>'; break;
+
+          case 'sect1':
+          case 'sect2':
+          case 'sect3':
+            context.push(element);
+            s = '\n' + helpers.getAnchor(element.$.id, module.exports.parserOptions) + '\n';
+            break;
+          case 'title':
+            var level = '#'.repeat(context[context.length - 1]['#name'].slice(-1));
+            s = '\n#' + level + ' ' + element._ + '\n';
+            break;
+
+          case 'mdash': s = '&mdash;'; break;
+          case 'ndash': s = '&ndash;'; break;
+          case 'linebreak': s = '<br/>'; break;
 
           case 'xreftitle':
           case 'entry':
@@ -114,10 +136,21 @@ function toMarkdown(element, context) {
           case 'programlisting': s += '```\n'; break;
           case 'codeline': s += '\n'; break;
           case 'ulink': s = markdown.link(s, element.$.url); break;
+          case 'orderedlist':
+            context.pop();
+            s += '\n';
+            break;
           case 'itemizedlist': s += '\n'; break;
           case 'listitem': s += '\n'; break;
           case 'entry': s = ' | '; break;
           case 'xreftitle': s += ': '; break;
+          case 'preformatted': s += '</pre>\n'; break;
+          case 'sect1':
+          case 'sect2':
+          case 'sect3':
+            context.pop();
+            s += '\n';
+            break;
           case 'row':
             s = '\n' + markdown.escape.row(s);
             if (element.$$ && element.$$[0].$.thead == "yes") {
@@ -179,7 +212,7 @@ module.exports = {
 
     if (membersdef) {
       membersdef.forEach(function (memberdef) {
-        var member = { name: memberdef.name[0] };
+        var member = { name: memberdef.name[0], parent: compound };
         compound.members.push(member);
         Object.keys(memberdef.$).forEach(function(prop) {
           member[prop] = memberdef.$[prop];
@@ -221,7 +254,7 @@ module.exports = {
         m = m.concat(toMarkdown(memberdef.type), ' ');
         m = m.concat(memberdef.$.explicit  == 'yes' ? ['explicit', ' '] : []);
         // m = m.concat(memberdef.name[0]._);
-        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        m = m.concat(markdown.refLink(member.name, member.refid));
         m = m.concat('(');
         if (memberdef.param) {
           memberdef.param.forEach(function (param, argn) {
@@ -244,14 +277,14 @@ module.exports = {
         m = m.concat(memberdef.$.mutable == 'yes' ? ['mutable', ' '] : []);
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
-        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        m = m.concat(markdown.refLink(member.name, member.refid));
         break;
 
       case 'property':
         m = m.concat(['{', member.kind, '} ']);
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
-        m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        m = m.concat(markdown.refLink(member.name, member.refid));
         break;
 
       case 'enum':
@@ -267,12 +300,12 @@ module.exports = {
           });
         }
         // m.push(member.kind + ' ' + member.name);
-        m = m.concat([member.kind, ' ', markdown.link(member.name, '#' + member.refid, true)]);
+        m = m.concat([member.kind, ' ', markdown.refLink(member.name, member.refid)]);
         break;
 
       default:
         // m.push(member.kind + ' ' + member.name);
-        m = m.concat([member.kind, ' ', markdown.link(member.name, '#' + member.refid, true)]);
+        m = m.concat([member.kind, ' ', markdown.refLink(member.name, member.refid)]);
         break;
     }
 
@@ -285,15 +318,15 @@ module.exports = {
 
     // namespaces take ownership of the child compound
     if (child.parent)
-        delete child.parent.compounds[child.name];
-    compound.compounds[child.name] = child;
+        delete child.parent.compounds[child.id];
+    compound.compounds[child.id] = child;
     child.parent = compound;
   },
 
   assignNamespaceToGroup: function (compound, child) {
 
     // add the namespace to the group
-    compound.compounds[child.name] = child;
+    compound.compounds[child.id] = child;
 
     // remove namespace clildren from direct group children
     Object.keys(child.compounds).forEach(function(id) {
@@ -306,7 +339,7 @@ module.exports = {
     // add the namespace to the group
     // if the child already belongs to a child namespace it will be removed
     // on the call to `assignNamespaceToGroup`
-    compound.compounds[child.name] = child;
+    compound.compounds[child.id] = child;
 
     // add a groupid and reference to the compound and all it's members
     child.groupid = compound.id;
@@ -318,11 +351,37 @@ module.exports = {
     });
   },
 
+  extractPageSections: function(page, elements) {
+    elements.forEach(function(element) {
+      if (element['#name'] == 'sect1' || element['#name'] == 'sect2' || element['#name'] == 'sect3') {
+        var id = element.$.id;
+        var member = { section: element['#name'], id: id, name: id, refid: id, parent: page };
+        page.members.push(member);
+        this.references[member.refid] = member;
+      }
+      if (element.$$)
+        this.extractPageSections(page, element.$$);
+    }.bind(this));
+  },
+
   parseCompound: function (compound, compounddef) {
     log.verbose('Processing compound ' + compound.name);
+    Object.keys(compounddef.$).forEach(function(prop) {
+      compound[prop] = compounddef.$[prop];
+    });
+    compound.fullname = compounddef.compoundname[0]._;
     copy(compound, 'briefdescription', compounddef);
     copy(compound, 'detaileddescription', compounddef);
     summary(compound, compounddef);
+
+    if (compounddef.basecompoundref) {
+      compounddef.basecompoundref.forEach(function (basecompoundref) {
+        compound.basecompoundref.push({
+          prot: basecompoundref.$.prot,
+          name: basecompoundref._,
+        });
+      });
+    }
 
     if (compounddef.sectiondef) {
       compounddef.sectiondef.forEach(function (section) {
@@ -342,6 +401,7 @@ module.exports = {
 
                 if (compound.kind == 'group') {
                   member.groupid = compound.id;
+                  member.groupname = compound.name;
                 }
                 else if (compound.kind == 'file') {
                   // add free members defined inside files in the default
@@ -359,25 +419,7 @@ module.exports = {
       }.bind(this));
     }
 
-    compound.proto = helpers.inline([compound.kind, ' ', markdown.link(compound.name, '#' + compound.refid, true)]);
-    return;
-  },
-
-  preprocessCompound: function (compound, compounddef) {
-    log.verbose('Preprocessing compound ' + compound.name);
-    Object.keys(compounddef.$).forEach(function(prop) {
-      compound[prop] = compounddef.$[prop];
-    });
-    compound.fullname = compounddef.compoundname[0]._;
-
-    if (compounddef.basecompoundref) {
-      compounddef.basecompoundref.forEach(function (basecompoundref) {
-        compound.basecompoundref.push({
-          prot: basecompoundref.$.prot,
-          name: basecompoundref._,
-        });
-      });
-    }
+    compound.proto = helpers.inline([compound.kind, ' ', markdown.refLink(compound.name, compound.refid)]);
 
     // kind specific parsing
     switch (compound.kind) {
@@ -396,8 +438,17 @@ module.exports = {
         // parse add all contained members to the root compound.
         break;
 
+      case 'page':
+        this.extractPageSections(compound, compounddef.$$);
+        break;
+
       case 'namespace':
       case 'group':
+
+        if (compound.kind == 'group') {
+          compound.groupid = compound.id;
+          compound.groupname = compound.name;
+        }
 
         // handle innerclass for groups and namespaces
         if (compounddef.innerclass) {
@@ -434,49 +485,34 @@ module.exports = {
     return;
   },
 
-  parseIndex: function (root, index, options, callback) {
-    var compounds = [], defs = [];
-    var processTogether = function(compound, def) {
-      this.preprocessCompound(compound, def);
-      defs.push([compound, def]);
-      if (compounds.length == defs.length) {
-        defs.forEach(function(item) {
-          this.resolveRef = helpers.resolveRef(options, item[0], this.references);
-          this.parseCompound(item[0], item[1]);
-        }.bind(this));
-        callback(null, this.root); // TODO: return errors properly
-      }
-    }.bind(this);
-
+  parseIndex: function (root, index, options) {
     index.forEach(function (element) {
-      var compound = root.find(element.name[0], true);
-      this.parseMembers(compound, element.$, element.member);
-      if (compound.kind !== 'file') { // && compound.kind !== 'file'
-        compounds.push(compound);
-      }
-    }.bind(this));
-
-    compounds.forEach(function (compound) {
-      var doxygen;
+      var doxygen, compound = root.find(element.$.refid, element.name[0], true);
       var xmlParser = new xml2js.Parser({
         explicitChildren: true,
         preserveChildrenOrder: true,
         charsAsChildren: true
       });
 
-      log.verbose('Parsing ' + path.join(options.directory, compound.refid + '.xml'));
-      doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
-      xmlParser.parseString(doxygen, function (err, data) {
-        if (err) {
-          log.verbose('warning - parse error for file' , path.join(options.directory, compound.refid + '.xml'))
-          return;
-        }
-        processTogether(compound, data.doxygen.compounddef[0]);
-      }.bind(this));
+      this.parseMembers(compound, element.$, element.member);
+
+      if (compound.kind !== 'file') { // && compound.kind !== 'file'
+        log.verbose('Parsing ' + path.join(options.directory, compound.refid + '.xml'));
+        doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
+        xmlParser.parseString(doxygen, function (err, data) {
+          if (err) {
+            log.verbose('warning - parse error for file' , path.join(options.directory, compound.refid + '.xml'))
+            return;
+          }
+            this.parseCompound(compound, data.doxygen.compounddef[0]);
+        }.bind(this));
+      }
+
     }.bind(this));
   },
 
   loadIndex: function (options, callback) {
+    this.parserOptions = options;
     log.verbose('Parsing ' + path.join(options.directory, 'index.xml'));
     fs.readFile(path.join(options.directory, 'index.xml'), 'utf8', function(err, data) {
       if (err) {
@@ -490,7 +526,8 @@ module.exports = {
           return;
         }
         this.root.kind = 'index';
-        this.parseIndex(this.root, result.doxygenindex.compound, options, callback);
+        this.parseIndex(this.root, result.doxygenindex.compound, options);
+        callback(null, this.root); // TODO: return errors properly
       }.bind(this));
     }.bind(this));
   }

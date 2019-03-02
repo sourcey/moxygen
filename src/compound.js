@@ -8,8 +8,9 @@
 
 var log = require('winston');
 
-function Compound(parent, name) {
+function Compound(parent, id, name) {
   this.parent = parent;
+  this.id = id;
   this.name = name;
   this.compounds = {};
   this.members = [];
@@ -19,11 +20,11 @@ function Compound(parent, name) {
 
 Compound.prototype = {
 
-  find: function (name, create) {
-    var compound = this.compounds[name];
+  find: function (id, name, create) {
+    var compound = this.compounds[id];
 
     if (!compound && create) {
-      compound = this.compounds[name] = new Compound(this, name);
+      compound = this.compounds[id] = new Compound(this, id, name);
     }
 
     return compound;

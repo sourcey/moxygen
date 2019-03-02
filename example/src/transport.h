@@ -3,7 +3,7 @@
 
 /** @defgroup bicycle Bycicle module
  *
- * Bicycle module contains the bycicle class. Bicycles are a useful way of
+ * Bicycle module contains the bicycle class. Bicycles are a useful way of
  * transporting oneself, without too much effort.
  */
 

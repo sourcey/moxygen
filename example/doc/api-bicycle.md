@@ -1,12 +1,12 @@
 # group `bicycle` {#group__bicycle}
 
-Bicycle module contains the bycicle class. Bicycles are a useful way of transporting oneself, without too much effort.
+Bicycle module contains the bicycle class. Bicycles are a useful way of transporting oneself, without too much effort.
 
 ## Summary
 
  Members                        | Descriptions                                
 --------------------------------|---------------------------------------------
-`class `[`transport::Bicycle`](example/doc/api-bicycle.md#classtransport_1_1Bicycle) | Standard bicycle class.
+`class `[`transport::Bicycle`](#classtransport_1_1Bicycle) | Standard bicycle class.
 
 # class `transport::Bicycle` {#classtransport_1_1Bicycle}
 

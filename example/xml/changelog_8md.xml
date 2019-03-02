@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="changelog_8md" kind="file" language="Markdown">
+    <compoundname>changelog.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>Changelog<sp/>{#changelog}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Version<sp/>1.0.1</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>Pedalling<sp/>harder<sp/>no<sp/>longer<sp/>stands<sp/>in<sp/>the<sp/>saddle<sp/>by<sp/>default.<sp/>This<sp/>is<sp/>just<sp/>better<sp/>form.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Version<sp/>1.0.0</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>Initial<sp/>release</highlight></codeline>
+    </programlisting>
+    <location file="src/changelog.md"/>
+  </compounddef>
+</doxygen>

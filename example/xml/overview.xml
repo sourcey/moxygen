@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
+  <compounddef id="overview" kind="page">
+    <compoundname>overview</compoundname>
+    <title>Transport</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The <computeroutput>transport</computeroutput> namespace provides several differnt types of bycicles, including <ref refid="classtransport_1_1Bicycle" kindref="compound">transport::Bicycle</ref>, <ref refid="classtransport_1_1MountainBike" kindref="compound">transport::MountainBike</ref> (designed for rough terrain), and <ref refid="classtransport_1_1RacingBike" kindref="compound">transport::RacingBike</ref> (designed specifically for challenging races).</para><para><heading level="2">Changelog</heading>
+</para><para>See the changelog. </para>    </detaileddescription>
+  </compounddef>
+</doxygen>

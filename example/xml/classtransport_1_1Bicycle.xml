@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.12">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.14">
   <compounddef id="classtransport_1_1Bicycle" kind="class" language="C++" prot="public">
     <compoundname>transport::Bicycle</compoundname>
     <derivedcompoundref refid="classtransport_1_1MountainBike" prot="public" virt="non-virtual">transport::MountainBike</derivedcompoundref>

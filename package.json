@@ -4,7 +4,9 @@
   "description": "Doxygen XML to Markdown documentation converter",
   "main": "index.js",
   "scripts": {
-    "release": "release-it"
+    "release": "release-it",
+    "test": "npm run clean && cd example/ && doxygen && cd .. && node bin/moxygen.js --groups --pages --anchors --output=example/doc/api-%s.md example/xml",
+    "clean": "rm -rf example/doc/*.md example/xml/"
   },
   "bin": {
     "moxygen": "./bin/moxygen.js"

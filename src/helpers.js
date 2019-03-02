@@ -46,15 +46,71 @@ module.exports = {
     }
   },
 
-  // Replace group and class links to point to correct output file if needed
-  resolveRef: function(options, compound, references) {
-    return function(refid) {
-      if ((options.groups || options.classes) && compound.refid !== refid && references[refid]) {
-        return util.format(options.output, options.groups ? references[refid].groupname : references[refid].name) + '#' + refid;
+  getAnchor: function(name, options) {
+    if (options.anchors) {
+      return '{#' + name + '}';
+    }
+    else if (options.htmlAnchors) {
+      return '<a id="' + name + '"></a>';
+    }
+    else {
+      return '';
+    }
+  },
+
+  findParent: function(compound, kinds) {
+    while (compound) {
+      if (kinds.includes(compound.kind))
+        return compound;
+      compound = compound.parent;
+    }
+  },
+
+  // Replace ref links to point to correct output file if needed
+  resolveRefs: function(content, compound, references, options) {
+    return content.replace(/\{#ref ([^ ]+) #\}/g, function(_, refid) {
+      var ref = references[refid]
+      var page = this.findParent(ref, ['page']);
+
+      if (page) {
+        if (page.refid == compound.refid)
+          return '#' + refid;
+        return this.compoundPath(page, options) + '#' + refid;
+      }
+
+      if (options.groups) {
+        if (compound.groupid && compound.groupid == ref.groupid)
+          return '#' + refid;
+        return this.compoundPath(ref, options) + '#' + refid;
+      } else if (options.classes) {
+        var dest = this.findParent(ref, ['namespace', 'class', 'struct']);
+        if (!dest || compound.refid == dest.refid)
+          return '#' + refid;
+        return this.compoundPath(dest, options) + '#' + refid;
       } else {
+        if (compound.kind == 'page')
+          return this.compoundPath(compound.parent, options) + '#' + refid;
         return '#' + refid;
       }
-    };
+    }.bind(this));
+  },
+
+  compoundPath: function(compound, options) {
+    if (compound.kind == 'page') {
+      return path.dirname(options.output) + "/page-" + compound.name + ".md";
+    } else if (options.groups) {
+      return util.format(options.output, compound.groupname);
+    } else if (options.classes) {
+      return util.format(options.output, compound.name);
+    } else {
+      return options.output;
+    }
+  },
+
+  writeCompound: function(compound, contents, references, options) {
+    this.writeFile(this.compoundPath(compound, options), contents.map(function(content) {
+      return this.resolveRefs(content, compound, references, options);
+    }.bind(this)));
   },
 
   // Write the output file

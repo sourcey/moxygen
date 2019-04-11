@@ -101,7 +101,7 @@ module.exports = {
     } else if (options.groups) {
       return util.format(options.output, compound.groupname);
     } else if (options.classes) {
-      return util.format(options.output, compound.name);
+      return util.format(options.output, compound.name.replace(/\:/g, '-'));
     } else {
       return options.output;
     }

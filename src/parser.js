@@ -427,6 +427,8 @@ module.exports = {
       case 'struct':
       case 'union':
       case 'typedef':
+      case 'interface':
+      case 'enum':
 
         // set namespace reference
         var nsp = compound.name.split('::');

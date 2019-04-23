@@ -83,7 +83,11 @@ module.exports = {
           return '#' + refid;
         return this.compoundPath(ref, options) + '#' + refid;
       } else if (options.classes) {
-        var dest = this.findParent(ref, ['namespace', 'class', 'struct']);
+        var compounds = ['namespace', 'class', 'struct'];
+        if (options.language == 'java') {
+          compounds.concat(['interface', 'enum']);
+        }
+        var dest = this.findParent(ref, compounds);
         if (!dest || compound.refid == dest.refid)
           return '#' + refid;
         return this.compoundPath(dest, options) + '#' + refid;

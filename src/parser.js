@@ -278,6 +278,7 @@ module.exports = {
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
         m = m.concat(markdown.refLink(member.name, member.refid));
+        m = m.concat(memberdef.initializer ? memberdef.initializer[0]._ : '');
         break;
 
       case 'property':

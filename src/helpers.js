@@ -25,7 +25,7 @@ module.exports = {
             var link = f.match(/\[(.*)\]\((.*)\)/);
             if (link) {
               isInline ? (s += '`') && (isInline = false) : null;
-              s += '[`' + link[1] + '`](' + link[2] + ')';
+              s += ' [`' + link[1] + '`](' + link[2] + ')';
             }
           }
           else if (f == '\n' || f == '  \n') {

@@ -83,11 +83,11 @@ module.exports = {
           return '#' + refid;
         return this.compoundPath(ref, options) + '#' + refid;
       } else if (options.classes) {
-        var compounds = ['namespace', 'class', 'struct'];
+        var filtered = ['namespace', 'class', 'struct'];
         if (options.language == 'java') {
-          compounds.concat(['interface', 'enum']);
+          filtered.concat(['interface', 'enum']);
         }
-        var dest = this.findParent(ref, compounds);
+        var dest = this.findParent(ref, filtered);
         if (!dest || compound.refid == dest.refid)
           return '#' + refid;
         return this.compoundPath(dest, options) + '#' + refid;
@@ -113,7 +113,9 @@ module.exports = {
 
   writeCompound: function(compound, contents, references, options) {
     this.writeFile(this.compoundPath(compound, options), contents.map(function(content) {
-      return this.resolveRefs(content, compound, references, options);
+      if (content) {
+        return this.resolveRefs(content, compound, references, options);
+      }
     }.bind(this)));
   },
 

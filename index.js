@@ -35,7 +35,7 @@ module.exports = {
         'enum',
         // 'enumvalue',
         'func',
-        'variable',
+        'var',
         'property',
         'public-attrib',
         'public-func',
@@ -75,6 +75,8 @@ module.exports = {
         options.filters.compounds.push('interface');
         options.filters.compounds.push('enum');
         options.filters.members.splice(1,1);
+        options.filters.members.push('public-static-attrib');
+        options.filters.members.push('public-static-func');
         break;
       default:
         break;

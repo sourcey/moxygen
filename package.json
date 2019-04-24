@@ -1,5 +1,5 @@
 {
-  "name": "@pro1602/moxygen",
+  "name": "moxygen",
   "version": "0.8.1",
   "description": "Doxygen XML to Markdown documentation converter",
   "main": "index.js",

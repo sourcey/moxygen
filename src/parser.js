@@ -544,7 +544,9 @@ module.exports = {
           return;
         }
         this.root.kind = 'index';
-        this.parseIndex(this.root, result.doxygenindex.compound, options);
+        this.parseIndex(this.root, result.doxygenindex.compound.sort(function(a, b){
+          return b.$.refid.length - a.$.refid.length;
+        }), options);
         callback(null, this.root); // TODO: return errors properly
       }.bind(this));
     }.bind(this));

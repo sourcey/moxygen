@@ -463,7 +463,8 @@ module.exports = {
           compounddef.innernamespace.forEach(function (namespacedef) {
             if (compound.kind == 'group') {
               // log.verbose('Assign namespace ' + namespacedef.$.refid + ' to group ' + compound.name);
-              this.assignNamespaceToGroup(compound, this.references[namespacedef.$.refid]);
+              if (this.references[namespacedef.$.refid])
+                this.assignNamespaceToGroup(compound, this.references[namespacedef.$.refid]);
             }
           }.bind(this));
         }

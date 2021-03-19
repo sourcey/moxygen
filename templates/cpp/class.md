@@ -6,7 +6,7 @@
   {{#each basecompoundref}}
   : {{prot}} {{name}}
   {{/each}}
-```  
+```
 {{/if}}
 
 {{briefdescription}}

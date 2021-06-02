@@ -44,7 +44,12 @@ module.exports = {
         'signal',
         'public-slot',
         'protected-slot',
-        'public-type'
+        'public-type',
+        'private-attrib',
+        'private-func',
+        'private-slot',
+        'public-static-func',
+        'private-static-func'
       ],
       compounds: [
         'namespace',

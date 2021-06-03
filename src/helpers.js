@@ -25,7 +25,7 @@ module.exports = {
             var link = f.match(/\[(.*)\]\((.*)\)/);
             if (link) {
               isInline ? (s += '`') && (isInline = false) : null;
-              s += '[`' + link[1] + '`](' + link[2] + ')';
+              s += ' [`' + link[1] + '`](' + link[2] + ')';
             }
           }
           else if (f == '\n' || f == '  \n') {
@@ -83,7 +83,11 @@ module.exports = {
           return '#' + refid;
         return this.compoundPath(ref, options) + '#' + refid;
       } else if (options.classes) {
-        var dest = this.findParent(ref, ['namespace', 'class', 'struct']);
+        var filtered = ['namespace', 'class', 'struct'];
+        if (options.language == 'java') {
+          filtered.concat(['interface', 'enum']);
+        }
+        var dest = this.findParent(ref, filtered);
         if (!dest || compound.refid == dest.refid)
           return '#' + refid;
         return this.compoundPath(dest, options) + '#' + refid;
@@ -109,7 +113,9 @@ module.exports = {
 
   writeCompound: function(compound, contents, references, options) {
     this.writeFile(this.compoundPath(compound, options), contents.map(function(content) {
-      return this.resolveRefs(content, compound, references, options);
+      if (content) {
+        return this.resolveRefs(content, compound, references, options);
+      }
     }.bind(this)));
   },
 

@@ -35,7 +35,7 @@ module.exports = {
         'enum',
         // 'enumvalue',
         'func',
-        // 'variable',
+        'var',
         'property',
         'public-attrib',
         'public-func',
@@ -56,7 +56,7 @@ module.exports = {
         'class',
         'struct',
         'union',
-        'typedef',
+        'typedef'
         // 'file'
       ]
     }
@@ -74,6 +74,18 @@ module.exports = {
 
     if (options.templates == this.defaultOptions.templates)
       options.templates = path.join(__dirname, 'templates', options.language);
+
+    switch(options.language) {
+      case 'java':
+        options.filters.compounds.push('interface');
+        options.filters.compounds.push('enum');
+        options.filters.members.splice(1,1);
+        options.filters.members.push('public-static-attrib');
+        options.filters.members.push('public-static-func');
+        break;
+      default:
+        break;
+    }
 
     // Load templates
     templates.registerHelpers(options);

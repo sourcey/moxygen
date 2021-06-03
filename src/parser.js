@@ -278,6 +278,7 @@ module.exports = {
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
         m = m.concat(markdown.refLink(member.name, member.refid));
+        m = m.concat(memberdef.initializer ? memberdef.initializer[0]._ : '');
         break;
 
       case 'property':
@@ -349,6 +350,10 @@ module.exports = {
       member.groupid = compound.id;
       member.groupname = compound.name;
     });
+  },
+
+  assignToClass: function(compound, child) {
+    compound.compounds[child.id] = child;
   },
 
   extractPageSections: function(page, elements) {
@@ -427,6 +432,8 @@ module.exports = {
       case 'struct':
       case 'union':
       case 'typedef':
+      case 'interface':
+      case 'enum':
 
         // set namespace reference
         var nsp = compound.name.split('::');
@@ -450,36 +457,49 @@ module.exports = {
           compound.groupname = compound.name;
         }
 
-        // handle innerclass for groups and namespaces
-        if (compounddef.innerclass) {
-          compounddef.innerclass.forEach(function (innerclassdef) {
-              if (compound.kind == 'namespace') {
-                // log.verbose('Assign ' + innerclassdef.$.refid + ' to namespace ' + compound.name);
-
-                if (this.references[innerclassdef.$.refid])
-                  this.assignToNamespace(compound, this.references[innerclassdef.$.refid]);
-              }
-              else if (compound.kind == 'group') {
-                // log.verbose('Assign ' + innerclassdef.$.refid + ' to group ' + compound.name);
-                if (this.references[innerclassdef.$.refid])
-                  this.assignClassToGroup(compound, this.references[innerclassdef.$.refid]);
-              }
-          }.bind(this));
-        }
-
         // handle innernamespace for groups and namespaces
         if (compounddef.innernamespace) {
           compound.innernamespaces = [];
           compounddef.innernamespace.forEach(function (namespacedef) {
             if (compound.kind == 'group') {
               // log.verbose('Assign namespace ' + namespacedef.$.refid + ' to group ' + compound.name);
-              this.assignNamespaceToGroup(compound, this.references[namespacedef.$.refid]);
+              if (this.references[namespacedef.$.refid])
+                this.assignNamespaceToGroup(compound, this.references[namespacedef.$.refid]);
             }
           }.bind(this));
         }
         break;
       default:
         console.assert(true);
+    }
+
+    switch(compound.kind) {
+      case 'class':
+      case 'interface':
+      case 'enum':
+      case 'namespace':
+      case 'group':
+        // handle innerclass for groups and namespaces and 'class'.
+        if (compounddef.innerclass) {
+          compounddef.innerclass.forEach(function (innerclassdef) {
+            if (compound.kind == 'namespace') {
+              // log.verbose('Assign ' + innerclassdef.$.refid + ' to namespace ' + compound.name);
+
+              if (this.references[innerclassdef.$.refid])
+                this.assignToNamespace(compound, this.references[innerclassdef.$.refid]);
+            } else if (compound.kind == 'group') {
+              // log.verbose('Assign ' + innerclassdef.$.refid + ' to group ' + compound.name);
+              if (this.references[innerclassdef.$.refid])
+                this.assignClassToGroup(compound, this.references[innerclassdef.$.refid]);
+            } else if (compound.kind == 'class' || compound.kind == 'interface' || compound.kind == 'enum') {
+              if (this.references[innerclassdef.$.refid])
+                this.assignToClass(compound, this.references[innerclassdef.$.refid]);
+            }
+          }.bind(this));
+        }
+        break;
+      default:
+        break;
     }
 
     return;
@@ -526,7 +546,9 @@ module.exports = {
           return;
         }
         this.root.kind = 'index';
-        this.parseIndex(this.root, result.doxygenindex.compound, options);
+        this.parseIndex(this.root, result.doxygenindex.compound.sort(function(a, b){
+          return b.$.refid.length - a.$.refid.length;
+        }), options);
         callback(null, this.root); // TODO: return errors properly
       }.bind(this));
     }.bind(this));

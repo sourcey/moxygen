@@ -55,6 +55,7 @@ module.exports = {
         break;
       case 'class':
       case 'struct':
+      case 'interface':
         template = 'class';
         break;
       default:

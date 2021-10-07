@@ -57,6 +57,7 @@ module.exports = {
         'struct',
         'union',
         'typedef',
+        'interface',
         // 'file'
       ]
     }

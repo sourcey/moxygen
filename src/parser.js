@@ -258,7 +258,7 @@ module.exports = {
         m = m.concat('(');
         if (memberdef.param) {
           memberdef.param.forEach(function (param, argn) {
-            m = m.concat(argn == 0 ? [] : ',');
+            m = m.concat(argn == 0 ? [] : ', ');
             m = m.concat([toMarkdown(param.type)]);
             m = m.concat(param.declname ? [' ', toMarkdown(param.declname)] : []);
           });

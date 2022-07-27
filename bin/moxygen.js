@@ -15,10 +15,10 @@ program.version(pjson.version)
   .option('-p, --pages', 'output doxygen pages into separate files', false)
   .option('-n, --noindex', 'disable generation of the index, ignored with `groups` or `classes`', false)
   .option('-a, --anchors', 'add anchors to internal links', false)
-  .option('-i, --html-anchors', 'add html anchors to internal links', false)
+  .option('-H, --html-anchors', 'add html anchors to internal links', false)
   .option('-l, --language <lang>', 'programming language', String, 'cpp')
   .option('-t, --templates <dir>', 'custom templates directory (default: "built-in templates")', String)
-  .option('-f, --logfile [file]', 'output log messages to file, (default: console only, default file name: "moxygen.log")')
+  .option('-L, --logfile [file]', 'output log messages to file, (default: console only, default file name: "moxygen.log")')
   .option('-q, --quiet', 'quiet mode', false)
   .parse(process.argv);
 

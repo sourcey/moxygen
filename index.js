@@ -69,9 +69,10 @@ module.exports = {
   run: function (options) {
 
     // Sanitize options
-    if (options.groups && options.output.indexOf('%s') === -1)
-      throw "The `output` file parameter must contain an '%s' for group name " +
-        "substitution when `groups` are enabled."
+    if ((options.classes || options.groups) && options.output.indexOf('%s') === -1) {
+      throw "The `output` file parameter must contain an '%s' for group or class name " +
+        "substitution when `groups` or `classes` are enabled."
+    }
 
     if (typeof options.templates == "undefined") {
       options.templates = path.join(__dirname, this.defaultOptions.templates, options.language);

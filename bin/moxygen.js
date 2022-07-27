@@ -9,7 +9,7 @@ var app = require('../index.js');
 
 program.version(pjson.version)
   .usage('[options] <doxygen directory>')
-  .option('-o, --output <file>', 'output file (must contain %s when using groups)', String, 'api.md')
+  .option('-o, --output <file>', 'output file, must contain "%s" when using groups or classes', String, 'api.md')
   .option('-g, --groups', 'output doxygen groups into separate files', false)
   .option('-c, --classes', 'output doxygen classes into separate files', false)
   .option('-p, --pages', 'output doxygen pages into separate files', false)

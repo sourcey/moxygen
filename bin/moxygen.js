@@ -36,7 +36,7 @@ if (program.args.length) {
     anchors: program.anchors,
     htmlAnchors: program.htmlAnchors,
     language: program.language,
-    templates: program.templates
+    templates: program.templates,
   }));
 }
 else {

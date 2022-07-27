@@ -17,7 +17,7 @@ program.version(pjson.version)
   .option('-a, --anchors', 'add anchors to internal links', false)
   .option('-h, --html-anchors', 'add html anchors to internal links', false)
   .option('-l, --language <lang>', 'programming language', String, 'cpp')
-  .option('-t, --templates <dir>', 'custom templates directory', String, 'templates')
+  .option('-t, --templates <dir>', 'custom templates directory (default: "built-in templates")', String)
   .option('-q, --quiet', 'quiet mode', false)
   .parse(process.argv);
 

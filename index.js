@@ -73,8 +73,9 @@ module.exports = {
       throw "The `output` file parameter must contain an '%s' for group name " +
         "substitution when `groups` are enabled."
 
-    if (options.templates == this.defaultOptions.templates)
-      options.templates = path.join(__dirname, 'templates', options.language);
+    if (typeof options.templates == "undefined") {
+      options.templates = path.join(__dirname, this.defaultOptions.templates, options.language);
+    }
 
     // Load templates
     templates.registerHelpers(options);

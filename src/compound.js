@@ -6,7 +6,7 @@
  **/
 'use strict';
 
-var log = require('winston');
+var log = require('./logger').getLogger();
 
 function Compound(parent, id, name) {
   this.parent = parent;
@@ -84,14 +84,16 @@ Compound.prototype = {
         if (item.kind == 'namespace') {
           if ((!item.filtered.compounds || !item.filtered.compounds.length) &&
             (!item.filtered.members || !item.filtered.members.length)) {
-            // log.verbose('Skip empty namespace', item.name);
+            // log.verbose('Skip empty namespace: ' + item.name);
             return;
           }
         }
 
         // skip items not belonging to current group
         else if (groupid && item.groupid != groupid) {
-          // log.verbose('Skip item from foreign group', item.kind, item.name, item.groupid, group.id);
+          // log.verbose('Skip item from foreign group: { item.kind: ' + item.kind
+          //   + ', item.name: ' + item.name + ', item.groupid: '
+          //   + item.groupid + ', group.id: '+ group.id + '}');
           return;
         }
 
@@ -104,7 +106,7 @@ Compound.prototype = {
     });
 
     return result;
-  }
+  },
 }
 
 module.exports = Compound;

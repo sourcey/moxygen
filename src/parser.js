@@ -7,7 +7,7 @@
 'use strict';
 
 var fs = require('fs');
-var log = require('winston');
+var log = require('./logger').getLogger();
 var path = require('path');
 var xml2js = require('xml2js');
 
@@ -501,7 +501,7 @@ module.exports = {
         doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
         xmlParser.parseString(doxygen, function (err, data) {
           if (err) {
-            log.verbose('warning - parse error for file: ' , path.join(options.directory, compound.refid + '.xml'))
+            log.verbose('warning - parse error for file: ' + path.join(options.directory, compound.refid + '.xml'))
             return;
           }
           this.parseCompound(compound, data.doxygen.compounddef[0]);
@@ -530,5 +530,5 @@ module.exports = {
         callback(null, this.root); // TODO: return errors properly
       }.bind(this));
     }.bind(this));
-  }
+  },
 };

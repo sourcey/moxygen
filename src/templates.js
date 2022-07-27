@@ -7,7 +7,7 @@
 'use strict';
 
 var fs = require('fs');
-var log = require('winston');
+var log = require('./logger').getLogger();
 var path = require('path');
 var handlebars = require('handlebars');
 // var tidyMarkdown = require('tidy-markdown');

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-var log = require('winston');
+var logger = require('../src/logger');
 var program = require('commander');
 var assign = require('object-assign');
 var pjson = require('../package.json');
@@ -18,12 +18,11 @@ program.version(pjson.version)
   .option('-i, --html-anchors', 'add html anchors to internal links', false)
   .option('-l, --language <lang>', 'programming language', String, 'cpp')
   .option('-t, --templates <dir>', 'custom templates directory (default: "built-in templates")', String)
+  .option('-f, --logfile [file]', 'output log messages to file, (default: console only, default file name: "moxygen.log")')
   .option('-q, --quiet', 'quiet mode', false)
   .parse(process.argv);
 
-if (!program.quiet) {
-  log.level = 'verbose';
-}
+logger.init(program, app.defaultOptions);
 
 if (program.args.length) {
   app.run(assign({}, app.defaultOptions, {

@@ -64,6 +64,10 @@ module.exports = {
         return undefined;
     }
 
+    if (typeof this.templates[template] == "undefined") {
+      throw 'Template "' + template + '" not found in your templates directory.';
+    }
+
     return this.templates[template](compound).replace(/(\r\n|\r|\n){3,}/g, '$1\n');
   },
 
@@ -90,5 +94,5 @@ module.exports = {
     handlebars.registerHelper('anchor', function(name) {
       return helpers.getAnchor(name, options);
     });
-  }
+  },
 };

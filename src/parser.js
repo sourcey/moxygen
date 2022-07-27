@@ -501,10 +501,10 @@ module.exports = {
         doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
         xmlParser.parseString(doxygen, function (err, data) {
           if (err) {
-            log.verbose('warning - parse error for file' , path.join(options.directory, compound.refid + '.xml'))
+            log.verbose('warning - parse error for file: ' , path.join(options.directory, compound.refid + '.xml'))
             return;
           }
-            this.parseCompound(compound, data.doxygen.compounddef[0]);
+          this.parseCompound(compound, data.doxygen.compounddef[0]);
         }.bind(this));
       }
 

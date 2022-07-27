@@ -28,6 +28,7 @@ module.exports = {
     templates: 'templates',     /** Templates directory **/
     pages: false,               /** Output doxygen pages separately **/
     classes: false,             /** Output doxygen classes separately **/
+    output_s: 'api_%s.md',      /** Output file for groups and classes **/
 
     filters: {
       members: [
@@ -69,6 +70,15 @@ module.exports = {
   run: function (options) {
 
     // Sanitize options
+    if (typeof options.output == "undefined") {
+      if (options.classes || options.groups) {
+        options.output = this.defaultOptions.output_s;
+      }
+      else {
+        options.output = this.defaultOptions.output;
+      }
+    }
+
     if ((options.classes || options.groups) && options.output.indexOf('%s') === -1) {
       throw "The `output` file parameter must contain an '%s' for group or class name " +
         "substitution when `groups` or `classes` are enabled."

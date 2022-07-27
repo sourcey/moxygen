@@ -34,7 +34,7 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
     -i, --html-anchors     add html anchors to internal links
     -l, --language <lang>  programming language
     -t, --templates <dir>  custom templates directory
-    -f, --logfile [file]   output log messages to file, (default: console only, default file name: "moxygen.log")
+    -f, --logfile [file]   output log messages to file
     -q, --quiet            quiet mode
     -h, --help             output usage information
   ```

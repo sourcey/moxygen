@@ -63,7 +63,7 @@ module.exports = {
         console.log('Skipping ', compound);
         return undefined;
     }
-    
+
     return this.templates[template](compound).replace(/(\r\n|\r|\n){3,}/g, '$1\n');
   },
 

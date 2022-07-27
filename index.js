@@ -69,7 +69,7 @@ module.exports = {
   run: function (options) {
 
     // Sanitize options
-    if (options.groups == options.output.indexOf('%s') === -1)
+    if (options.groups && options.output.indexOf('%s') === -1)
       throw "The `output` file parameter must contain an '%s' for group name " +
         "substitution when `groups` are enabled."
 

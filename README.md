@@ -31,10 +31,10 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
     -p, --pages            output doxygen pages into separate files
     -n, --noindex          disable generation of the index, ignored with `groups` or `classes`
     -a, --anchors          add anchors to internal links
-    -i, --html-anchors     add html anchors to internal links
+    -H, --html-anchors     add html anchors to internal links
     -l, --language <lang>  programming language
     -t, --templates <dir>  custom templates directory
-    -f, --logfile [file]   output log messages to file, (default: console only, default file name: "moxygen.log")
+    -L, --logfile [file]   output log messages to file
     -q, --quiet            quiet mode
     -h, --help             output usage information
   ```

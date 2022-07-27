@@ -24,16 +24,18 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
 
   Options:
 
-    -h, --help             output usage information
     -V, --version          output the version number
     -o, --output <file>    output file, must contain "%s" when using `groups` or `classes`
     -g, --groups           output doxygen groups into separate files
     -c, --classes          output doxygen classes into separate files
+    -p, --pages            output doxygen pages into separate files
     -n, --noindex          disable generation of the index, ignored with `groups` or `classes`
     -a, --anchors          add anchors to internal links
+    -i, --html-anchors     add html anchors to internal links
     -l, --language <lang>  programming language
     -t, --templates <dir>  custom templates directory
     -q, --quiet            quiet mode
+    -h, --help             output usage information
   ```
 
 ## Multi-page Output

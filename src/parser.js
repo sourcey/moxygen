@@ -516,13 +516,13 @@ module.exports = {
     log.verbose('Parsing ' + path.join(options.directory, 'index.xml'));
     fs.readFile(path.join(options.directory, 'index.xml'), 'utf8', function(err, data) {
       if (err) {
-        callback('Failed to load Doxygen XML: ' + err);
+        callback('Failed to load doxygen XML: ' + err);
         return;
       }
       var xmlParser = new xml2js.Parser();
       xmlParser.parseString(data, function (err, result) {
         if (err) {
-          callback('Failed to parse Doxygen XML: ' + err);
+          callback('Failed to parse doxygen XML: ' + err);
           return;
         }
         this.root.kind = 'index';

@@ -49,7 +49,7 @@ module.exports = {
         'private-func',
         'private-slot',
         'public-static-func',
-        'private-static-func'
+        'private-static-func',
       ],
       compounds: [
         'namespace',
@@ -58,9 +58,9 @@ module.exports = {
         'union',
         'typedef',
         'interface',
-        // 'file'
+        // 'file',
       ]
-    }
+    },
   },
 
   /**
@@ -139,5 +139,5 @@ module.exports = {
       }
 
     });
-  }
+  },
 }

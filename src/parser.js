@@ -7,7 +7,7 @@
 'use strict';
 
 var fs = require('fs');
-var log = require('winston');
+var log = require('./logger').getLogger();
 var path = require('path');
 var xml2js = require('xml2js');
 
@@ -501,10 +501,10 @@ module.exports = {
         doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
         xmlParser.parseString(doxygen, function (err, data) {
           if (err) {
-            log.verbose('warning - parse error for file' , path.join(options.directory, compound.refid + '.xml'))
+            log.verbose('warning - parse error for file: ' + path.join(options.directory, compound.refid + '.xml'))
             return;
           }
-            this.parseCompound(compound, data.doxygen.compounddef[0]);
+          this.parseCompound(compound, data.doxygen.compounddef[0]);
         }.bind(this));
       }
 
@@ -516,13 +516,13 @@ module.exports = {
     log.verbose('Parsing ' + path.join(options.directory, 'index.xml'));
     fs.readFile(path.join(options.directory, 'index.xml'), 'utf8', function(err, data) {
       if (err) {
-        callback('Failed to load Doxygen XML: ' + err);
+        callback('Failed to load doxygen XML: ' + err);
         return;
       }
       var xmlParser = new xml2js.Parser();
       xmlParser.parseString(data, function (err, result) {
         if (err) {
-          callback('Failed to parse Doxygen XML: ' + err);
+          callback('Failed to parse doxygen XML: ' + err);
           return;
         }
         this.root.kind = 'index';
@@ -530,5 +530,5 @@ module.exports = {
         callback(null, this.root); // TODO: return errors properly
       }.bind(this));
     }.bind(this));
-  }
+  },
 };

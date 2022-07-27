@@ -20,20 +20,23 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
 3. Install `moxygen` like so: `npm install moxygen -g`.
 4. Run `moxygen` providing the folder location of the XML documentation as the first argument ie. `{OUTPUT_DIRECTORY}/xml`.  
   ```
-  Usage: moxygen [options] <doxygen directory>
+  Usage: moxygen [options] <doxygen XML directory>
 
   Options:
 
-    -h, --help             output usage information
     -V, --version          output the version number
-    -o, --output <file>    output file (must contain %s when using groups)
+    -o, --output <file>    output file, must contain "%s" when using `groups` or `classes`
     -g, --groups           output doxygen groups into separate files
     -c, --classes          output doxygen classes into separate files
-    -n, --noindex          disable generation of the index (no effect with `groups` option
+    -p, --pages            output doxygen pages into separate files
+    -n, --noindex          disable generation of the index, ignored with `groups` or `classes`
     -a, --anchors          add anchors to internal links
+    -i, --html-anchors     add html anchors to internal links
     -l, --language <lang>  programming language
     -t, --templates <dir>  custom templates directory
+    -f, --logfile [file]   output log messages to file, (default: console only, default file name: "moxygen.log")
     -q, --quiet            quiet mode
+    -h, --help             output usage information
   ```
 
 ## Multi-page Output

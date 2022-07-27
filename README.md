@@ -26,7 +26,7 @@ Moxygen is currently used in conjunction with GitBook to generate the API docume
 
     -h, --help             output usage information
     -V, --version          output the version number
-    -o, --output <file>    output file (must contain %s when using groups)
+    -o, --output <file>    output file, must contain "%s" when using groups or classes
     -g, --groups           output doxygen groups into separate files
     -c, --classes          output doxygen classes into separate files
     -n, --noindex          disable generation of the index (no effect with `groups` option

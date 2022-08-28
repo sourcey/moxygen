@@ -30,6 +30,7 @@ module.exports = {
     classes: false,             /** Output doxygen classes separately **/
     output_s: 'api_%s.md',      /** Output file for groups and classes **/
     logfile: 'moxygen.log',     /** Log file **/
+    relativePaths: false,       /** Use relative paths (omit output base path) **/
     separator: '::',            /** Group separator sequence **/
 
     filters: {

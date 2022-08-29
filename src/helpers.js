@@ -96,18 +96,18 @@ module.exports = {
   },
 
   compoundPath: function(compound, options) {
+    var target = options.output;
+    if (options.relativePaths) {
+      target = target.replace(target, path.basename(target));
+    }
     if (compound.kind == 'page') {
       return path.dirname(options.output) + "/page-" + compound.name + ".md";
     } else if (options.groups) {
-      return util.format(options.output, compound.groupname);
+      return util.format(target, compound.groupname);
     } else if (options.classes) {
-      var target = options.output;
-      if (options.relativePaths) {
-	target = target.replace(target, path.basename(target));
-      }
       return util.format(target, compound.name.replace(/\:\:/g, options.separator).replace(/\:/g, '-').replace('<', '(').replace('>', ')'));
     } else {
-      return options.output;
+      return target;
     }
   },
 

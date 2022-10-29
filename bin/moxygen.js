@@ -20,13 +20,16 @@ program.version(pjson.version)
   .option('-t, --templates <dir>', 'custom templates directory (default: "built-in templates")', String)
   .option('-L, --logfile [file]', 'output log messages to file, (default: console only, default file name: "moxygen.log")')
   .option('-q, --quiet', 'quiet mode', false)
+  .option('-r, --relative-paths', 'links are relative (don`t include the output path)', false)
+  .option('-s, --separator <separator sequence>', 'separator sequence (default: "::")', '::')
+
   .parse(process.argv);
 
 logger.init(program, app.defaultOptions);
 
 if (program.args.length) {
   app.run(assign({}, app.defaultOptions, {
-    directory: program.args[0],
+    directory: program.args.slice(-1).pop(),
     output: program.output,
     groups: program.groups,
     pages: program.pages,
@@ -35,6 +38,8 @@ if (program.args.length) {
     anchors: program.anchors,
     htmlAnchors: program.htmlAnchors,
     language: program.language,
+    relativePaths: program.relativePaths,
+    separator: program.separator,
     templates: program.templates,
   }));
 }

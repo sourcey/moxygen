@@ -96,19 +96,27 @@ module.exports = {
   },
 
   compoundPath: function(compound, options) {
+    var target = options.output;
+    if (options.relativePaths) {
+      target = target.replace(target, path.basename(target));
+    }
     if (compound.kind == 'page') {
       return path.dirname(options.output) + "/page-" + compound.name + ".md";
     } else if (options.groups) {
-      return util.format(options.output, compound.groupname);
+      return util.format(target, compound.groupname);
     } else if (options.classes) {
-      return util.format(options.output, compound.name.replace(/\:/g, '-').replace('<', '(').replace('>', ')'));
+      return util.format(target, compound.name.replace(/\:\:/g, options.separator).replace(/\:/g, '-').replace('<', '(').replace('>', ')'));
     } else {
-      return options.output;
+      return target;
     }
   },
 
   writeCompound: function(compound, contents, references, options) {
-    this.writeFile(this.compoundPath(compound, options), contents.map(function(content) {
+    var outputPath = this.compoundPath(compound, options);
+    if (options.relativePaths) {
+      outputPath = path.join(path.dirname(options.output), outputPath);
+    }
+    this.writeFile(outputPath, contents.map(function(content) {
       return this.resolveRefs(content, compound, references, options);
     }.bind(this)));
   },

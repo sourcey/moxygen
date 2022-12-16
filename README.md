@@ -1,6 +1,6 @@
 # Moxygen
 
-Moxygen is a Doxygen XML to Markdown converter for C++ developers who want a minimal and beautiful solution for documentating their projects.
+Moxygen is a Doxygen XML to Markdown converter for C++ developers who want a minimal and beautiful solution for documenting their projects.
 
 Moxygen is currently used in conjunction with GitBook to generate the API documentation for [LibSourcey](http://sourcey.com/libsourcey/).
 

@@ -1,23 +1,29 @@
-# Summary
+# API Reference
 
- Members                        | Descriptions                                
---------------------------------|---------------------------------------------
-{{#each filtered.members}}{{cell proto}}            | {{cell summary}}
-{{/each}}{{#each filtered.compounds}}{{cell proto}} | {{cell summary}}
+| Name | Description |
+|------|-------------|
+{{#each filtered.members}}| [`{{name}}`](#{{refid}}) | {{summary}} |
+{{/each}}{{#each filtered.compounds}}| [`{{shortname name}}`](#{{refid}}) | {{summary}} |
 {{/each}}
 
 {{#if filtered.members}}
 ## Members
 
 {{#each filtered.members}}
-#### {{title proto}} {{anchor refid}}
+---
+
+#### {{name}} {{anchor refid}}
+
+```java
+{{signature}}
+```
 
 {{briefdescription}}
 
 {{#if enumvalue}}
- Values                         | Descriptions                                
---------------------------------|---------------------------------------------
-{{#each enumvalue}}{{cell name}}            | {{cell summary}}
+| Value | Description |
+|-------|-------------|
+{{#each enumvalue}}| `{{name}}` | {{summary}} |
 {{/each}}
 {{/if}}
 

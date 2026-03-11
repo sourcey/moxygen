@@ -1,48 +1,48 @@
-# {{kind}} `{{name}}` {{anchor refid}}
+## {{shortname name}} {{anchor refid}}
 
-{{#if basecompoundref}}
-```
-{{kind}} {{name}}
-  {{#each basecompoundref}}
-  : {{prot}} {{name}}
-  {{/each}}
-```  
+{{#if basecompoundref}}> **Extends:** {{#each basecompoundref}}`{{name}}`{{#unless @last}}, {{/unless}}{{/each}}
+{{/if}}{{#if derivedcompoundref}}> **Subclasses:** {{#each derivedcompoundref}}`{{name}}`{{#unless @last}}, {{/unless}}{{/each}}
+{{/if}}{{#if includes}}> **Defined in:** `{{includes}}`
 {{/if}}
 
 {{briefdescription}}
 
 {{detaileddescription}}
 
-## Summary
+{{#if filtered.members}}
+### Members
 
- Members                        | Descriptions                                
---------------------------------|---------------------------------------------
-{{#each filtered.compounds}}{{cell proto}}        | {{cell summary}}
-{{/each}}{{#each filtered.members}}{{cell proto}} | {{cell summary}}
-{{/each}}
-
-## Members
-
-{{#each filtered.compounds}}
-#### {{title proto}} {{anchor refid}}
-
-{{briefdescription}}
-
-{{detaileddescription}}
+| Name | Description |
+|------|-------------|
+{{#each filtered.members}}| [`{{name}}`](#{{refid}}) | {{summary}} |
 {{/each}}
 
 {{#each filtered.members}}
-#### {{title proto}} {{anchor refid}}
+---
 
-{{#if enumvalue}}
- Values                         | Descriptions                                
---------------------------------|---------------------------------------------
-{{#each enumvalue}}{{cell name}}            | {{cell summary}}
-{{/each}}
-{{/if}}
+#### {{name}} {{anchor refid}}
+
+```java
+{{signature}}
+```
 
 {{briefdescription}}
 
 {{detaileddescription}}
 
+{{#if (hasParams)}}
+| Parameter | Type | Description |
+|-----------|------|-------------|
+{{#each params}}{{#if name}}| `{{name}}` | `{{type}}` | {{description}} |
+{{/if}}{{/each}}
+{{/if}}
+
+{{#if enumvalue}}
+| Value | Description |
+|-------|-------------|
+{{#each enumvalue}}| `{{name}}` | {{summary}} |
 {{/each}}
+{{/if}}
+
+{{/each}}
+{{/if}}

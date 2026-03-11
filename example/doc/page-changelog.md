@@ -1,4 +1,4 @@
-# page `changelog` {#changelog}
+# changelog {#changelog}
 
 ## Version 1.0.1
 

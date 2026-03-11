@@ -429,7 +429,7 @@ module.exports = {
       case 'typedef':
 
         // set namespace reference
-        var nsp = compound.name.split('::');
+        var nsp = compound.name.split("::");
         compound.namespace = nsp.splice(0, nsp.length - 1).join('::');
         break;
 

@@ -9,7 +9,7 @@
 var fs = require('fs');
 var path = require('path');
 var util = require('util');
-var log = require('winston');
+var log = require('./logger').getLogger();
 var handlebars = require('handlebars');
 
 module.exports = {
@@ -100,28 +100,34 @@ module.exports = {
   },
 
   compoundPath: function(compound, options) {
+    var target = options.output;
+    if (options.relativePaths) {
+      target = target.replace(target, path.basename(target));
+    }
     if (compound.kind == 'page') {
       return path.dirname(options.output) + "/page-" + compound.name + ".md";
     } else if (options.groups) {
-      return util.format(options.output, compound.groupname);
+      return util.format(target, compound.groupname);
     } else if (options.classes) {
-      return util.format(options.output, compound.name.replace(/\:/g, '-'));
+      return util.format(target, compound.name.replace(/\:\:/g, options.separator).replace(/\:/g, '-').replace('<', '(').replace('>', ')'));
     } else {
-      return options.output;
+      return target;
     }
   },
 
   writeCompound: function(compound, contents, references, options) {
-    this.writeFile(this.compoundPath(compound, options), contents.map(function(content) {
-      if (content) {
-        return this.resolveRefs(content, compound, references, options);
-      }
+    var outputPath = this.compoundPath(compound, options);
+    if (options.relativePaths) {
+      outputPath = path.join(path.dirname(options.output), outputPath);
+    }
+    this.writeFile(outputPath, contents.map(function(content) {
+      return this.resolveRefs(content, compound, references, options);
     }.bind(this)));
   },
 
   // Write the output file
   writeFile: function (filepath, contents) {
-    log.verbose('Writing', filepath);
+    log.verbose('Writing: ' + filepath);
     var stream = fs.createWriteStream(filepath);
     stream.once('open', function(fd) {
       contents.forEach(function (content) {
@@ -130,5 +136,5 @@ module.exports = {
       });
       stream.end();
     });
-  }
+  },
 };

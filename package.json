@@ -31,7 +31,7 @@
   "author": "Kam Low",
   "license": "MIT",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
     "commander": "^13.1.0",

@@ -23,7 +23,7 @@ Doxygen XML to Markdown converter for C++ and Java developers who want minimal, 
 npm install moxygen -g
 ```
 
-Requires Node.js 18+.
+Requires Node.js 20+.
 
 ## Usage
 

@@ -28,6 +28,10 @@ module.exports = {
     templates: 'templates',     /** Templates directory **/
     pages: false,               /** Output doxygen pages separately **/
     classes: false,             /** Output doxygen classes separately **/
+    output_s: 'api_%s.md',      /** Output file for groups and classes **/
+    logfile: 'moxygen.log',     /** Log file **/
+    relativePaths: false,       /** Use relative paths (omit output base path) **/
+    separator: '::',            /** Group separator sequence **/
 
     filters: {
       members: [
@@ -44,17 +48,23 @@ module.exports = {
         'signal',
         'public-slot',
         'protected-slot',
-        'public-type'
+        'public-type',
+        'private-attrib',
+        'private-func',
+        'private-slot',
+        'public-static-func',
+        'private-static-func',
       ],
       compounds: [
         'namespace',
         'class',
         'struct',
         'union',
-        'typedef'
-        // 'file'
+        'typedef',
+        'interface',
+        // 'file',
       ]
-    }
+    },
   },
 
   /**
@@ -63,12 +73,23 @@ module.exports = {
   run: function (options) {
 
     // Sanitize options
-    if (options.groups == options.output.indexOf('%s') === -1)
-      throw "The `output` file parameter must contain an '%s' for group name " +
-        "substitution when `groups` are enabled."
+    if (typeof options.output == "undefined") {
+      if (options.classes || options.groups) {
+        options.output = this.defaultOptions.output_s;
+      }
+      else {
+        options.output = this.defaultOptions.output;
+      }
+    }
 
-    if (options.templates == this.defaultOptions.templates)
-      options.templates = path.join(__dirname, 'templates', options.language);
+    if ((options.classes || options.groups) && options.output.indexOf('%s') === -1) {
+      throw "The `output` file parameter must contain an '%s' for group or class name " +
+        "substitution when `groups` or `classes` are enabled."
+    }
+
+    if (typeof options.templates == "undefined") {
+      options.templates = path.join(__dirname, this.defaultOptions.templates, options.language);
+    }
 
     switch(options.language) {
       case 'java':
@@ -145,5 +166,5 @@ module.exports = {
       }
 
     });
-  }
+  },
 }

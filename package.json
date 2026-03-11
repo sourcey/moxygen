@@ -1,15 +1,21 @@
 {
   "name": "moxygen",
-  "version": "0.8.1",
-  "description": "Doxygen XML to Markdown documentation converter",
-  "main": "index.js",
-  "scripts": {
-    "release": "release-it",
-    "test": "npm run clean && cd example/ && doxygen && cd .. && node bin/moxygen.js --groups --pages --anchors --output=example/doc/api-%s.md example/xml",
-    "clean": "rm -rf example/doc/*.md example/xml/"
-  },
+  "version": "1.0.0",
+  "description": "Doxygen XML to Markdown converter",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
-    "moxygen": "./bin/moxygen.js"
+    "moxygen": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "example": "npm run build && node dist/cli.js --groups --pages --anchors --output=example/doc/api-%s.md example/xml"
   },
   "repository": {
     "type": "git",
@@ -19,15 +25,23 @@
     "doxygen",
     "markdown",
     "documentation",
-    "generator"
+    "generator",
+    "api-docs"
   ],
   "author": "Kam Low",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
-    "commander": "^2.19.0",
-    "handlebars": "^4.0.12",
-    "object-assign": "^4.1.1",
-    "winston": "^3.2.1",
-    "xml2js": "^0.4.19"
+    "commander": "^13.1.0",
+    "handlebars": "^4.7.8",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "@types/xml2js": "^0.4.14",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
   }
 }

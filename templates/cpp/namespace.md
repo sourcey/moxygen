@@ -1,33 +1,52 @@
-# {{kind}} `{{name}}` {{anchor refid}}
+# {{shortname name}} {{anchor refid}}
 
 {{briefdescription}}
 
 {{detaileddescription}}
 
-## Summary
+{{#if filtered.compounds}}
+### Classes
 
- Members                        | Descriptions                                
---------------------------------|---------------------------------------------
-{{#each filtered.members}}{{cell proto}}            | {{cell summary}}
-{{/each}}{{#each filtered.compounds}}{{cell proto}} | {{cell summary}}
-{{/each}}
-
-{{#if filtered.members}}
-## Members
-
-{{#each filtered.members}}
-#### {{title proto}} {{anchor refid}}
-
-{{#if enumvalue}}
- Values                         | Descriptions                                
---------------------------------|---------------------------------------------
-{{#each enumvalue}}{{cell name}}            | {{cell summary}}
+| Name | Description |
+|------|-------------|
+{{#each filtered.compounds}}| [`{{shortname name}}`](#{{refid}}) | {{summary}} |
 {{/each}}
 {{/if}}
 
+{{#if filtered.members}}
+### Members
+
+| Name | Description |
+|------|-------------|
+{{#each filtered.members}}| [`{{name}}`](#{{refid}}) | {{summary}} |
+{{/each}}
+
+{{#each filtered.members}}
+---
+
+#### {{name}} {{anchor refid}}
+
+```cpp
+{{signature}}
+```
+
 {{briefdescription}}
 
 {{detaileddescription}}
+
+{{#if (hasParams)}}
+| Parameter | Type | Description |
+|-----------|------|-------------|
+{{#each params}}{{#if name}}| `{{name}}` | `{{type}}` | {{description}} |
+{{/if}}{{/each}}
+{{/if}}
+
+{{#if enumvalue}}
+| Value | Description |
+|-------|-------------|
+{{#each enumvalue}}| `{{name}}` | {{summary}} |
+{{/each}}
+{{/if}}
 
 {{/each}}
 {{/if}}

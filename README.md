@@ -1,80 +1,113 @@
 # Moxygen
 
-Moxygen is a Doxygen XML to Markdown converter for C++ developers who want a minimal and beautiful solution for documentating their projects.
+[![CI](https://github.com/sourcey/moxygen/actions/workflows/ci.yml/badge.svg)](https://github.com/sourcey/moxygen/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/moxygen)](https://www.npmjs.com/package/moxygen)
+[![Node](https://img.shields.io/node/v/moxygen)](https://nodejs.org)
+[![License](https://img.shields.io/npm/l/moxygen)](https://github.com/sourcey/moxygen/blob/master/LICENCE)
 
-Moxygen is currently used in conjunction with GitBook to generate the API documentation for [LibSourcey](http://sourcey.com/libsourcey/).
+Doxygen XML to Markdown converter for C++ and Java developers who want minimal, beautiful API documentation.
 
 ## Features
 
-* **Multi page output**: Output single or multiple files
-* **Internal linking**: Anchors in comments and function definitions are supported
-* **Markdown comments**: Markdown in Doxygen comments are rendered
-* **Doxygen groups**: Doxygen [grouping](http://www.doxygen.nl/manual/grouping.html) is supported for more organised documentation
-* **Custom templates**: Modify the core Markdown templates to add your own flavour
-* **Optional index**: Optionally render a top level index
+- **Multi-language** - C++ and Java supported out of the box
+- **Multi-page output** - single file, per-group, per-class, or per-page
+- **Internal linking** - anchors in comments and function definitions
+- **Markdown comments** - Markdown in Doxygen comments is rendered
+- **Doxygen groups** - [grouping](http://www.doxygen.nl/manual/grouping.html) support for organised docs
+- **Custom templates** - modify the Handlebars templates to suit your needs
+- **Optional index** - optionally render a top-level index
+
+## Install
+
+```
+npm install moxygen -g
+```
+
+Requires Node.js 18+.
 
 ## Usage
 
-1. Add `GENERATE_XML=YES` to your `Doxyfile` first.
-2. Run `doxygen` to generate the XML documentation.
-3. Install `moxygen` like so: `npm install moxygen -g`.
-4. Run `moxygen` providing the folder location of the XML documentation as the first argument ie. `{OUTPUT_DIRECTORY}/xml`.  
-  ```
-  Usage: moxygen [options] <doxygen XML directory>
+1. Add `GENERATE_XML=YES` to your `Doxyfile`
+2. Run `doxygen` to generate the XML documentation
+3. Run `moxygen` pointing to the XML output directory
 
-  Options:
+```
+moxygen [options] <doxygen XML directory>
 
-    -V, --version          output the version number
-    -o, --output <file>    output file, must contain "%s" when using `groups` or `classes`
-    -g, --groups           output doxygen groups into separate files
-    -c, --classes          output doxygen classes into separate files
-    -p, --pages            output doxygen pages into separate files
-    -n, --noindex          disable generation of the index, ignored with `groups` or `classes`
-    -a, --anchors          add anchors to internal links
-    -H, --html-anchors     add html anchors to internal links
-    -l, --language <lang>  programming language
-    -t, --templates <dir>  custom templates directory
-    -L, --logfile [file]   output log messages to file
-    -q, --quiet            quiet mode
-    -h, --help             output usage information
-  ```
+Options:
+  -V, --version          output the version number
+  -o, --output <file>    output file, must contain "%s" when using groups or classes
+  -g, --groups           output doxygen groups into separate files
+  -c, --classes          output doxygen classes into separate files
+  -p, --pages            output doxygen pages into separate files
+  -n, --noindex          disable generation of the index
+  -a, --anchors          add anchors to internal links
+  -H, --html-anchors     add HTML anchors to internal links
+  -l, --language <lang>  programming language (default: cpp)
+  -t, --templates <dir>  custom templates directory
+  -L, --logfile [file]   output log messages to file (default: moxygen.log)
+  -q, --quiet            quiet mode
+  -h, --help             display help
+```
 
-## Multi-page Output
+## Examples
 
-Moxygen supports the doxygen [groups](http://www.doxygen.nl/manual/grouping.html#modules) syntax for generating multi page documentation. Every [\defgroup](http://www.doxygen.nl/manual/commands.html#cmddefgroup) in your source code will be parsed and output into a separate markdown file, with internal reference updated accordingly.
+Single file output:
+```
+moxygen --anchors /path/to/doxygen/xml
+```
 
-Example:
-
+Multi-file grouped output:
 ```
 moxygen --anchors --groups --output api-%s.md /path/to/doxygen/xml
 ```
 
-## Example
-
-To get a feel for how Moxygen works you can play with the example which is located in the [example](/example) folder. The example contains:
-
-* Documented C++ example code
-* A `Doxyfile` file (for doxygen 1.8.13)
-* Pre-generated XML output in [example/xml](/example/xml)
-* Pre-generated output Markdown files in [example/doc](/example/doc)
-
-To fully build the example, follow these steps (once you've installed `doxygen`. See **Development & Contribution**, below):
-
-1. Rebuild the XML: run `doxygen` from within the example folder.
-2. Rebuild the Moxygen output: from within this directory,
-
+Per-class files:
 ```
-node bin/moxygen.js --groups --pages --anchors --output=example/doc/api-%s.md example/xml
+moxygen --classes --output api-%s.md /path/to/doxygen/xml
 ```
 
-## Development & Contribution
+Java project:
+```
+moxygen --language java --anchors /path/to/doxygen/xml
+```
 
-You can develop this project as you would any other Node project:
+## Custom Templates
 
-1. Clone this repo.
-2. `npm install` from this directory.
+Moxygen uses Handlebars templates for output. The default modern templates produce clean Markdown with code-block signatures and parameter tables.
 
-This project is tested through integration, by building the `example/`. To quickly test this project:
+To use the classic (pre-1.0) template style:
+```
+moxygen --templates ./templates/classic /path/to/xml
+```
 
-1. Install `doxygen` (`brew install doxygen`, `choco install doxygen`, for example). Only must be done once per computer.
-2. `npm test` from this directory. This will run Doxygen on the `example/` and build the output.
+To create your own templates, copy the `templates/cpp/` directory and modify. Templates receive the full parsed compound data including structured parameter info, inheritance, and more.
+
+## Programmatic API
+
+```typescript
+import { run } from 'moxygen';
+
+await run({
+  directory: '/path/to/doxygen/xml',
+  output: 'api.md',
+  anchors: true,
+});
+```
+
+## Development
+
+```bash
+npm install
+npm run build
+npm test
+```
+
+To test against the example:
+```bash
+npm run example
+```
+
+## Licence
+
+MIT

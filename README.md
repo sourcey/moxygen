@@ -108,6 +108,10 @@ To test against the example:
 npm run example
 ```
 
+## More Information
+
+For more details, visit [sourcey.com/code/moxygen](https://sourcey.com/code/moxygen).
+
 ## Licence
 
 MIT

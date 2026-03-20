@@ -131,6 +131,21 @@ export function compoundPath(compound: Compound, options: MoxygenOptions): strin
 }
 
 /**
+ * Render a compound's contents to a string, resolving refs.
+ */
+export function renderCompound(
+  compound: Compound,
+  contents: (string | undefined)[],
+  references: References,
+  options: MoxygenOptions,
+): string {
+  const resolved = contents.map((content) =>
+    content ? resolveRefs(content, compound, references, options) : '',
+  );
+  return resolved.filter(Boolean).join('');
+}
+
+/**
  * Write a compound's rendered contents to file, resolving refs first.
  */
 export function writeCompound(
@@ -140,10 +155,8 @@ export function writeCompound(
   options: MoxygenOptions,
 ): void {
   const filepath = compoundPath(compound, options);
-  const resolved = contents.map((content) =>
-    content ? resolveRefs(content, compound, references, options) : '',
-  );
-  writeFile(filepath, resolved);
+  const output = renderCompound(compound, contents, references, options);
+  writeFile(filepath, [output]);
 }
 
 /**

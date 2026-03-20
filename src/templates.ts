@@ -9,10 +9,20 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import Handlebars from 'handlebars';
 import { getAnchor, cleanId } from './helpers.js';
+import type { AnchorMap } from './helpers.js';
 import { log } from './logger.js';
 import type { Compound, MoxygenOptions } from './types.js';
 
 const templates: Record<string, HandlebarsTemplateDelegate> = {};
+let activeAnchorMap: AnchorMap | undefined;
+
+/**
+ * Set the anchor map used by cleanAnchor/cleanId helpers.
+ * Call before rendering a batch of compounds.
+ */
+export function setAnchorMap(map: AnchorMap | undefined): void {
+  activeAnchorMap = map;
+}
 
 /**
  * Register Handlebars helpers for template rendering.
@@ -23,25 +33,6 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
     code.replace(/\|/g, '\\|').replace(/\n/g, '<br/>'),
   );
 
-  Handlebars.registerHelper('title', (code: string) =>
-    code.replace(/\n/g, '<br/>'),
-  );
-
-  Handlebars.registerHelper('anchor', (name: string) =>
-    getAnchor(name, options),
-  );
-
-  // Modern helpers
-  Handlebars.registerHelper('lang', (language: string) => {
-    const map: Record<string, string> = {
-      'Java': 'java',
-      'C#': 'csharp',
-      'Python': 'python',
-      'Objective-C': 'objc',
-    };
-    return map[language] || 'cpp';
-  });
-
   Handlebars.registerHelper('eq', (a: unknown, b: unknown) => a === b);
 
   Handlebars.registerHelper('or', (a: unknown, b: unknown) => a || b);
@@ -49,29 +40,6 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
   Handlebars.registerHelper('shortname', (fullname: string) => {
     const parts = (fullname || '').split('::');
     return parts[parts.length - 1] || fullname;
-  });
-
-  Handlebars.registerHelper('sectionLabel', (section: string) => {
-    const labels: Record<string, string> = {
-      'public-func': 'Public Methods',
-      'protected-func': 'Protected Methods',
-      'private-func': 'Private Methods',
-      'public-static-func': 'Public Static Methods',
-      'private-static-func': 'Private Static Methods',
-      'public-attrib': 'Public Attributes',
-      'protected-attrib': 'Protected Attributes',
-      'private-attrib': 'Private Attributes',
-      'public-type': 'Public Types',
-      'public-slot': 'Public Slots',
-      'protected-slot': 'Protected Slots',
-      'private-slot': 'Private Slots',
-      'signal': 'Signals',
-      'property': 'Properties',
-      'enum': 'Enumerations',
-      'define': 'Macros',
-      'func': 'Functions',
-    };
-    return labels[section] || section;
   });
 
   Handlebars.registerHelper('signature', function (this: Record<string, unknown>) {
@@ -131,15 +99,15 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
     return params && params.length > 0 && params.some(p => p.name);
   });
 
-  // Clean anchor: generates a readable anchor from refid + name
+  // Clean anchor: generates a readable anchor, using the anchor map for consistency
   Handlebars.registerHelper('cleanAnchor', (refid: string, name: string) => {
-    const id = cleanId(name || refid);
+    const id = activeAnchorMap?.get(refid) ?? cleanId(name || refid);
     return getAnchor(id, options);
   });
 
-  // Clean ID: returns the clean id string (no anchor markup, for href targets)
-  Handlebars.registerHelper('cleanId', (_refid: string, name: string) => {
-    return cleanId(name || _refid);
+  // Clean ID: returns the clean id string for href targets, using the anchor map
+  Handlebars.registerHelper('cleanId', (refid: string, name: string) => {
+    return activeAnchorMap?.get(refid) ?? cleanId(name || refid);
   });
 
   // Return type for summary tables: strip markdown links to plain text

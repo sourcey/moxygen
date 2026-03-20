@@ -1,4 +1,4 @@
-# {{shortname name}} {{anchor refid}}
+# {{shortname name}} {{cleanAnchor refid name}}
 
 {{briefdescription}}
 
@@ -9,22 +9,25 @@
 
 | Name | Description |
 |------|-------------|
-{{#each filtered.compounds}}| [`{{shortname name}}`](#{{refid}}) | {{summary}} |
+{{#each filtered.compounds}}| [`{{shortname name}}`](#{{cleanId refid name}}) | {{cell summary}} |
 {{/each}}
 {{/if}}
 
-{{#if filtered.members}}
-### Members
+{{#each filtered.sections}}
+### {{label}}
 
-| Name | Description |
-|------|-------------|
-{{#each filtered.members}}| [`{{name}}`](#{{refid}}) | {{summary}} |
+| Return | Name | Description |
+|--------|------|-------------|
+{{#each members}}| `{{returnTypeShort}}` | [`{{name}}`](#{{cleanId refid name}}) {{badges}} | {{cell summary}} |
 {{/each}}
 
-{{#each filtered.members}}
+{{#each members}}
+
 ---
 
-#### {{name}} {{anchor refid}}
+#### {{name}} {{cleanAnchor refid name}}
+
+{{badges}}
 
 ```java
 {{signature}}
@@ -49,4 +52,4 @@
 {{/if}}
 
 {{/each}}
-{{/if}}
+{{/each}}

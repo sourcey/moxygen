@@ -1,4 +1,4 @@
-# {{shortname name}} {{anchor refid}}
+# {{shortname name}} {{cleanAnchor refid name}}
 
 {{briefdescription}}
 
@@ -7,8 +7,8 @@
 {{#if filtered.members}}
 ## Contents
 
-| Section | |
-|---------|--|
-{{#each filtered.members}}| [`{{name}}`](#{{refid}}) | |
+| Section |
+|---------|
+{{#each filtered.members}}| [`{{name}}`](#{{cleanId refid name}}) |
 {{/each}}
 {{/if}}

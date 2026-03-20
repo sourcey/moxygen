@@ -13,6 +13,7 @@ import type { AnchorMap } from './helpers.js';
 import { log } from './logger.js';
 import { loadIndex } from './parser.js';
 import * as templates from './templates.js';
+import { setAnchorMap } from './templates.js';
 import type { Compound, Filters, MoxygenOptions, References } from './types.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -204,6 +205,7 @@ export async function generate(
 
   // Build clean anchor map across all compounds
   const anchorMap = buildCleanAnchorMap(allCompounds);
+  setAnchorMap(anchorMap);
 
   // Second pass: render
   for (const comp of rootCompounds) {
@@ -253,40 +255,26 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
   const opts = resolveOptions(options);
   const { root, references } = await loadAndPrepare(opts);
 
-  // Collect all compounds for anchor map building
+  // --- Pass 1: filter + prepare all compounds ---
   const allCompounds: Compound[] = [];
 
   if (opts.groups) {
     const groups = toArray(root, 'compounds', 'group') as Compound[];
     if (!groups.length) {
-      throw new Error(
-        'You have enabled `groups` output, but no groups were located in your doxygen XML files.',
-      );
+      throw new Error('You have enabled `groups` output, but no groups were located in your doxygen XML files.');
     }
-
     for (const group of groups) {
       filterChildren(group, opts.filters, group.id);
       prepareCompound(group);
-      const compounds = toFilteredArray(group, 'compounds');
-      for (const c of compounds) prepareCompound(c);
-      allCompounds.push(group, ...compounds);
-    }
-
-    const anchorMap = buildCleanAnchorMap(allCompounds);
-
-    for (const group of groups) {
-      const compounds = toFilteredArray(group, 'compounds');
-      compounds.unshift(group);
-      writeWithOptionalFrontmatter(group, templates.renderArray(compounds), references, opts, anchorMap);
+      const children = toFilteredArray(group, 'compounds');
+      for (const c of children) prepareCompound(c);
+      allCompounds.push(group, ...children);
     }
   } else if (opts.classes) {
     const rootCompounds = toArray(root, 'compounds', 'namespace') as Compound[];
     if (!rootCompounds.length) {
-      throw new Error(
-        'You have enabled `classes` output, but no classes were located in your doxygen XML files.',
-      );
+      throw new Error('You have enabled `classes` output, but no classes were located in your doxygen XML files.');
     }
-
     for (const comp of rootCompounds) {
       filterChildren(comp, opts.filters);
       prepareCompound(comp);
@@ -297,9 +285,28 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
         allCompounds.push(e);
       }
     }
+  } else {
+    filterChildren(root, opts.filters);
+    prepareCompound(root);
+    const children = toFilteredArray(root, 'compounds');
+    for (const c of children) prepareCompound(c);
+    allCompounds.push(root, ...children);
+  }
 
-    const anchorMap = buildCleanAnchorMap(allCompounds);
+  // --- Build anchor map once ---
+  const anchorMap = buildCleanAnchorMap(allCompounds);
+  setAnchorMap(anchorMap);
 
+  // --- Pass 2: render + write ---
+  if (opts.groups) {
+    const groups = toArray(root, 'compounds', 'group') as Compound[];
+    for (const group of groups) {
+      const compounds = toFilteredArray(group, 'compounds');
+      compounds.unshift(group);
+      writeWithOptionalFrontmatter(group, templates.renderArray(compounds), references, opts, anchorMap);
+    }
+  } else if (opts.classes) {
+    const rootCompounds = toArray(root, 'compounds', 'namespace') as Compound[];
     for (const comp of rootCompounds) {
       writeWithOptionalFrontmatter(comp, [templates.render(comp)], references, opts, anchorMap);
       for (const e of toFilteredArray(comp)) {
@@ -307,14 +314,7 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
       }
     }
   } else {
-    filterChildren(root, opts.filters);
-    prepareCompound(root);
     const compounds = toFilteredArray(root, 'compounds');
-    for (const c of compounds) prepareCompound(c);
-    allCompounds.push(root, ...compounds);
-
-    const anchorMap = buildCleanAnchorMap(allCompounds);
-
     if (!opts.noindex) {
       compounds.unshift(root);
     }
@@ -326,13 +326,8 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
   if (opts.pages) {
     const doxyPages = toArray(root, 'compounds', 'page') as Compound[];
     if (!doxyPages.length) {
-      throw new Error(
-        'You have enabled `pages` output, but no pages were located in your doxygen XML files.',
-      );
+      throw new Error('You have enabled `pages` output, but no pages were located in your doxygen XML files.');
     }
-
-    const anchorMap = buildCleanAnchorMap(allCompounds);
-
     for (const page of doxyPages) {
       const compounds = toFilteredArray(page, 'compounds');
       compounds.unshift(page);

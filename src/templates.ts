@@ -8,7 +8,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import Handlebars from 'handlebars';
-import { getAnchor } from './helpers.js';
+import { getAnchor, cleanId } from './helpers.js';
 import { log } from './logger.js';
 import type { Compound, MoxygenOptions } from './types.js';
 
@@ -130,6 +130,33 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
     const params = this.params as Array<{ name: string }>;
     return params && params.length > 0 && params.some(p => p.name);
   });
+
+  // Clean anchor: generates a readable anchor from refid + name
+  Handlebars.registerHelper('cleanAnchor', (refid: string, name: string) => {
+    const id = cleanId(name || refid);
+    return getAnchor(id, options);
+  });
+
+  // Clean ID: returns the clean id string (no anchor markup, for href targets)
+  Handlebars.registerHelper('cleanId', (_refid: string, name: string) => {
+    return cleanId(name || _refid);
+  });
+
+  // Return type for summary tables: strip markdown links to plain text
+  Handlebars.registerHelper('returnTypeShort', function (this: Record<string, unknown>) {
+    const rt = (this.returnType as string) || '';
+    return rt.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').trim() || '';
+  });
+
+  // Linked name: renders as markdown link if refid exists
+  Handlebars.registerHelper('linkedName', (name: string, refid: string) => {
+    const short = (name || '').split('::').pop() || name;
+    if (refid) return `[\`${short}\`]({#ref ${refid} #})`;
+    return `\`${short}\``;
+  });
+
+  // Not helper for conditionals
+  Handlebars.registerHelper('not', (value: unknown) => !value);
 }
 
 /**

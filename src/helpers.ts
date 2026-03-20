@@ -11,6 +11,8 @@ import { format as utilFormat } from 'node:util';
 import { log } from './logger.js';
 import type { Compound, Member, MoxygenOptions, References } from './types.js';
 
+export type AnchorMap = Map<string, string>;
+
 /**
  * Wrap code segments in backticks, preserving markdown links and line breaks.
  */
@@ -71,6 +73,46 @@ export function findParent(compound: Compound | Member | undefined, kinds: strin
 }
 
 /**
+ * Convert a name to a clean URL-safe anchor ID.
+ */
+export function cleanId(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/::/g, '-')
+    .replace(/[^a-z0-9_-]/g, '')
+    .replace(/^-+|-+$/g, '') || 'unknown';
+}
+
+/**
+ * Build a map from Doxygen refids to clean, human-readable anchor IDs.
+ * Handles deduplication for overloaded names.
+ */
+export function buildCleanAnchorMap(compounds: Compound[]): AnchorMap {
+  const map = new Map<string, string>();
+  const used = new Set<string>();
+
+  function dedup(base: string): string {
+    let id = base;
+    let i = 1;
+    while (used.has(id)) { id = `${base}-${i++}`; }
+    used.add(id);
+    return id;
+  }
+
+  for (const compound of compounds) {
+    const compClean = dedup(cleanId(compound.shortname || compound.name));
+    map.set(compound.refid, compClean);
+
+    for (const member of compound.filtered?.members || []) {
+      const memberClean = dedup(cleanId(member.name));
+      map.set(member.refid, memberClean);
+    }
+  }
+
+  return map;
+}
+
+/**
  * Resolve internal reference links to point to correct output files.
  */
 export function resolveRefs(
@@ -78,36 +120,41 @@ export function resolveRefs(
   compound: Compound,
   references: References,
   options: MoxygenOptions,
+  anchorMap?: AnchorMap,
 ): string {
+  function anchor(refid: string): string {
+    return anchorMap?.get(refid) ?? refid;
+  }
+
   return content.replace(/\{#ref ([^ ]+) #\}/g, (_, refid: string) => {
     const ref = references[refid];
-    if (!ref) return `#${refid}`;
+    if (!ref) return `#${anchor(refid)}`;
 
     const page = findParent(ref, ['page']);
 
     if (page) {
-      if (page.refid === compound.refid) return `#${refid}`;
-      return `${compoundPath(page, options)}#${refid}`;
+      if (page.refid === compound.refid) return `#${anchor(refid)}`;
+      return `${compoundPath(page, options)}#${anchor(refid)}`;
     }
 
     if (options.groups) {
       if (compound.groupid && compound.groupid === (ref as Member).groupid) {
-        return `#${refid}`;
+        return `#${anchor(refid)}`;
       }
-      return `${compoundPath(ref as Compound, options)}#${refid}`;
+      return `${compoundPath(ref as Compound, options)}#${anchor(refid)}`;
     }
 
     if (options.classes) {
       const dest = findParent(ref, ['namespace', 'class', 'struct']);
-      if (!dest || compound.refid === dest.refid) return `#${refid}`;
-      return `${compoundPath(dest, options)}#${refid}`;
+      if (!dest || compound.refid === dest.refid) return `#${anchor(refid)}`;
+      return `${compoundPath(dest, options)}#${anchor(refid)}`;
     }
 
     if (compound.kind === 'page') {
-      return `${compoundPath(compound.parent as Compound, options)}#${refid}`;
+      return `${compoundPath(compound.parent as Compound, options)}#${anchor(refid)}`;
     }
 
-    return `#${refid}`;
+    return `#${anchor(refid)}`;
   });
 }
 
@@ -138,9 +185,10 @@ export function renderCompound(
   contents: (string | undefined)[],
   references: References,
   options: MoxygenOptions,
+  anchorMap?: AnchorMap,
 ): string {
   const resolved = contents.map((content) =>
-    content ? resolveRefs(content, compound, references, options) : '',
+    content ? resolveRefs(content, compound, references, options, anchorMap) : '',
   );
   return resolved.filter(Boolean).join('');
 }
@@ -153,9 +201,10 @@ export function writeCompound(
   contents: (string | undefined)[],
   references: References,
   options: MoxygenOptions,
+  anchorMap?: AnchorMap,
 ): void {
   const filepath = compoundPath(compound, options);
-  const output = renderCompound(compound, contents, references, options);
+  const output = renderCompound(compound, contents, references, options, anchorMap);
   writeFile(filepath, [output]);
 }
 

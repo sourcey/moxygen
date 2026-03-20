@@ -110,7 +110,7 @@ npm run example
 
 ## More Information
 
-For more details, visit [sourcey.com/code/moxygen](https://sourcey.com/code/moxygen).
+For more details, visit [0state.com/moxygen](https://0state.com/moxygen).
 
 ## Licence
 

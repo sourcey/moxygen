@@ -96,12 +96,18 @@ function toMarkdown(element: unknown, context: XmlElement[] = []): string {
       break;
     case 'simplesect': {
       const kind = el.$?.kind;
-      if (kind === 'attention') {
-        s = '> ';
+      if (kind === 'attention' || kind === 'warning') {
+        s = '\n:::warning\n';
+      } else if (kind === 'note' || kind === 'remark') {
+        s = '\n:::note\n';
+      } else if (kind === 'deprecated') {
+        s = '\n:::warning\n**Deprecated.** ';
       } else if (kind === 'return') {
         s = '\n#### Returns\n';
       } else if (kind === 'see') {
         s = '**See also**: ';
+      } else if (kind === 'since') {
+        s = '**Since**: ';
       } else {
         log.warn(`simplesect kind '${kind}' not supported`);
       }
@@ -164,6 +170,15 @@ function toMarkdown(element: unknown, context: XmlElement[] = []): string {
 
   // Closing
   switch (el['#name']) {
+    case 'simplesect': {
+      const closeKind = el.$?.kind;
+      if (closeKind === 'attention' || closeKind === 'warning' || closeKind === 'note' || closeKind === 'remark' || closeKind === 'deprecated') {
+        s += '\n:::\n\n';
+      } else {
+        s += '\n\n';
+      }
+      break;
+    }
     case 'parameterlist':
     case 'para':
       s += '\n\n';

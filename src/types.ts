@@ -18,6 +18,7 @@ export interface MoxygenOptions {
   templates: string;
   logfile?: string | boolean;
   quiet: boolean;
+  frontmatter: boolean;
   filters: Filters;
 }
 

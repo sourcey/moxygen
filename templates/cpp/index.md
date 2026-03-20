@@ -1,18 +1,18 @@
 # API Reference
 
+{{#if filtered.compounds}}
 | Name | Description |
 |------|-------------|
-{{#each filtered.members}}| [`{{name}}`](#{{refid}}) | {{summary}} |
-{{/each}}{{#each filtered.compounds}}| [`{{shortname name}}`](#{{refid}}) | {{summary}} |
+{{#each filtered.compounds}}| [`{{shortname name}}`](#{{cleanId refid name}}) | {{cell summary}} |
 {{/each}}
+{{/if}}
 
-{{#if filtered.members}}
-## Members
+{{#each filtered.sections}}
+## {{label}}
 
-{{#each filtered.members}}
----
+{{#each members}}
 
-#### {{name}} {{anchor refid}}
+#### {{name}} {{cleanAnchor refid name}}
 
 ```cpp
 {{signature}}
@@ -30,4 +30,4 @@
 {{detaileddescription}}
 
 {{/each}}
-{{/if}}
+{{/each}}

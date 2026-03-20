@@ -7,8 +7,9 @@
 
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { toArray, toFilteredArray, filterChildren } from './compound.js';
-import { writeCompound, renderCompound, compoundPath, writeFile } from './helpers.js';
+import { toArray, toFilteredArray, filterChildren, filterNoise, groupMembersBySection } from './compound.js';
+import { writeCompound, renderCompound, compoundPath, writeFile, buildCleanAnchorMap } from './helpers.js';
+import type { AnchorMap } from './helpers.js';
 import { log } from './logger.js';
 import { loadIndex } from './parser.js';
 import * as templates from './templates.js';
@@ -167,6 +168,14 @@ export function generateFrontmatter(meta: CompoundMeta): string {
 // ---------------------------------------------------------------------------
 
 /**
+ * Apply noise filtering and section grouping to a compound after filterChildren.
+ */
+function prepareCompound(compound: Compound): void {
+  compound.filtered.members = filterNoise(compound.filtered.members);
+  compound.filtered.sections = groupMembersBySection(compound);
+}
+
+/**
  * Parse Doxygen XML and return structured pages with rendered markdown.
  * Markdown is the body only; metadata is in the structured fields.
  */
@@ -179,21 +188,36 @@ export async function generate(
 
   const rootCompounds = toArray(root, 'compounds', 'namespace') as Compound[];
 
+  // First pass: filter and prepare all compounds
+  const allCompounds: Compound[] = [];
   for (const comp of rootCompounds) {
     filterChildren(comp, opts.filters);
-
-    const nsMarkdown = templates.render(comp);
-    if (nsMarkdown) {
-      const meta = extractMeta(comp);
-      pages.push({ ...meta, markdown: renderCompound(comp, [nsMarkdown], references, opts) });
-    }
+    prepareCompound(comp);
+    allCompounds.push(comp);
 
     for (const child of toFilteredArray(comp)) {
       filterChildren(child, opts.filters);
+      prepareCompound(child);
+      allCompounds.push(child);
+    }
+  }
+
+  // Build clean anchor map across all compounds
+  const anchorMap = buildCleanAnchorMap(allCompounds);
+
+  // Second pass: render
+  for (const comp of rootCompounds) {
+    const nsMarkdown = templates.render(comp);
+    if (nsMarkdown) {
+      const meta = extractMeta(comp);
+      pages.push({ ...meta, markdown: renderCompound(comp, [nsMarkdown], references, opts, anchorMap) });
+    }
+
+    for (const child of toFilteredArray(comp)) {
       const childMarkdown = templates.render(child);
       if (childMarkdown) {
         const meta = extractMeta(child);
-        pages.push({ ...meta, markdown: renderCompound(child, [childMarkdown], references, opts) });
+        pages.push({ ...meta, markdown: renderCompound(child, [childMarkdown], references, opts, anchorMap) });
       }
     }
   }
@@ -203,7 +227,7 @@ export async function generate(
     const pageCompounds = toFilteredArray(page, 'compounds');
     pageCompounds.unshift(page);
     const content = templates.renderArray(pageCompounds);
-    const markdown = renderCompound(page, content, references, opts);
+    const markdown = renderCompound(page, content, references, opts, anchorMap);
     if (markdown) {
       pages.push({
         slug: page.name,
@@ -229,6 +253,9 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
   const opts = resolveOptions(options);
   const { root, references } = await loadAndPrepare(opts);
 
+  // Collect all compounds for anchor map building
+  const allCompounds: Compound[] = [];
+
   if (opts.groups) {
     const groups = toArray(root, 'compounds', 'group') as Compound[];
     if (!groups.length) {
@@ -239,9 +266,18 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
 
     for (const group of groups) {
       filterChildren(group, opts.filters, group.id);
+      prepareCompound(group);
+      const compounds = toFilteredArray(group, 'compounds');
+      for (const c of compounds) prepareCompound(c);
+      allCompounds.push(group, ...compounds);
+    }
+
+    const anchorMap = buildCleanAnchorMap(allCompounds);
+
+    for (const group of groups) {
       const compounds = toFilteredArray(group, 'compounds');
       compounds.unshift(group);
-      writeWithOptionalFrontmatter(group, templates.renderArray(compounds), references, opts);
+      writeWithOptionalFrontmatter(group, templates.renderArray(compounds), references, opts, anchorMap);
     }
   } else if (opts.classes) {
     const rootCompounds = toArray(root, 'compounds', 'namespace') as Compound[];
@@ -253,21 +289,38 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
 
     for (const comp of rootCompounds) {
       filterChildren(comp, opts.filters);
-      writeWithOptionalFrontmatter(comp, [templates.render(comp)], references, opts);
+      prepareCompound(comp);
+      allCompounds.push(comp);
       for (const e of toFilteredArray(comp)) {
         filterChildren(e, opts.filters);
-        writeWithOptionalFrontmatter(e, [templates.render(e)], references, opts);
+        prepareCompound(e);
+        allCompounds.push(e);
+      }
+    }
+
+    const anchorMap = buildCleanAnchorMap(allCompounds);
+
+    for (const comp of rootCompounds) {
+      writeWithOptionalFrontmatter(comp, [templates.render(comp)], references, opts, anchorMap);
+      for (const e of toFilteredArray(comp)) {
+        writeWithOptionalFrontmatter(e, [templates.render(e)], references, opts, anchorMap);
       }
     }
   } else {
     filterChildren(root, opts.filters);
+    prepareCompound(root);
     const compounds = toFilteredArray(root, 'compounds');
+    for (const c of compounds) prepareCompound(c);
+    allCompounds.push(root, ...compounds);
+
+    const anchorMap = buildCleanAnchorMap(allCompounds);
+
     if (!opts.noindex) {
       compounds.unshift(root);
     }
     const contents = templates.renderArray(compounds);
     contents.push('Generated by [Moxygen](https://sourcey.com/code/moxygen)');
-    writeCompound(root, contents, references, opts);
+    writeCompound(root, contents, references, opts, anchorMap);
   }
 
   if (opts.pages) {
@@ -278,10 +331,12 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
       );
     }
 
+    const anchorMap = buildCleanAnchorMap(allCompounds);
+
     for (const page of doxyPages) {
       const compounds = toFilteredArray(page, 'compounds');
       compounds.unshift(page);
-      writeWithOptionalFrontmatter(page, templates.renderArray(compounds), references, opts);
+      writeWithOptionalFrontmatter(page, templates.renderArray(compounds), references, opts, anchorMap);
     }
   }
 }
@@ -299,14 +354,15 @@ function writeWithOptionalFrontmatter(
   contents: (string | undefined)[],
   references: References,
   options: MoxygenOptions,
+  anchorMap?: AnchorMap,
 ): void {
   if (options.frontmatter) {
     const filepath = compoundPath(compound, options);
-    const body = renderCompound(compound, contents, references, options);
+    const body = renderCompound(compound, contents, references, options, anchorMap);
     const fm = generateFrontmatter(extractMeta(compound));
     writeFile(filepath, [fm, body]);
   } else {
-    writeCompound(compound, contents, references, options);
+    writeCompound(compound, contents, references, options, anchorMap);
   }
 }
 

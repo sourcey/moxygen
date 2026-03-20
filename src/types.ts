@@ -96,6 +96,7 @@ export interface Compound {
   filtered: {
     compounds: Compound[];
     members: Member[];
+    sections: SectionGroup[];
   };
   briefdescription: string;
   detaileddescription: string;
@@ -108,6 +109,12 @@ export interface Compound {
   includes?: string;
   language?: string;
   [key: string]: unknown;
+}
+
+export interface SectionGroup {
+  section: string;
+  label: string;
+  members: Member[];
 }
 
 /** References map: refid -> Compound | Member */

@@ -5,7 +5,7 @@
  * @license MIT
  */
 
-import type { Compound, Filters, Member } from './types.js';
+import type { Compound, Filters, Member, SectionGroup } from './types.js';
 
 export function createCompound(
   parent: Compound | null = null,
@@ -24,7 +24,7 @@ export function createCompound(
     members: [],
     basecompoundref: [],
     derivedcompoundref: [],
-    filtered: { compounds: [], members: [] },
+    filtered: { compounds: [], members: [], sections: [] },
     briefdescription: '',
     detaileddescription: '',
     summary: '',
@@ -183,4 +183,64 @@ export function filterChildren(
     filters.compounds,
     groupid,
   ) as Compound[];
+}
+
+const SECTION_LABELS: Record<string, string> = {
+  'public-type': 'Public Types',
+  'public-func': 'Public Methods',
+  'public-static-func': 'Public Static Methods',
+  'protected-func': 'Protected Methods',
+  'private-func': 'Private Methods',
+  'private-static-func': 'Private Static Methods',
+  'public-attrib': 'Public Attributes',
+  'public-static-attrib': 'Public Static Attributes',
+  'protected-attrib': 'Protected Attributes',
+  'private-attrib': 'Private Attributes',
+  'signal': 'Signals',
+  'public-slot': 'Public Slots',
+  'protected-slot': 'Protected Slots',
+  'private-slot': 'Private Slots',
+  'property': 'Properties',
+  'enum': 'Enumerations',
+  'define': 'Macros',
+  'func': 'Functions',
+  'var': 'Variables',
+};
+
+const NOISE_RE = /^(TYPE|BREAK|DEG|SEP|IMPL)_\d+$/;
+
+/**
+ * Remove noisy members: undocumented destructors, internal macros,
+ * undocumented copy/move operators.
+ */
+export function filterNoise(members: Member[]): Member[] {
+  return members.filter((m) => {
+    if (m.name.startsWith('~') && !m.briefdescription && !m.detaileddescription) return false;
+    if (NOISE_RE.test(m.name)) return false;
+    if (m.name === 'operator=' && !m.briefdescription && !m.detaileddescription) return false;
+    return true;
+  });
+}
+
+/**
+ * Group filtered members by their section kind for structured output.
+ */
+export function groupMembersBySection(compound: Compound): SectionGroup[] {
+  const groups: Record<string, Member[]> = {};
+  const order: string[] = [];
+
+  for (const member of compound.filtered.members) {
+    const key = member.section || 'func';
+    if (!groups[key]) {
+      groups[key] = [];
+      order.push(key);
+    }
+    groups[key].push(member);
+  }
+
+  return order.map((section) => ({
+    section,
+    label: SECTION_LABELS[section] || section,
+    members: groups[section],
+  }));
 }

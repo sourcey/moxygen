@@ -1,26 +1,35 @@
-## {{shortname name}} {{anchor refid}}
+## {{shortname name}} {{cleanAnchor refid name}}
 
-{{#if basecompoundref}}> **Extends:** {{#each basecompoundref}}`{{name}}`{{#unless @last}}, {{/unless}}{{/each}}
-{{/if}}{{#if derivedcompoundref}}> **Subclasses:** {{#each derivedcompoundref}}`{{name}}`{{#unless @last}}, {{/unless}}{{/each}}
-{{/if}}{{#if includes}}> **Defined in:** `{{includes}}`
+{{#if includes}}
+```cpp
+#include <{{includes}}>
+```
+{{/if}}
+
+{{#if basecompoundref}}> **Inherits:** {{#each basecompoundref}}{{linkedName name refid}}{{#unless @last}}, {{/unless}}{{/each}}
+{{/if}}
+{{#if derivedcompoundref}}> **Subclassed by:** {{#each derivedcompoundref}}{{linkedName name refid}}{{#unless @last}}, {{/unless}}{{/each}}
 {{/if}}
 
 {{briefdescription}}
 
 {{detaileddescription}}
 
-{{#if filtered.members}}
-### Members
+{{#each filtered.sections}}
+### {{label}}
 
-| Name | Description |
-|------|-------------|
-{{#each filtered.members}}| [`{{name}}`](#{{refid}}) | {{summary}} |
+| Return | Name | Description |
+|--------|------|-------------|
+{{#each members}}| `{{returnTypeShort}}` | [`{{name}}`](#{{cleanId refid name}}) {{badges}} | {{cell summary}} |
 {{/each}}
 
-{{#each filtered.members}}
+{{#each members}}
+
 ---
 
-#### {{name}} {{anchor refid}}
+#### {{name}} {{cleanAnchor refid name}}
+
+{{badges}}
 
 ```cpp
 {{signature}}
@@ -45,4 +54,4 @@
 {{/if}}
 
 {{/each}}
-{{/if}}
+{{/each}}

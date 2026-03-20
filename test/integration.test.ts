@@ -64,8 +64,20 @@ describe('integration', () => {
     expect(content).toContain('PedalHarder');
     expect(content).toContain('RingBell');
 
-    // Should contain anchors
-    expect(content).toContain('{#classtransport_1_1Bicycle}');
+    // Should contain clean anchors (not Doxygen refids)
+    expect(content).toContain('{#pedalharder}');
+
+    // Should contain section headers
+    expect(content).toContain('### Public Methods');
+
+    // Should contain #include directive
+    expect(content).toContain('#include <bicycle.h>');
+
+    // Should contain return types in summary
+    expect(content).toContain('`void`');
+
+    // Should contain badges
+    expect(content).toContain('`virtual`');
 
     // Should contain description text
     expect(content).toContain('Standard bicycle class');

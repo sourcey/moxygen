@@ -93,6 +93,7 @@ describe('integration', () => {
     expect(content.length).toBeGreaterThan(0);
     expect(content).toContain('# widget');
     expect(content).toContain('Module page for a widget API documented with file-level grouping.');
+    expect(content).toContain('### Namespaces');
     expect(content).toContain('documented via file-level grouping only.');
     expect(content).toContain('createWidget');
     expect(content).toContain('Returns the current widget size.');

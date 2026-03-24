@@ -8,7 +8,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import Handlebars from 'handlebars';
-import { getAnchor, cleanId } from './helpers.js';
+import { getAnchor, cleanId, stripMarkdownLinks } from './helpers.js';
 import type { AnchorMap } from './helpers.js';
 import { log } from './logger.js';
 import type { Compound, MoxygenOptions } from './types.js';
@@ -37,6 +37,25 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
 
   Handlebars.registerHelper('or', (a: unknown, b: unknown) => a || b);
 
+  Handlebars.registerHelper('compoundsOfKind', (compounds: unknown, ...args: unknown[]) => {
+    const options = args[args.length - 1];
+    void options;
+    const kinds = new Set(
+      args
+        .slice(0, -1)
+        .filter((value): value is string => typeof value === 'string'),
+    );
+    if (!Array.isArray(compounds) || !kinds.size) {
+      return [];
+    }
+    return compounds.filter((compound) =>
+      compound &&
+      typeof compound === 'object' &&
+      'kind' in compound &&
+      kinds.has((compound as Record<string, unknown>).kind as string),
+    );
+  });
+
   Handlebars.registerHelper('shortname', (fullname: string) => {
     const parts = (fullname || '').split('::');
     return parts[parts.length - 1] || fullname;
@@ -52,27 +71,35 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
     if (kind === 'variable') {
       const init = member.initializer as string;
       return init
-        ? `${member.returnType} ${member.name} ${init}`
-        : `${member.returnType} ${member.name}`;
+        ? `${stripMarkdownLinks(member.returnType as string)} ${member.name} ${init}`
+        : `${stripMarkdownLinks(member.returnType as string)} ${member.name}`;
     }
     if (kind === 'property') {
-      return `${member.returnType} ${member.name}`;
+      return `${stripMarkdownLinks(member.returnType as string)} ${member.name}`;
     }
 
     // function/signal/slot
     const parts: string[] = [];
     const tparams = member.templateParams as Array<{ type: string; name: string }>;
     if (tparams && tparams.length > 0) {
-      parts.push('template<' + tparams.map(tp => tp.name ? `${tp.type} ${tp.name}` : tp.type).join(', ') + '>');
+      parts.push('template<' + tparams.map(tp => {
+        const type = stripMarkdownLinks(tp.type);
+        return tp.name ? `${type} ${tp.name}` : type;
+      }).join(', ') + '>');
     }
     if (member.isVirtual) parts.push('virtual');
     if (member.isStatic) parts.push('static');
     if (member.isInline) parts.push('inline');
     if (member.isExplicit) parts.push('explicit');
     const rt = member.returnType as string;
-    if (rt) parts.push(rt);
+    if (rt) parts.push(stripMarkdownLinks(rt));
     const params = member.params as Array<{ type: string; name: string }>;
-    const paramStr = params ? params.map(p => p.name ? `${p.type} ${p.name}` : p.type).join(', ') : '';
+    const paramStr = params
+      ? params.map((p) => {
+        const type = stripMarkdownLinks(p.type);
+        return p.name ? `${type} ${p.name}` : type;
+      }).join(', ')
+      : '';
     parts.push(`${member.name}(${paramStr})`);
     const qualifiers = member.qualifiers as string[];
     if (qualifiers) {

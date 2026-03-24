@@ -48,6 +48,13 @@ export function inline(code: string | string[]): string {
 }
 
 /**
+ * Strip markdown links from generated type/signature text while preserving labels.
+ */
+export function stripMarkdownLinks(text: string): string {
+  return (text || '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+}
+
+/**
  * Generate an anchor string based on options.
  */
 export function getAnchor(name: string, options: Pick<MoxygenOptions, 'anchors' | 'htmlAnchors'>): string {

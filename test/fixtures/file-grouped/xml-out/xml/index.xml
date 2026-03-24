@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.8" xml:lang="en-US">
+  <compound refid="structdemo_1_1Widget_1_1Options" kind="struct"><name>demo::Widget::Options</name>
+    <member refid="structdemo_1_1Widget_1_1Options_1a4f7c9b0fbc1d2a1e16e5dcd0d1f22fcd" kind="variable"><name>capacity</name></member>
+  </compound>
+  <compound refid="classdemo_1_1Widget" kind="class"><name>demo::Widget</name>
+    <member refid="classdemo_1_1Widget_1ad56d53bd603a1d81a5ad3623f5f873a8" kind="function"><name>Widget</name></member>
+    <member refid="classdemo_1_1Widget_1aa86e1979ddb314612c44b1038cbd1a9f" kind="function"><name>size</name></member>
+  </compound>
+  <compound refid="namespacedemo" kind="namespace"><name>demo</name>
+    <member refid="namespacedemo_1a0fa68db4f02fb4b0d10b0039d91208c3" kind="function"><name>createWidget</name></member>
+  </compound>
+  <compound refid="module_8h" kind="file"><name>module.h</name>
+  </compound>
+  <compound refid="widget_8cpp" kind="file"><name>widget.cpp</name>
+  </compound>
+  <compound refid="widget_8h" kind="file"><name>widget.h</name>
+  </compound>
+  <compound refid="group__widget" kind="group"><name>widget</name>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+</doxygenindex>

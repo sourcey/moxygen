@@ -16,6 +16,7 @@ export interface MoxygenOptions {
   htmlAnchors: boolean;
   language: string;
   templates: string;
+  sourceRoot?: string;
   logfile?: string | boolean;
   quiet: boolean;
   frontmatter: boolean;
@@ -108,6 +109,9 @@ export interface Compound {
   innernamespaces?: unknown[];
   includes?: string;
   language?: string;
+  location?: string;
+  fileCompoundRefs?: string[];
+  fileNamespaceRefs?: string[];
   [key: string]: unknown;
 }
 

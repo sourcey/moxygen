@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="widget_8cpp" kind="file" language="C++">
+    <compoundname>widget.cpp</compoundname>
+    <includes refid="widget_8h" local="yes">widget.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>src/widget.cpp</label>
+        <link refid="widget_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>widget.h</label>
+        <link refid="widget_8h"/>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacedemo">demo</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="widget_8h" kindref="compound">widget.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="namespacedemo" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacedemo" kindref="compound">demo</ref><sp/>{</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><ref refid="classdemo_1_1Widget_1ad56d53bd603a1d81a5ad3623f5f873a8" kindref="member">Widget::Widget</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classdemo_1_1Widget_1aa86e1979ddb314612c44b1038cbd1a9f" kindref="member">Widget::size</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="8"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><ref refid="classdemo_1_1Widget" kindref="compound">Widget</ref><sp/><ref refid="namespacedemo_1a0fa68db4f02fb4b0d10b0039d91208c3" kindref="member">createWidget</ref>()</highlight></codeline>
+<codeline lineno="13"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classdemo_1_1Widget" kindref="compound">Widget</ref>{};</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>demo</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/widget.cpp"/>
+  </compounddef>
+</doxygen>

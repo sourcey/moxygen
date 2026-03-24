@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classdemo_1_1Plain" kind="class" language="C++" prot="public">
+    <compoundname>demo::Plain</compoundname>
+    <includes refid="plain_8h" local="no">plain.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classdemo_1_1Plain_1adf0afb5cd4356a97afc6ba0a10322f05" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int demo::Plain::value</definition>
+        <argsstring>() const</argsstring>
+        <name>value</name>
+        <qualifiedname>demo::Plain::value</qualifiedname>
+        <briefdescription>
+<para>Returns a stable value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/plain.h" line="10" column="9" bodyfile="src/plain.cpp" bodystart="5" bodyend="8"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="classdemo_1_1Plain" kindref="compound">Plain</ref> namespace-scoped type for ungrouped rendering. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/plain.h" line="6" column="1" bodyfile="src/plain.h" bodystart="7" bodyend="11"/>
+    <listofallmembers>
+      <member refid="classdemo_1_1Plain_1adf0afb5cd4356a97afc6ba0a10322f05" prot="public" virt="non-virtual"><scope>demo::Plain</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

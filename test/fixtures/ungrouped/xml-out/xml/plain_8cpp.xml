@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="plain_8cpp" kind="file" language="C++">
+    <compoundname>plain.cpp</compoundname>
+    <includes refid="plain_8h" local="yes">plain.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>src/plain.cpp</label>
+        <link refid="plain_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>plain.h</label>
+        <link refid="plain_8h"/>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacedemo">demo</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="plain_8h" kindref="compound">plain.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="namespacedemo" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacedemo" kindref="compound">demo</ref><sp/>{</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classdemo_1_1Plain_1adf0afb5cd4356a97afc6ba0a10322f05" kindref="member">Plain::value</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="6"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>7;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>demo</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/plain.cpp"/>
+  </compounddef>
+</doxygen>

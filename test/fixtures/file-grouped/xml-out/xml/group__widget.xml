@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__widget" kind="group">
+    <compoundname>widget</compoundname>
+    <title>Widget module</title>
+    <innernamespace refid="namespacedemo">demo</innernamespace>
+    <briefdescription>
+<para>Module page for a widget API documented with file-level grouping. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

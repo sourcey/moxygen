@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classdemo_1_1Widget" kind="class" language="C++" prot="public">
+    <compoundname>demo::Widget</compoundname>
+    <includes refid="widget_8h" local="no">widget.h</includes>
+    <innerclass refid="structdemo_1_1Widget_1_1Options" prot="public">demo::Widget::Options</innerclass>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classdemo_1_1Widget_1ad56d53bd603a1d81a5ad3623f5f873a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>demo::Widget::Widget</definition>
+        <argsstring>()</argsstring>
+        <name>Widget</name>
+        <qualifiedname>demo::Widget::Widget</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/widget.h" line="18" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classdemo_1_1Widget_1aa86e1979ddb314612c44b1038cbd1a9f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int demo::Widget::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <qualifiedname>demo::Widget::size</qualifiedname>
+        <briefdescription>
+<para>Returns the current widget size. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/widget.h" line="21" column="9" bodyfile="src/widget.cpp" bodystart="7" bodyend="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="classdemo_1_1Widget" kindref="compound">Widget</ref> documented via file-level grouping only. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/widget.h" line="9" column="1" bodyfile="src/widget.h" bodystart="10" bodyend="22"/>
+    <listofallmembers>
+      <member refid="classdemo_1_1Widget_1aa86e1979ddb314612c44b1038cbd1a9f" prot="public" virt="non-virtual"><scope>demo::Widget</scope><name>size</name></member>
+      <member refid="classdemo_1_1Widget_1ad56d53bd603a1d81a5ad3623f5f873a8" prot="public" virt="non-virtual"><scope>demo::Widget</scope><name>Widget</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

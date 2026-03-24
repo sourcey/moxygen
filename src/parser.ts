@@ -511,8 +511,40 @@ function assignToNamespace(compound: Compound, child: Compound): void {
   child.parent = compound;
 }
 
+function assignCompoundGroup(compound: Compound, group: Compound): void {
+  compound.groupid = group.id;
+  compound.groupname = group.name;
+
+  for (const member of compound.members) {
+    member.groupid = group.id;
+    member.groupname = group.name;
+  }
+
+  for (const child of Object.values(compound.compounds)) {
+    assignCompoundGroup(child, group);
+  }
+}
+
+function pruneGroupTopLevelDuplicates(group: Compound): void {
+  const topLevelRefids = new Set(
+    Object.values(group.compounds).map((compound) => compound.refid),
+  );
+
+  for (const [id, compound] of Object.entries(group.compounds)) {
+    let current = compound.parent;
+    while (current) {
+      if (topLevelRefids.has(current.refid)) {
+        delete group.compounds[id];
+        break;
+      }
+      current = current.parent;
+    }
+  }
+}
+
 function assignNamespaceToGroup(compound: Compound, child: Compound): void {
   compound.compounds[child.id] = child;
+  assignCompoundGroup(child, compound);
 
   for (const id of Object.keys(child.compounds)) {
     delete compound.compounds[id];
@@ -521,14 +553,7 @@ function assignNamespaceToGroup(compound: Compound, child: Compound): void {
 
 function assignClassToGroup(compound: Compound, child: Compound): void {
   compound.compounds[child.id] = child;
-
-  child.groupid = compound.id;
-  child.groupname = compound.name;
-
-  for (const member of child.members) {
-    member.groupid = compound.id;
-    member.groupname = compound.name;
-  }
+  assignCompoundGroup(child, compound);
 }
 
 function extractPageSections(page: Compound, elements: XmlElement[]): void {
@@ -654,10 +679,20 @@ function parseCompound(compound: Compound, compounddef: Record<string, unknown>)
 
   compound.proto = inline([compound.kind, ' ', md.refLink(compound.name, compound.refid)]);
 
+  if (compounddef.location) {
+    const locations = compounddef.location as Array<Record<string, Record<string, string>>>;
+    const location = locations?.[0]?.$?.file;
+    if (location) {
+      compound.location = location;
+    }
+  }
+
   // Handle innerclass for any compound that can contain nested types
   if (compounddef.innerclass) {
+    const innerclassRefs: string[] = [];
     for (const innerclassdef of compounddef.innerclass as Array<Record<string, unknown>>) {
       const innerAttrs = innerclassdef.$ as Record<string, string>;
+      innerclassRefs.push(innerAttrs.refid);
       const ref = references[innerAttrs.refid] as Compound;
       if (!ref) continue;
 
@@ -668,6 +703,8 @@ function parseCompound(compound: Compound, compounddef: Record<string, unknown>)
         case 'group':
           assignClassToGroup(compound, ref);
           break;
+        case 'file':
+          break;
         default:
           // class, interface, enum - nest inner classes directly
           compound.compounds[ref.id] = ref;
@@ -675,6 +712,18 @@ function parseCompound(compound: Compound, compounddef: Record<string, unknown>)
           break;
       }
     }
+    if (compound.kind === 'file') {
+      compound.fileCompoundRefs = innerclassRefs;
+    }
+  }
+
+  if (compounddef.innernamespace && compound.kind === 'file') {
+    const innernamespaceRefs: string[] = [];
+    for (const namespacedef of compounddef.innernamespace as Array<Record<string, unknown>>) {
+      const nsAttrs = namespacedef.$ as Record<string, string>;
+      innernamespaceRefs.push(nsAttrs.refid);
+    }
+    compound.fileNamespaceRefs = innernamespaceRefs;
   }
 
   switch (compound.kind) {
@@ -710,6 +759,10 @@ function parseCompound(compound: Compound, compounddef: Record<string, unknown>)
           }
         }
       }
+
+      if (compound.kind === 'group') {
+        pruneGroupTopLevelDuplicates(compound);
+      }
       break;
 
     default:
@@ -742,7 +795,7 @@ function parseIndex(
   for (const element of sorted) {
     const attrs = element.$ as Record<string, string>;
     const compound = references[attrs.refid] as Compound;
-    if (!compound || compound.kind === 'file') continue;
+    if (!compound) continue;
 
     const xmlPath = join(options.directory, `${compound.refid}.xml`);
     log.verbose(`Parsing ${xmlPath}`);

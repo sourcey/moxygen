@@ -9,7 +9,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { toArray, toFilteredArray, filterChildren, filterNoise, groupMembersBySection } from './compound.js';
 import { writeCompound, renderCompound, compoundPath, writeFile, buildCleanAnchorMap } from './helpers.js';
-import type { AnchorMap } from './helpers.js';
+import type { AnchorMap, SlugMap } from './helpers.js';
 import { log } from './logger.js';
 import { loadIndex } from './parser.js';
 import * as templates from './templates.js';
@@ -140,12 +140,12 @@ function extractMeta(compound: Compound): CompoundMeta {
   const group = findGroup(compound);
   return {
     slug: slugify(compound.name),
-    title: shortname(compound.name),
+    title: qualifiedTitle(compound),
     kind: compound.kind,
     module: group?.name,
     namespace: ns?.fullname,
     header: compound.includes as string | undefined,
-    description: compound.briefdescription || '',
+    description: compound.briefdescription || firstSentence(compound.detaileddescription) || '',
   };
 }
 
@@ -179,53 +179,146 @@ function prepareCompound(compound: Compound): void {
 /**
  * Parse Doxygen XML and return structured pages with rendered markdown.
  * Markdown is the body only; metadata is in the structured fields.
+ *
+ * Uses Doxygen groups (@defgroup/@addtogroup) as the primary module
+ * organization when available, falling back to namespaces.
  */
 export async function generate(
   options: Partial<MoxygenOptions> & { directory: string },
 ): Promise<GeneratedPage[]> {
-  const opts = resolveOptions({ ...options, classes: true, anchors: true });
+  const opts = resolveOptions({ ...options, classes: true, anchors: false, htmlAnchors: true });
   const { root, references } = await loadAndPrepare(opts);
   const pages: GeneratedPage[] = [];
 
-  const rootCompounds = toArray(root, 'compounds', 'namespace') as Compound[];
+  // Check if Doxygen groups exist (from @defgroup/@addtogroup)
+  const groups = (toArray(root, 'compounds', 'group') as Compound[])
+    .filter((g) => !isJunkCompound(g));
+  const useGroups = groups.length > 0;
 
   // First pass: filter and prepare all compounds
   const allCompounds: Compound[] = [];
-  for (const comp of rootCompounds) {
-    filterChildren(comp, opts.filters);
-    prepareCompound(comp);
-    allCompounds.push(comp);
 
-    for (const child of toFilteredArray(comp)) {
-      filterChildren(child, opts.filters);
-      prepareCompound(child);
-      allCompounds.push(child);
-    }
-  }
+  if (useGroups) {
+    const seenPrep = new Set<string>();
 
-  // Build clean anchor map across all compounds
-  const anchorMap = buildCleanAnchorMap(allCompounds);
-  setAnchorMap(anchorMap);
+    // Group-based: each @defgroup becomes a module
+    for (const group of groups) {
+      filterChildren(group, opts.filters, group.id);
+      prepareCompound(group);
+      allCompounds.push(group);
+      seenPrep.add(group.refid);
 
-  // Second pass: render
-  for (const comp of rootCompounds) {
-    const nsMarkdown = templates.render(comp);
-    if (nsMarkdown) {
-      const meta = extractMeta(comp);
-      pages.push({ ...meta, markdown: renderCompound(comp, [nsMarkdown], references, opts, anchorMap) });
+      for (const child of toFilteredArray(group, 'compounds')) {
+        if (isJunkCompound(child)) continue;
+        filterChildren(child, opts.filters);
+        prepareCompound(child);
+        allCompounds.push(child);
+        seenPrep.add(child.refid);
+      }
     }
 
-    for (const child of toFilteredArray(comp)) {
-      const childMarkdown = templates.render(child);
-      if (childMarkdown) {
-        const meta = extractMeta(child);
-        pages.push({ ...meta, markdown: renderCompound(child, [childMarkdown], references, opts, anchorMap) });
+    // Also collect orphaned classes from namespaces not in any group
+    const allNamespaces = (toArray(root, 'compounds', 'namespace') as Compound[])
+      .filter((c) => !isJunkCompound(c));
+    for (const ns of allNamespaces) {
+      filterChildren(ns, opts.filters);
+      for (const child of toFilteredArray(ns)) {
+        if (seenPrep.has(child.refid) || isJunkCompound(child)) continue;
+        filterChildren(child, opts.filters);
+        prepareCompound(child);
+        allCompounds.push(child);
+        seenPrep.add(child.refid);
+      }
+    }
+  } else {
+    // Namespace-based fallback
+    const rootCompounds = (toArray(root, 'compounds', 'namespace') as Compound[])
+      .filter((c) => !isJunkCompound(c));
+
+    for (const comp of rootCompounds) {
+      filterChildren(comp, opts.filters);
+      prepareCompound(comp);
+      allCompounds.push(comp);
+
+      for (const child of toFilteredArray(comp)) {
+        if (isJunkCompound(child)) continue;
+        filterChildren(child, opts.filters);
+        prepareCompound(child);
+        allCompounds.push(child);
       }
     }
   }
 
-  // Doxygen @page entries
+  // Build clean anchor map and slug map across all compounds
+  const anchorMap = buildCleanAnchorMap(allCompounds);
+  setAnchorMap(anchorMap);
+
+  const slugMap: SlugMap = new Map();
+  for (const c of allCompounds) {
+    slugMap.set(c.refid, slugify(c.name));
+  }
+
+  // Second pass: render (dedup by refid)
+  const seen = new Set<string>();
+
+  function emitPage(compound: Compound, moduleName?: string): void {
+    if (seen.has(compound.refid)) return;
+    seen.add(compound.refid);
+    if (isJunkCompound(compound)) return;
+
+    const md = templates.render(compound);
+    if (!md) return;
+
+    if (compound.kind === 'group') {
+      pages.push({
+        slug: slugify(compound.name),
+        title: compound.shortname || compound.name,
+        kind: 'group',
+        module: compound.name,
+        description: compound.briefdescription || firstSentence(compound.detaileddescription) || '',
+        markdown: renderCompound(compound, [md], references, opts, anchorMap, slugMap),
+      });
+    } else {
+      const meta = extractMeta(compound);
+      if (moduleName) meta.module = moduleName;
+      pages.push({ ...meta, markdown: renderCompound(compound, [md], references, opts, anchorMap, slugMap) });
+    }
+  }
+
+  if (useGroups) {
+    for (const group of groups) {
+      emitPage(group);
+      for (const child of toFilteredArray(group, 'compounds')) {
+        emitPage(child, group.name);
+      }
+    }
+
+    // Emit orphaned classes (already prepared in first pass)
+    const allNamespaces = (toArray(root, 'compounds', 'namespace') as Compound[])
+      .filter((c) => !isJunkCompound(c));
+    for (const ns of allNamespaces) {
+      for (const child of toFilteredArray(ns)) {
+        if (seen.has(child.refid) || isJunkCompound(child)) continue;
+        const nsParts = ns.fullname.split('::');
+        const inferredModule = nsParts.length > 1 ? nsParts[1] : nsParts[0];
+        emitPage(child, inferredModule);
+      }
+    }
+  } else {
+    const rootCompounds = (toArray(root, 'compounds', 'namespace') as Compound[])
+      .filter((c) => !isJunkCompound(c));
+
+    for (const comp of rootCompounds) {
+      emitPage(comp);
+      for (const child of toFilteredArray(comp)) {
+        emitPage(child);
+      }
+    }
+  }
+
+  // Doxygen @page entries (skip auto-generated ones from source READMEs)
   for (const page of toArray(root, 'compounds', 'page') as Compound[]) {
+    if (isJunkPage(page)) continue;
     const pageCompounds = toFilteredArray(page, 'compounds');
     pageCompounds.unshift(page);
     const content = templates.renderArray(pageCompounds);
@@ -241,7 +334,28 @@ export async function generate(
     }
   }
 
+  // Disambiguate: if multiple pages in the same module have the same title,
+  // add the namespace qualifier to distinguish them
+  const titleKey = (p: GeneratedPage) => `${p.module}|${p.title}`;
+  const titleCounts = new Map<string, number>();
+  for (const p of pages) {
+    titleCounts.set(titleKey(p), (titleCounts.get(titleKey(p)) || 0) + 1);
+  }
+  for (const p of pages) {
+    if ((titleCounts.get(titleKey(p)) || 0) > 1 && p.namespace) {
+      const nsShort = lastSegment(p.namespace);
+      if (nsShort && !p.title.includes('::')) {
+        p.title = `${nsShort}::${p.title}`;
+      }
+    }
+  }
+
   return pages;
+}
+
+function lastSegment(ns: string): string {
+  const parts = ns.split('::');
+  return parts[parts.length - 1] || ns;
 }
 
 // ---------------------------------------------------------------------------
@@ -361,6 +475,35 @@ function writeWithOptionalFrontmatter(
   }
 }
 
+const JUNK_NAMESPACES = new Set(['std', 'detail', 'nlohmann']);
+const JUNK_NAME_RE = /^@\d+$/;
+
+/**
+ * Skip compounds that produce junk documentation:
+ * std namespace, anonymous groups (@123), deprecated pseudo-pages.
+ */
+function isJunkCompound(compound: Compound): boolean {
+  const name = compound.name;
+  if (JUNK_NAMESPACES.has(name)) return true;
+  if (JUNK_NAME_RE.test(name)) return true;
+  if (name === 'deprecated') return true;
+  return false;
+}
+
+/**
+ * Skip Doxygen pages auto-generated from source tree markdown files.
+ */
+function isJunkPage(page: Compound): boolean {
+  return page.name.startsWith('md_') || page.name === 'deprecated';
+}
+
+function firstSentence(text: string): string {
+  if (!text) return '';
+  const clean = text.replace(/\n/g, ' ').trim();
+  const match = clean.match(/^(.+?[.!?])\s/);
+  return match ? match[1] : clean.slice(0, 120);
+}
+
 function findNamespace(compound: Compound): Compound | undefined {
   let current: Compound | null = compound.parent;
   while (current) {
@@ -382,6 +525,31 @@ function findGroup(compound: Compound): Compound | undefined {
 function shortname(name: string): string {
   const parts = (name || '').split('::');
   return parts[parts.length - 1] || name;
+}
+
+/**
+ * Build a readable title for a compound.
+ * Inner classes: "Device::AudioCapability"
+ * Deep sub-namespace classes: "ws::ConnectionAdapter"
+ * Top-level module classes: "Server" (icy::http::Server stays as Server)
+ */
+function qualifiedTitle(compound: Compound): string {
+  const name = shortname(compound.name);
+
+  // Inner class/struct: qualify with parent class name
+  if (compound.parent && ['class', 'struct'].includes(compound.parent.kind)) {
+    return `${shortname(compound.parent.name)}::${name}`;
+  }
+
+  // Sub-namespace: 4+ segments means it's nested deeper than the module level
+  // e.g. icy::http::ws::ConnectionAdapter -> ws::ConnectionAdapter
+  // but icy::http::Server (3 segments) stays as Server
+  const parts = compound.fullname.split('::');
+  if (parts.length >= 4) {
+    return `${parts[parts.length - 2]}::${name}`;
+  }
+
+  return name;
 }
 
 function slugify(name: string): string {

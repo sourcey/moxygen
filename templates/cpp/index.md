@@ -12,7 +12,9 @@
 
 {{#each members}}
 
-#### {{name}} {{cleanAnchor refid name}}
+{{cleanAnchor refid name}}
+
+#### {{name}}
 
 ```cpp
 {{signature}}

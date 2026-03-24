@@ -1,4 +1,6 @@
-## {{shortname name}} {{cleanAnchor refid name}}
+{{cleanAnchor refid name}}
+
+## {{shortname name}}
 
 {{#if basecompoundref}}> **Extends:** {{#each basecompoundref}}{{linkedName name refid}}{{#unless @last}}, {{/unless}}{{/each}}
 {{/if}}
@@ -12,16 +14,25 @@
 {{#each filtered.sections}}
 ### {{label}}
 
+{{#if (hasReturnColumn section)}}
 | Return | Name | Description |
 |--------|------|-------------|
-{{#each members}}| `{{returnTypeShort}}` | [`{{name}}`](#{{cleanId refid name}}) {{badges}} | {{cell summary}} |
+{{#each members}}| {{returnTypeShort}} | [`{{name}}`](#{{cleanId refid name}}) {{badges}} | {{cell summary}} |
 {{/each}}
+{{else}}
+| Name | Description |
+|------|-------------|
+{{#each members}}| [`{{name}}`](#{{cleanId refid name}}) {{badges}} | {{cell summary}} |
+{{/each}}
+{{/if}}
 
 {{#each members}}
 
 ---
 
-#### {{name}} {{cleanAnchor refid name}}
+{{cleanAnchor refid name}}
+
+#### {{name}}
 
 {{badges}}
 

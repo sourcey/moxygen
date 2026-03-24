@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { inline, getAnchor, findParent } from '../src/helpers.js';
+import { inline, getAnchor, findParent, stripMarkdownLinks } from '../src/helpers.js';
 import { createCompound } from '../src/compound.js';
 
 describe('helpers', () => {
@@ -63,6 +63,13 @@ describe('helpers', () => {
 
       const result = findParent(cls, ['group']);
       expect(result).toBeUndefined();
+    });
+  });
+
+  describe('stripMarkdownLinks', () => {
+    it('replaces markdown links with their labels', () => {
+      const input = '[TrackHandle](#trackhandle) func([PeerSession::State](#state) state)';
+      expect(stripMarkdownLinks(input)).toBe('TrackHandle func(PeerSession::State state)');
     });
   });
 });

@@ -10,14 +10,38 @@
 {{detaileddescription}}
 {{/if}}
 
-{{#if filtered.compounds}}
+{{#with (compoundsOfKind filtered.compounds "namespace") as |namespaces|}}
+{{#if namespaces}}
+### Namespaces
+
+| Name | Description |
+|------|-------------|
+{{#each namespaces}}| [`{{shortname name}}`](#{{cleanId refid name}}) | {{cell summary}} |
+{{/each}}
+{{/if}}
+{{/with}}
+
+{{#with (compoundsOfKind filtered.compounds "class" "struct" "interface") as |types|}}
+{{#if types}}
 ### Classes
 
 | Name | Description |
 |------|-------------|
-{{#each filtered.compounds}}| [`{{shortname name}}`](#{{cleanId refid name}}) | {{cell summary}} |
+{{#each types}}| [`{{shortname name}}`](#{{cleanId refid name}}) | {{cell summary}} |
 {{/each}}
 {{/if}}
+{{/with}}
+
+{{#with (compoundsOfKind filtered.compounds "enum") as |enums|}}
+{{#if enums}}
+### Enumerations
+
+| Name | Description |
+|------|-------------|
+{{#each enums}}| [`{{shortname name}}`](#{{cleanId refid name}}) | {{cell summary}} |
+{{/each}}
+{{/if}}
+{{/with}}
 
 {{#each filtered.sections}}
 ### {{label}}

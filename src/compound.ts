@@ -202,6 +202,7 @@ const SECTION_LABELS: Record<string, string> = {
   'private-slot': 'Private Slots',
   'property': 'Properties',
   'enum': 'Enumerations',
+  'typedef': 'Typedefs',
   'define': 'Macros',
   'func': 'Functions',
   'var': 'Variables',

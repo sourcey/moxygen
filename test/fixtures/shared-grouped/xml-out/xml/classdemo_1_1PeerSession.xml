@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classdemo_1_1PeerSession" kind="class" language="C++" prot="public">
+    <compoundname>demo::PeerSession</compoundname>
+    <includes refid="webrtc_8h" local="no">webrtc.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classdemo_1_1PeerSession_1a660bae42c71cea549e2b528ff113a154" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void demo::PeerSession::attach</definition>
+        <argsstring>(PacketStream &amp;stream)</argsstring>
+        <name>attach</name>
+        <qualifiedname>demo::PeerSession::attach</qualifiedname>
+        <param>
+          <type><ref refid="classdemo_1_1PacketStream" kindref="compound">PacketStream</ref> &amp;</type>
+          <declname>stream</declname>
+        </param>
+        <briefdescription>
+<para>Attaches the session to <ref refid="classdemo_1_1PacketStream" kindref="compound">demo::PacketStream</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/webrtc.h" line="16" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classdemo_1_1PeerSession_1aef5e145f6b2ff248bc56c8ecd12d5814" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void demo::PeerSession::bindLoop</definition>
+        <argsstring>(uv::Loop *loop)</argsstring>
+        <name>bindLoop</name>
+        <qualifiedname>demo::PeerSession::bindLoop</qualifiedname>
+        <param>
+          <type><ref refid="namespacedemo_1_1uv_1a49a923cb432527bfbb0951bf7fa75b71" kindref="member">uv::Loop</ref> *</type>
+          <declname>loop</declname>
+        </param>
+        <briefdescription>
+<para>Binds the session to <ref refid="namespacedemo_1_1uv_1a49a923cb432527bfbb0951bf7fa75b71" kindref="member">demo::uv::Loop</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/webrtc.h" line="19" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Session type documented in a different group from <ref refid="classdemo_1_1PacketStream" kindref="compound">PacketStream</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/webrtc.h" line="12" column="1" bodyfile="src/webrtc.h" bodystart="13" bodyend="20"/>
+    <listofallmembers>
+      <member refid="classdemo_1_1PeerSession_1a660bae42c71cea549e2b528ff113a154" prot="public" virt="non-virtual"><scope>demo::PeerSession</scope><name>attach</name></member>
+      <member refid="classdemo_1_1PeerSession_1aef5e145f6b2ff248bc56c8ecd12d5814" prot="public" virt="non-virtual"><scope>demo::PeerSession</scope><name>bindLoop</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

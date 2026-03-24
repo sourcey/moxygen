@@ -66,6 +66,7 @@ Moxygen supports both of the common Doxygen documentation styles:
 2. File-level grouped code.
    - Some codebases group files with `@addtogroup` / `@ingroup`, but Doxygen emits sparse group XML and leaves the real compound ownership in file XML.
    - Moxygen can recover those grouped classes, namespaces, and members when you pass `--source-root`.
+   - Shared umbrella namespaces across multiple groups are preserved without dropping group-owned root classes, and cross-page refs are resolved correctly for both markdown mirrors and generated multi-page output.
 
 Use `--source-root` when your Doxygen XML is generated outside the source tree or when grouped output depends on file-level grouping comments:
 

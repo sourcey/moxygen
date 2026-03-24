@@ -1,8 +1,54 @@
 import { describe, it, expect } from 'vitest';
-import { inline, getAnchor, findParent, stripMarkdownLinks } from '../src/helpers.js';
+import {
+  inline,
+  getAnchor,
+  findParent,
+  stripMarkdownLinks,
+  buildCleanAnchorMap,
+  resolveRefs,
+} from '../src/helpers.js';
 import { createCompound } from '../src/compound.js';
+import type { Compound, MoxygenOptions, References } from '../src/types.js';
 
 describe('helpers', () => {
+  function makeOptions(output: string): MoxygenOptions {
+    return {
+      directory: '/tmp/xml',
+      output,
+      groups: true,
+      classes: false,
+      pages: false,
+      noindex: true,
+      anchors: true,
+      htmlAnchors: false,
+      language: 'cpp',
+      templates: '/tmp/templates',
+      quiet: true,
+      frontmatter: false,
+      filters: { members: [], compounds: [] },
+    };
+  }
+
+  function makeGroupedCompound(
+    parent: Compound | null,
+    id: string,
+    name: string,
+    kind: string,
+    groupname: string,
+  ): Compound {
+    const compound = createCompound(parent, id, name);
+    compound.kind = kind;
+    compound.refid = id;
+    compound.fullname = name;
+    compound.shortname = name.split('::').pop() || name;
+    compound.groupid = `group__${groupname}`;
+    compound.groupname = groupname;
+    if (parent) {
+      parent.compounds[id] = compound;
+    }
+    return compound;
+  }
+
   describe('inline', () => {
     it('wraps a string in backticks', () => {
       expect(inline('void')).toBe('`void`');
@@ -70,6 +116,99 @@ describe('helpers', () => {
     it('replaces markdown links with their labels', () => {
       const input = '[TrackHandle](#trackhandle) func([PeerSession::State](#state) state)';
       expect(stripMarkdownLinks(input)).toBe('TrackHandle func(PeerSession::State state)');
+    });
+  });
+
+  describe('resolveRefs', () => {
+    it('writes relative markdown links for grouped multi-file output', () => {
+      const baseGroup = makeGroupedCompound(null, 'group__base', 'base', 'group', 'base');
+      const packetStream = makeGroupedCompound(
+        baseGroup,
+        'classicy_1_1PacketStream',
+        'icy::PacketStream',
+        'class',
+        'base',
+      );
+
+      const webrtcGroup = makeGroupedCompound(null, 'group__webrtc', 'webrtc', 'group', 'webrtc');
+      const references: References = {
+        [baseGroup.refid]: baseGroup,
+        [packetStream.refid]: packetStream,
+        [webrtcGroup.refid]: webrtcGroup,
+      };
+      const anchorMap = buildCleanAnchorMap([baseGroup, packetStream, webrtcGroup]);
+      const content = 'Uses [PacketStream]({#ref classicy_1_1PacketStream #}).';
+
+      const resolved = resolveRefs(
+        content,
+        webrtcGroup,
+        references,
+        makeOptions('/tmp/docs/api/%s.md'),
+        anchorMap,
+      );
+
+      expect(resolved).toContain('[PacketStream](base.md#packetstream)');
+    });
+
+    it('keeps same-file anchors for grouped markdown mirrors', () => {
+      const webrtcGroup = makeGroupedCompound(null, 'group__webrtc', 'webrtc', 'group', 'webrtc');
+      const mediaBridge = makeGroupedCompound(
+        webrtcGroup,
+        'classicy_1_1wrtc_1_1MediaBridge',
+        'icy::wrtc::MediaBridge',
+        'class',
+        'webrtc',
+      );
+
+      const references: References = {
+        [webrtcGroup.refid]: webrtcGroup,
+        [mediaBridge.refid]: mediaBridge,
+      };
+      const anchorMap = buildCleanAnchorMap([webrtcGroup, mediaBridge]);
+      const content = 'See [MediaBridge]({#ref classicy_1_1wrtc_1_1MediaBridge #}).';
+
+      const resolved = resolveRefs(
+        content,
+        webrtcGroup,
+        references,
+        makeOptions('/tmp/docs/api/%s.md'),
+        anchorMap,
+      );
+
+      expect(resolved).toContain('[MediaBridge](#mediabridge)');
+    });
+
+    it('writes child-page links when a slug map is provided', () => {
+      const widgetGroup = makeGroupedCompound(null, 'group__widget', 'widget', 'group', 'widget');
+      const widgetClass = makeGroupedCompound(
+        widgetGroup,
+        'classdemo_1_1Widget',
+        'demo::Widget',
+        'class',
+        'widget',
+      );
+
+      const references: References = {
+        [widgetGroup.refid]: widgetGroup,
+        [widgetClass.refid]: widgetClass,
+      };
+      const anchorMap = buildCleanAnchorMap([widgetGroup, widgetClass]);
+      const slugMap = new Map<string, string>([
+        [widgetGroup.refid, 'widget'],
+        [widgetClass.refid, 'demo-Widget'],
+      ]);
+      const content = '| Name |\n|------|\n| [Widget]({#ref classdemo_1_1Widget #}) |';
+
+      const resolved = resolveRefs(
+        content,
+        widgetGroup,
+        references,
+        makeOptions('/tmp/docs/api/%s.md'),
+        anchorMap,
+        slugMap,
+      );
+
+      expect(resolved).toContain('[Widget](demo-Widget.html#widget-1)');
     });
   });
 });

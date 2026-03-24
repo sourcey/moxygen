@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.8" xml:lang="en-US">
+  <compound refid="classdemo_1_1PacketStream" kind="class"><name>demo::PacketStream</name>
+    <member refid="classdemo_1_1PacketStream_1a369fe297b6638d68a4f715117e1d462a" kind="function"><name>id</name></member>
+  </compound>
+  <compound refid="classdemo_1_1PeerSession" kind="class"><name>demo::PeerSession</name>
+    <member refid="classdemo_1_1PeerSession_1a660bae42c71cea549e2b528ff113a154" kind="function"><name>attach</name></member>
+    <member refid="classdemo_1_1PeerSession_1aef5e145f6b2ff248bc56c8ecd12d5814" kind="function"><name>bindLoop</name></member>
+  </compound>
+  <compound refid="namespacedemo" kind="namespace"><name>demo</name>
+  </compound>
+  <compound refid="namespacedemo_1_1uv" kind="namespace"><name>demo::uv</name>
+    <member refid="namespacedemo_1_1uv_1a49a923cb432527bfbb0951bf7fa75b71" kind="typedef"><name>Loop</name></member>
+  </compound>
+  <compound refid="base_8h" kind="file"><name>base.h</name>
+  </compound>
+  <compound refid="module__base_8h" kind="file"><name>module_base.h</name>
+  </compound>
+  <compound refid="module__uv_8h" kind="file"><name>module_uv.h</name>
+  </compound>
+  <compound refid="module__webrtc_8h" kind="file"><name>module_webrtc.h</name>
+  </compound>
+  <compound refid="uv_8h" kind="file"><name>uv.h</name>
+  </compound>
+  <compound refid="webrtc_8h" kind="file"><name>webrtc.h</name>
+  </compound>
+  <compound refid="group__base" kind="group"><name>base</name>
+  </compound>
+  <compound refid="group__uv" kind="group"><name>uv</name>
+  </compound>
+  <compound refid="group__webrtc" kind="group"><name>webrtc</name>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+</doxygenindex>

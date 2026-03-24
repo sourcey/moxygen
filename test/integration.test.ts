@@ -1,5 +1,5 @@
 import { describe, it, expect, afterAll, beforeAll } from 'vitest';
-import { run } from '../src/index.js';
+import { run, generate } from '../src/index.js';
 import { readFileSync, existsSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -7,6 +7,8 @@ const outputRoot = join(import.meta.dirname, '..', '.test-output');
 const exampleXmlDir = join(import.meta.dirname, '..', 'example', 'xml');
 const fileGroupedXmlDir = join(import.meta.dirname, 'fixtures', 'file-grouped', 'xml-out', 'xml');
 const fileGroupedSourceDir = join(import.meta.dirname, 'fixtures', 'file-grouped', 'src');
+const sharedGroupedXmlDir = join(import.meta.dirname, 'fixtures', 'shared-grouped', 'xml-out', 'xml');
+const sharedGroupedSourceDir = join(import.meta.dirname, 'fixtures', 'shared-grouped', 'src');
 const ungroupedXmlDir = join(import.meta.dirname, 'fixtures', 'ungrouped', 'xml-out', 'xml');
 
 const exampleOutputDir = join(outputRoot, 'example');
@@ -127,6 +129,70 @@ describe('integration', () => {
     expect(classContent).toContain('## Plain');
     expect(classContent).toContain('#include <plain.h>');
     expect(classContent).toContain('Returns a stable value.');
+  });
+
+  it('renders grouped overview links differently for markdown mirrors and generated pages', async () => {
+    const outputDir = join(outputRoot, 'file-grouped-links');
+
+    await run({
+      directory: fileGroupedXmlDir,
+      output: join(outputDir, '%s.md'),
+      groups: true,
+      anchors: true,
+      quiet: true,
+      sourceRoot: fileGroupedSourceDir,
+    });
+
+    const markdownMirror = read(join(outputDir, 'widget.md'));
+    expect(markdownMirror).toContain('| [`demo`](#demo) |');
+
+    const pages = await generate({
+      directory: fileGroupedXmlDir,
+      groups: true,
+      anchors: true,
+      quiet: true,
+      sourceRoot: fileGroupedSourceDir,
+    });
+
+    const groupPage = pages.find((page) => page.kind === 'group' && page.slug === 'widget');
+    expect(groupPage).toBeDefined();
+    expect(groupPage!.markdown).toContain('| [`demo`](demo.html#demo) |');
+  });
+
+  it('keeps root-level classes from shared namespaces on grouped module pages', async () => {
+    const outputDir = join(outputRoot, 'shared-grouped');
+
+    await run({
+      directory: sharedGroupedXmlDir,
+      output: join(outputDir, '%s.md'),
+      groups: true,
+      anchors: true,
+      quiet: true,
+      sourceRoot: sharedGroupedSourceDir,
+    });
+
+    const baseContent = read(join(outputDir, 'base.md'));
+    const webrtcContent = read(join(outputDir, 'webrtc.md'));
+
+    expect(baseContent).toContain('# base');
+    expect(baseContent).toContain('Packet pipeline primitive owned by the base module.');
+    expect(baseContent).toContain('[`PacketStream`](#packetstream)');
+    expect(baseContent).toContain('## PacketStream');
+    expect(webrtcContent).toContain('base.md#packetstream');
+    expect(webrtcContent).toContain('uv.md#loop');
+    expect(webrtcContent).not.toContain('undefined.md');
+
+    const pages = await generate({
+      directory: sharedGroupedXmlDir,
+      groups: true,
+      anchors: true,
+      quiet: true,
+      sourceRoot: sharedGroupedSourceDir,
+    });
+
+    const groupPage = pages.find((page) => page.kind === 'group' && page.slug === 'webrtc');
+    expect(groupPage).toBeDefined();
+    expect(groupPage!.markdown).toContain('demo-PacketStream.html#packetstream');
   });
 
   it('generates single file output', async () => {

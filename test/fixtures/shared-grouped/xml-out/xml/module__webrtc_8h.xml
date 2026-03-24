@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="module__webrtc_8h" kind="file" language="C++">
+    <compoundname>module_webrtc.h</compoundname>
+    <includes refid="webrtc_8h" local="yes">webrtc.h</includes>
+    <incdepgraph>
+      <node id="3">
+        <label>base.h</label>
+        <link refid="base_8h"/>
+      </node>
+      <node id="1">
+        <label>src/module_webrtc.h</label>
+        <link refid="module__webrtc_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>uv.h</label>
+        <link refid="uv_8h"/>
+      </node>
+      <node id="2">
+        <label>webrtc.h</label>
+        <link refid="webrtc_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="webrtc_8h" kindref="compound">webrtc.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/module_webrtc.h"/>
+  </compounddef>
+</doxygen>

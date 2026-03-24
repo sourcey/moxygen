@@ -16,7 +16,7 @@
 
 | Name | Description |
 |------|-------------|
-{{#each namespaces}}| [`{{shortname name}}`](#{{cleanId refid name}}) | {{cell summary}} |
+{{#each namespaces}}| {{linkedName name refid}} | {{cell summary}} |
 {{/each}}
 {{/if}}
 {{/with}}
@@ -27,7 +27,7 @@
 
 | Name | Description |
 |------|-------------|
-{{#each types}}| [`{{shortname name}}`](#{{cleanId refid name}}) | {{cell summary}} |
+{{#each types}}| {{linkedName name refid}} | {{cell summary}} |
 {{/each}}
 {{/if}}
 {{/with}}
@@ -38,7 +38,7 @@
 
 | Name | Description |
 |------|-------------|
-{{#each enums}}| [`{{shortname name}}`](#{{cleanId refid name}}) | {{cell summary}} |
+{{#each enums}}| {{linkedName name refid}} | {{cell summary}} |
 {{/each}}
 {{/if}}
 {{/with}}

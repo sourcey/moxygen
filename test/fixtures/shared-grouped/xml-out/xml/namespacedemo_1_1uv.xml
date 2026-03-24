@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespacedemo_1_1uv" kind="namespace" language="C++">
+    <compoundname>demo::uv</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespacedemo_1_1uv_1a49a923cb432527bfbb0951bf7fa75b71" prot="public" static="no">
+        <type>int</type>
+        <definition>using demo::uv::Loop = typedef int</definition>
+        <argsstring></argsstring>
+        <name>Loop</name>
+        <qualifiedname>demo::uv::Loop</qualifiedname>
+        <briefdescription>
+<para>Alias used to model namespace-owned API entries. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/uv.h" line="9" column="1" bodyfile="src/uv.h" bodystart="9" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/uv.h" line="6" column="1"/>
+  </compounddef>
+</doxygen>

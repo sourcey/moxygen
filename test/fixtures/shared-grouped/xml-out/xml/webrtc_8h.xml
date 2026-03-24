@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="webrtc_8h" kind="file" language="C++">
+    <compoundname>webrtc.h</compoundname>
+    <includes refid="base_8h" local="yes">base.h</includes>
+    <includes refid="uv_8h" local="yes">uv.h</includes>
+    <includedby refid="module__webrtc_8h" local="yes">src/module_webrtc.h</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>base.h</label>
+        <link refid="base_8h"/>
+      </node>
+      <node id="3">
+        <label>uv.h</label>
+        <link refid="uv_8h"/>
+      </node>
+      <node id="1">
+        <label>src/webrtc.h</label>
+        <link refid="webrtc_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>src/module_webrtc.h</label>
+        <link refid="module__webrtc_8h"/>
+      </node>
+      <node id="1">
+        <label>src/webrtc.h</label>
+        <link refid="webrtc_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classdemo_1_1PeerSession" prot="public">demo::PeerSession</innerclass>
+    <innernamespace refid="namespacedemo">demo</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="base_8h" kindref="compound">base.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="uv_8h" kindref="compound">uv.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacedemo" kindref="compound">demo</ref><sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12" refid="classdemo_1_1PeerSession" refkind="compound"><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classdemo_1_1PeerSession" kindref="compound">PeerSession</ref></highlight></codeline>
+<codeline lineno="13"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="16" refid="classdemo_1_1PeerSession_1a660bae42c71cea549e2b528ff113a154" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classdemo_1_1PeerSession_1a660bae42c71cea549e2b528ff113a154" kindref="member">attach</ref>(<ref refid="classdemo_1_1PacketStream" kindref="compound">PacketStream</ref>&amp;<sp/>stream);</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="classdemo_1_1PeerSession_1aef5e145f6b2ff248bc56c8ecd12d5814" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classdemo_1_1PeerSession_1aef5e145f6b2ff248bc56c8ecd12d5814" kindref="member">bindLoop</ref>(<ref refid="namespacedemo_1_1uv_1a49a923cb432527bfbb0951bf7fa75b71" kindref="member">uv::Loop</ref>*<sp/>loop);</highlight></codeline>
+<codeline lineno="20"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>demo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/webrtc.h"/>
+  </compounddef>
+</doxygen>

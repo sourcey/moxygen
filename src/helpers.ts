@@ -6,12 +6,13 @@
  */
 
 import { writeFileSync, mkdirSync } from 'node:fs';
-import { dirname, format as formatPath } from 'node:path';
+import { dirname, format as formatPath, relative } from 'node:path';
 import { format as utilFormat } from 'node:util';
 import { log } from './logger.js';
 import type { Compound, Member, MoxygenOptions, References } from './types.js';
 
 export type AnchorMap = Map<string, string>;
+export type PagePathMap = Map<string, string>;
 
 /**
  * Wrap code segments in backticks, preserving markdown links and line breaks.
@@ -97,6 +98,7 @@ export function cleanId(name: string): string {
 export function buildCleanAnchorMap(compounds: Compound[]): AnchorMap {
   const map = new Map<string, string>();
   const used = new Set<string>();
+  const seen = new Set<string>();
 
   function dedup(base: string): string {
     let id = base;
@@ -106,14 +108,31 @@ export function buildCleanAnchorMap(compounds: Compound[]): AnchorMap {
     return id;
   }
 
-  for (const compound of compounds) {
+  function visit(compound: Compound): void {
+    if (seen.has(compound.refid)) {
+      return;
+    }
+    seen.add(compound.refid);
+
     const compClean = dedup(cleanId(compound.shortname || compound.name));
     map.set(compound.refid, compClean);
 
-    for (const member of compound.filtered?.members || []) {
+    for (const member of compound.filtered?.members || compound.members || []) {
+      if (seen.has(member.refid)) {
+        continue;
+      }
+      seen.add(member.refid);
       const memberClean = dedup(cleanId(member.name));
       map.set(member.refid, memberClean);
     }
+
+    for (const child of Object.values(compound.compounds)) {
+      visit(child);
+    }
+  }
+
+  for (const compound of compounds) {
+    visit(compound);
   }
 
   return map;
@@ -131,12 +150,18 @@ export function resolveRefs(
   options: MoxygenOptions,
   anchorMap?: AnchorMap,
   slugMap?: SlugMap,
+  pagePathMap?: PagePathMap,
 ): string {
   function anchor(refid: string): string {
     return anchorMap?.get(refid) ?? refid;
   }
 
-  function filePath(dest: Compound): string {
+  function outputPath(dest: Compound): string {
+    const mappedPath = pagePathMap?.get(dest.refid);
+    if (mappedPath) {
+      return mappedPath;
+    }
+
     if (slugMap) {
       const slug = slugMap.get(dest.refid);
       if (slug) return `${slug}.html`;
@@ -149,6 +174,20 @@ export function resolveRefs(
     return compoundPath(dest, options);
   }
 
+  function hrefTo(dest: Compound, refid: string): string {
+    const targetPath = outputPath(dest);
+    const currentPath = outputPath(compound);
+    if (targetPath === currentPath) {
+      return `#${anchor(refid)}`;
+    }
+    if (slugMap) {
+      return `${targetPath}#${anchor(refid)}`;
+    }
+
+    const relPath = relative(dirname(currentPath), targetPath).replace(/\\/g, '/');
+    return `${relPath || targetPath}#${anchor(refid)}`;
+  }
+
   return content.replace(/\{#ref ([^ ]+) #\}/g, (_, refid: string) => {
     const ref = references[refid];
     if (!ref) return `#${anchor(refid)}`;
@@ -156,30 +195,23 @@ export function resolveRefs(
     const page = findParent(ref, ['page']);
 
     if (page) {
-      if (page.refid === compound.refid) return `#${anchor(refid)}`;
-      return `${filePath(page)}#${anchor(refid)}`;
+      return hrefTo(page, refid);
     }
 
     if (options.groups || slugMap) {
-      const dest = findParent(ref, ['class', 'struct', 'group', 'namespace']);
-      if (!dest || compound.refid === dest.refid) return `#${anchor(refid)}`;
-      if (options.groups && compound.groupid && compound.groupid === (ref as Member).groupid) {
-        return `#${anchor(refid)}`;
-      }
-      const path = filePath(dest);
-      // If the file path couldn't resolve, just use an in-page anchor
-      if (path.includes('.md') || path.includes('api_')) return `#${anchor(refid)}`;
-      return `${path}#${anchor(refid)}`;
+      const dest = findParent(ref, ['class', 'struct', 'interface', 'enum', 'group', 'namespace']);
+      if (!dest) return `#${anchor(refid)}`;
+      return hrefTo(dest, refid);
     }
 
     if (options.classes) {
       const dest = findParent(ref, ['namespace', 'class', 'struct']);
-      if (!dest || compound.refid === dest.refid) return `#${anchor(refid)}`;
-      return `${filePath(dest)}#${anchor(refid)}`;
+      if (!dest) return `#${anchor(refid)}`;
+      return hrefTo(dest, refid);
     }
 
     if (compound.kind === 'page') {
-      return `${filePath(compound.parent as Compound)}#${anchor(refid)}`;
+      return hrefTo(compound.parent as Compound, refid);
     }
 
     return `#${anchor(refid)}`;
@@ -215,9 +247,10 @@ export function renderCompound(
   options: MoxygenOptions,
   anchorMap?: AnchorMap,
   slugMap?: SlugMap,
+  pagePathMap?: PagePathMap,
 ): string {
   const resolved = contents.map((content) =>
-    content ? resolveRefs(content, compound, references, options, anchorMap, slugMap) : '',
+    content ? resolveRefs(content, compound, references, options, anchorMap, slugMap, pagePathMap) : '',
   );
   return resolved.filter(Boolean).join('');
 }
@@ -231,9 +264,10 @@ export function writeCompound(
   references: References,
   options: MoxygenOptions,
   anchorMap?: AnchorMap,
+  pagePathMap?: PagePathMap,
 ): void {
   const filepath = compoundPath(compound, options);
-  const output = renderCompound(compound, contents, references, options, anchorMap);
+  const output = renderCompound(compound, contents, references, options, anchorMap, undefined, pagePathMap);
   writeFile(filepath, [output]);
 }
 

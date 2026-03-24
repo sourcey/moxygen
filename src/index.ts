@@ -10,7 +10,7 @@ import { join, dirname, isAbsolute, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { toArray, toFilteredArray, filterChildren, filterNoise, groupMembersBySection } from './compound.js';
 import { writeCompound, renderCompound, compoundPath, writeFile, buildCleanAnchorMap } from './helpers.js';
-import type { AnchorMap, SlugMap } from './helpers.js';
+import type { AnchorMap, PagePathMap, SlugMap } from './helpers.js';
 import { log } from './logger.js';
 import { loadIndex } from './parser.js';
 import * as templates from './templates.js';
@@ -23,6 +23,7 @@ export const defaultFilters: Filters = {
   members: [
     'define',
     'enum',
+    'typedef',
     'func',
     'var',
     'property',
@@ -271,6 +272,39 @@ function attachMemberToGroup(group: Compound, member: Compound['members'][number
   }
 }
 
+function attachFileScopedNamespaceMembersToGroup(
+  group: Compound,
+  namespaceCompound: Compound,
+  fileLocation: string,
+): boolean {
+  let attached = false;
+
+  for (const member of namespaceCompound.members) {
+    if (member.location === fileLocation) {
+      attachMemberToGroup(group, member);
+      attached = true;
+    }
+  }
+
+  for (const child of Object.values(namespaceCompound.compounds)) {
+    if (child.kind === 'namespace') {
+      if (attachFileScopedNamespaceMembersToGroup(group, child, fileLocation)) {
+        attached = true;
+      }
+    }
+  }
+
+  if (attached) {
+    const refs = (group.fileScopedNamespaceRefs as string[] | undefined) ?? [];
+    if (!refs.includes(namespaceCompound.refid)) {
+      refs.push(namespaceCompound.refid);
+    }
+    group.fileScopedNamespaceRefs = refs;
+  }
+
+  return attached;
+}
+
 function isNestedCompound(compound: Compound): boolean {
   const parent = compound.parent;
   return !!parent && ['class', 'struct', 'union', 'interface'].includes(parent.kind);
@@ -368,6 +402,16 @@ function augmentGroupsFromFiles(root: Compound, groups: Compound[], options: Mox
         attachedNamespaceRefs.add(refid);
       }
 
+      const fileLocation = typeof file.location === 'string' ? file.location : '';
+      if (fileLocation) {
+        for (const refid of (file.fileNamespaceRefs ?? [])) {
+          if (!sharedNamespaceRefs.has(refid)) continue;
+          const candidate = compoundsByRefid.get(refid);
+          if (!candidate || candidate.kind !== 'namespace') continue;
+          attachFileScopedNamespaceMembersToGroup(group, candidate, fileLocation);
+        }
+      }
+
       for (const refid of (file.fileCompoundRefs ?? [])) {
         const candidate = compoundsByRefid.get(refid);
         if (!candidate) continue;
@@ -385,20 +429,18 @@ function augmentGroupsFromFiles(root: Compound, groups: Compound[], options: Mox
 
 function finalizeGroups(groups: Compound[], sharedNamespaceRefs: Set<string>): void {
   for (const group of groups) {
-    pruneTopLevelGroupCompounds(group);
-
     const groupedTopLevelCompounds = Object.values(group.compounds)
       .filter((compound) => compound.groupid === group.id);
 
-    if (groupedTopLevelCompounds.length <= 1) {
-      continue;
-    }
-
-    for (const compound of groupedTopLevelCompounds) {
-      if (sharedNamespaceRefs.has(compound.refid)) {
-        delete group.compounds[compound.id];
+    if (groupedTopLevelCompounds.length > 1) {
+      for (const compound of groupedTopLevelCompounds) {
+        if (sharedNamespaceRefs.has(compound.refid)) {
+          delete group.compounds[compound.id];
+        }
       }
     }
+
+    pruneTopLevelGroupCompounds(group);
   }
 }
 
@@ -596,6 +638,7 @@ function lastSegment(ns: string): string {
 export async function run(options: Partial<MoxygenOptions> & { directory: string }): Promise<void> {
   const opts = resolveOptions(options);
   const { root, references } = await loadAndPrepare(opts);
+  let pagePathMap: PagePathMap | undefined;
 
   // --- Pass 1: filter + prepare all compounds ---
   const allCompounds: Compound[] = [];
@@ -612,6 +655,23 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
       prepareCompound(group);
       const children = toFilteredArray(group, 'compounds');
       for (const c of children) prepareCompound(c);
+      if (!pagePathMap) {
+        pagePathMap = new Map<string, string>();
+      }
+      const pagePath = compoundPath(group, opts);
+      if (!pagePathMap.has(group.refid)) {
+        pagePathMap.set(group.refid, pagePath);
+      }
+      for (const child of children) {
+        if (!pagePathMap.has(child.refid)) {
+          pagePathMap.set(child.refid, pagePath);
+        }
+      }
+      for (const refid of (group.fileScopedNamespaceRefs as string[] | undefined) ?? []) {
+        if (!pagePathMap.has(refid)) {
+          pagePathMap.set(refid, pagePath);
+        }
+      }
       allCompounds.push(group, ...children);
     }
   } else if (opts.classes) {
@@ -647,7 +707,7 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
     for (const group of groups) {
       const compounds = toFilteredArray(group, 'compounds');
       compounds.unshift(group);
-      writeWithOptionalFrontmatter(group, templates.renderArray(compounds), references, opts, anchorMap);
+      writeWithOptionalFrontmatter(group, templates.renderArray(compounds), references, opts, anchorMap, pagePathMap);
     }
   } else if (opts.classes) {
     const rootCompounds = toArray(root, 'compounds', 'namespace') as Compound[];
@@ -694,14 +754,15 @@ function writeWithOptionalFrontmatter(
   references: References,
   options: MoxygenOptions,
   anchorMap?: AnchorMap,
+  pagePathMap?: PagePathMap,
 ): void {
   if (options.frontmatter) {
     const filepath = compoundPath(compound, options);
-    const body = renderCompound(compound, contents, references, options, anchorMap);
+    const body = renderCompound(compound, contents, references, options, anchorMap, undefined, pagePathMap);
     const fm = generateFrontmatter(extractMeta(compound));
     writeFile(filepath, [fm, body]);
   } else {
-    writeCompound(compound, contents, references, options, anchorMap);
+    writeCompound(compound, contents, references, options, anchorMap, pagePathMap);
   }
 }
 

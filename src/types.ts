@@ -58,6 +58,7 @@ export interface Member {
   groupid?: string;
   groupname?: string;
   id?: string;
+  location?: string;
 
   // Structured fields for modern templates
   returnType: string;

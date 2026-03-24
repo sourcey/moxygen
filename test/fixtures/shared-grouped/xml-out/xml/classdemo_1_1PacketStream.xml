@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classdemo_1_1PacketStream" kind="class" language="C++" prot="public">
+    <compoundname>demo::PacketStream</compoundname>
+    <includes refid="base_8h" local="no">base.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classdemo_1_1PacketStream_1a369fe297b6638d68a4f715117e1d462a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int demo::PacketStream::id</definition>
+        <argsstring>() const</argsstring>
+        <name>id</name>
+        <qualifiedname>demo::PacketStream::id</qualifiedname>
+        <briefdescription>
+<para>Returns a stable identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/base.h" line="13" column="9"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Packet pipeline primitive owned by the base module. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/base.h" line="9" column="1" bodyfile="src/base.h" bodystart="10" bodyend="14"/>
+    <listofallmembers>
+      <member refid="classdemo_1_1PacketStream_1a369fe297b6638d68a4f715117e1d462a" prot="public" virt="non-virtual"><scope>demo::PacketStream</scope><name>id</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

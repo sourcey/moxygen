@@ -367,6 +367,14 @@ function parseMember(
   member.isVirtual = attrs.virt === 'virtual';
   member.returnType = trim(toMarkdown(memberdef.type));
 
+  if (memberdef.location) {
+    const locations = memberdef.location as Array<Record<string, Record<string, string>>>;
+    const location = locations?.[0]?.$?.file;
+    if (location) {
+      member.location = location;
+    }
+  }
+
   // Definition and argsstring
   if (memberdef.definition) {
     const defArr = memberdef.definition as Array<Record<string, string>>;

@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir">
+    <compoundname>src</compoundname>
+    <innerfile refid="base_8h">base.h</innerfile>
+    <innerfile refid="module__base_8h">module_base.h</innerfile>
+    <innerfile refid="module__uv_8h">module_uv.h</innerfile>
+    <innerfile refid="module__webrtc_8h">module_webrtc.h</innerfile>
+    <innerfile refid="uv_8h">uv.h</innerfile>
+    <innerfile refid="webrtc_8h">webrtc.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/"/>
+  </compounddef>
+</doxygen>

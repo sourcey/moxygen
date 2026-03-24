@@ -6,6 +6,7 @@ import {
   toFilteredArray,
   filterChildren,
   filterCollection,
+  filterNoise,
 } from '../src/compound.js';
 import type { Compound, Member } from '../src/types.js';
 
@@ -198,6 +199,18 @@ describe('compound', () => {
       expect(result).toHaveLength(2);
       expect(result[0].name).toBe('transport');
       expect(result[1].name).toBe('Bicycle');
+    });
+  });
+
+  describe('filterNoise', () => {
+    it('drops undocumented macros but keeps documented ones', () => {
+      const undocumented = makeMember('HTTP_API', 'define');
+      const documented = makeMember('DECLARE_THING', 'define');
+      documented.briefdescription = 'Macro docs';
+
+      const result = filterNoise([undocumented, documented]);
+      expect(result).toHaveLength(1);
+      expect(result[0].name).toBe('DECLARE_THING');
     });
   });
 });

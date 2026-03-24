@@ -533,7 +533,7 @@ function pruneGroupTopLevelDuplicates(group: Compound): void {
   for (const [id, compound] of Object.entries(group.compounds)) {
     let current = compound.parent;
     while (current) {
-      if (topLevelRefids.has(current.refid)) {
+      if (topLevelRefids.has(current.refid) && current.groupid === group.id) {
         delete group.compounds[id];
         break;
       }
@@ -544,7 +544,6 @@ function pruneGroupTopLevelDuplicates(group: Compound): void {
 
 function assignNamespaceToGroup(compound: Compound, child: Compound): void {
   compound.compounds[child.id] = child;
-  assignCompoundGroup(child, compound);
 
   for (const id of Object.keys(child.compounds)) {
     delete compound.compounds[id];

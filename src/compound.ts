@@ -215,6 +215,7 @@ const NOISE_RE = /^(TYPE|BREAK|DEG|SEP|IMPL)_\d+$/;
  */
 export function filterNoise(members: Member[]): Member[] {
   return members.filter((m) => {
+    if (m.section === 'define' && !m.briefdescription && !m.detaileddescription) return false;
     if (m.name.startsWith('~') && !m.briefdescription && !m.detaileddescription) return false;
     if (NOISE_RE.test(m.name)) return false;
     if (m.name === 'operator=' && !m.briefdescription && !m.detaileddescription) return false;

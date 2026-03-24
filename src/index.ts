@@ -295,7 +295,7 @@ function pruneTopLevelGroupCompounds(group: Compound): void {
   for (const [id, compound] of Object.entries(group.compounds)) {
     let current = compound.parent;
     while (current) {
-      if (topLevelRefids.has(current.refid)) {
+      if (topLevelRefids.has(current.refid) && current.groupid === group.id) {
         delete group.compounds[id];
         break;
       }
@@ -304,9 +304,39 @@ function pruneTopLevelGroupCompounds(group: Compound): void {
   }
 }
 
+function collectSharedNamespaceRefs(files: Compound[], options: MoxygenOptions): Set<string> {
+  const namespaceGroups = new Map<string, Set<string>>();
+
+  for (const file of files) {
+    const tags = readFileGroupTags(file, options);
+    if (!tags.length) continue;
+
+    for (const refid of (file.fileNamespaceRefs ?? [])) {
+      let groups = namespaceGroups.get(refid);
+      if (!groups) {
+        groups = new Set<string>();
+        namespaceGroups.set(refid, groups);
+      }
+
+      for (const tag of tags) {
+        groups.add(tag);
+      }
+    }
+  }
+
+  const shared = new Set<string>();
+  for (const [refid, groups] of namespaceGroups) {
+    if (groups.size > 1) {
+      shared.add(refid);
+    }
+  }
+  return shared;
+}
+
 function augmentGroupsFromFiles(root: Compound, groups: Compound[], options: MoxygenOptions): void {
   const files = toArray(root, 'compounds', 'file') as Compound[];
   if (!files.length) return;
+  const sharedNamespaceRefs = collectSharedNamespaceRefs(files, options);
   const compoundsByRefid = new Map<string, Compound>();
   for (const compound of toArray(root, 'compounds') as Compound[]) {
     compoundsByRefid.set(compound.refid, compound);
@@ -325,8 +355,13 @@ function augmentGroupsFromFiles(root: Compound, groups: Compound[], options: Mox
       const group = groupsByName.get(tag);
       if (!group) continue;
 
+      let namespaceRefs = (file.fileNamespaceRefs ?? []).filter((refid) => !sharedNamespaceRefs.has(refid));
+      if (!namespaceRefs.length && !(file.fileCompoundRefs?.length || file.members.length)) {
+        namespaceRefs = [...(file.fileNamespaceRefs ?? [])];
+      }
+
       const attachedNamespaceRefs = new Set<string>();
-      for (const refid of (file.fileNamespaceRefs ?? [])) {
+      for (const refid of namespaceRefs) {
         const candidate = compoundsByRefid.get(refid);
         if (!candidate || isJunkCompound(candidate)) continue;
         attachCompoundToGroup(group, candidate);
@@ -348,9 +383,22 @@ function augmentGroupsFromFiles(root: Compound, groups: Compound[], options: Mox
   }
 }
 
-function finalizeGroups(groups: Compound[]): void {
+function finalizeGroups(groups: Compound[], sharedNamespaceRefs: Set<string>): void {
   for (const group of groups) {
     pruneTopLevelGroupCompounds(group);
+
+    const groupedTopLevelCompounds = Object.values(group.compounds)
+      .filter((compound) => compound.groupid === group.id);
+
+    if (groupedTopLevelCompounds.length <= 1) {
+      continue;
+    }
+
+    for (const compound of groupedTopLevelCompounds) {
+      if (sharedNamespaceRefs.has(compound.refid)) {
+        delete group.compounds[compound.id];
+      }
+    }
   }
 }
 
@@ -379,7 +427,7 @@ export async function generate(
   if (useGroups) {
     const seenPrep = new Set<string>();
     augmentGroupsFromFiles(root, groups, opts);
-    finalizeGroups(groups);
+    finalizeGroups(groups, collectSharedNamespaceRefs(toArray(root, 'compounds', 'file') as Compound[], opts));
 
     // Group-based: each @defgroup becomes a module
     for (const group of groups) {
@@ -558,7 +606,7 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
       throw new Error('You have enabled `groups` output, but no groups were located in your doxygen XML files.');
     }
     augmentGroupsFromFiles(root, groups, opts);
-    finalizeGroups(groups);
+    finalizeGroups(groups, collectSharedNamespaceRefs(toArray(root, 'compounds', 'file') as Compound[], opts));
     for (const group of groups) {
       filterChildren(group, opts.filters, group.id);
       prepareCompound(group);

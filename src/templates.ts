@@ -113,7 +113,8 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
   // Return type for summary tables: strip markdown links to plain text
   Handlebars.registerHelper('returnTypeShort', function (this: Record<string, unknown>) {
     const rt = (this.returnType as string) || '';
-    return rt.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').trim() || '';
+    const clean = rt.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').trim();
+    return clean ? `\`${clean}\`` : '';
   });
 
   // Linked name: renders as markdown link if refid exists
@@ -125,6 +126,12 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
 
   // Not helper for conditionals
   Handlebars.registerHelper('not', (value: unknown) => !value);
+
+  // Whether a section should show the return/type column
+  Handlebars.registerHelper('hasReturnColumn', (section: string) => {
+    const noReturn = new Set(['enum', 'define', 'public-type']);
+    return !noReturn.has(section);
+  });
 }
 
 /**

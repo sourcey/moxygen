@@ -115,15 +115,31 @@ export function buildCleanAnchorMap(compounds: Compound[]): AnchorMap {
 /**
  * Resolve internal reference links to point to correct output files.
  */
+export type SlugMap = Map<string, string>;
+
 export function resolveRefs(
   content: string,
   compound: Compound,
   references: References,
   options: MoxygenOptions,
   anchorMap?: AnchorMap,
+  slugMap?: SlugMap,
 ): string {
   function anchor(refid: string): string {
     return anchorMap?.get(refid) ?? refid;
+  }
+
+  function filePath(dest: Compound): string {
+    if (slugMap) {
+      const slug = slugMap.get(dest.refid);
+      if (slug) return `${slug}.html`;
+      // Fallback: try parent group/namespace
+      if (dest.parent) {
+        const parentSlug = slugMap.get(dest.parent.refid);
+        if (parentSlug) return `${parentSlug}.html`;
+      }
+    }
+    return compoundPath(dest, options);
   }
 
   return content.replace(/\{#ref ([^ ]+) #\}/g, (_, refid: string) => {
@@ -134,24 +150,29 @@ export function resolveRefs(
 
     if (page) {
       if (page.refid === compound.refid) return `#${anchor(refid)}`;
-      return `${compoundPath(page, options)}#${anchor(refid)}`;
+      return `${filePath(page)}#${anchor(refid)}`;
     }
 
-    if (options.groups) {
-      if (compound.groupid && compound.groupid === (ref as Member).groupid) {
+    if (options.groups || slugMap) {
+      const dest = findParent(ref, ['class', 'struct', 'group', 'namespace']);
+      if (!dest || compound.refid === dest.refid) return `#${anchor(refid)}`;
+      if (options.groups && compound.groupid && compound.groupid === (ref as Member).groupid) {
         return `#${anchor(refid)}`;
       }
-      return `${compoundPath(ref as Compound, options)}#${anchor(refid)}`;
+      const path = filePath(dest);
+      // If the file path couldn't resolve, just use an in-page anchor
+      if (path.includes('.md') || path.includes('api_')) return `#${anchor(refid)}`;
+      return `${path}#${anchor(refid)}`;
     }
 
     if (options.classes) {
       const dest = findParent(ref, ['namespace', 'class', 'struct']);
       if (!dest || compound.refid === dest.refid) return `#${anchor(refid)}`;
-      return `${compoundPath(dest, options)}#${anchor(refid)}`;
+      return `${filePath(dest)}#${anchor(refid)}`;
     }
 
     if (compound.kind === 'page') {
-      return `${compoundPath(compound.parent as Compound, options)}#${anchor(refid)}`;
+      return `${filePath(compound.parent as Compound)}#${anchor(refid)}`;
     }
 
     return `#${anchor(refid)}`;
@@ -186,9 +207,10 @@ export function renderCompound(
   references: References,
   options: MoxygenOptions,
   anchorMap?: AnchorMap,
+  slugMap?: SlugMap,
 ): string {
   const resolved = contents.map((content) =>
-    content ? resolveRefs(content, compound, references, options, anchorMap) : '',
+    content ? resolveRefs(content, compound, references, options, anchorMap, slugMap) : '',
   );
   return resolved.filter(Boolean).join('');
 }

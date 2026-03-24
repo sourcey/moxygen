@@ -585,6 +585,13 @@ function parseCompound(compound: Compound, compounddef: Record<string, unknown>)
   const nameParts = compound.fullname.split('::');
   compound.shortname = nameParts[nameParts.length - 1] || compound.name;
 
+  // Group title (from @defgroup "Title")
+  if (compounddef.title) {
+    const titleArr = compounddef.title as Array<Record<string, string>>;
+    const title = titleArr?.[0]?._ ?? (titleArr?.[0] as unknown as string) ?? '';
+    if (title) compound.shortname = title;
+  }
+
   // Language from XML attribute
   if (attrs.language) {
     compound.language = attrs.language;

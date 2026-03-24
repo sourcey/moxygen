@@ -1,29 +1,39 @@
-import { describe, it, expect, afterAll } from 'vitest';
+import { describe, it, expect, afterAll, beforeAll } from 'vitest';
 import { run } from '../src/index.js';
 import { readFileSync, existsSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 
-const outputDir = join(import.meta.dirname, '..', '.test-output');
-const xmlDir = join(import.meta.dirname, '..', 'example', 'xml');
+const outputRoot = join(import.meta.dirname, '..', '.test-output');
+const exampleXmlDir = join(import.meta.dirname, '..', 'example', 'xml');
+const fileGroupedXmlDir = join(import.meta.dirname, 'fixtures', 'file-grouped', 'xml-out', 'xml');
+const fileGroupedSourceDir = join(import.meta.dirname, 'fixtures', 'file-grouped', 'src');
+const ungroupedXmlDir = join(import.meta.dirname, 'fixtures', 'ungrouped', 'xml-out', 'xml');
+
+const exampleOutputDir = join(outputRoot, 'example');
+
+function read(path: string): string {
+  return readFileSync(path, 'utf8');
+}
 
 afterAll(() => {
-  if (existsSync(outputDir)) {
-    rmSync(outputDir, { recursive: true });
+  if (existsSync(outputRoot)) {
+    rmSync(outputRoot, { recursive: true });
   }
+});
+
+beforeAll(async () => {
+  await run({
+    directory: exampleXmlDir,
+    output: join(exampleOutputDir, 'api-%s.md'),
+    groups: true,
+    pages: true,
+    anchors: true,
+    quiet: true,
+  });
 });
 
 describe('integration', () => {
   it('generates grouped output from example XML', async () => {
-    await run({
-      directory: xmlDir,
-      output: join(outputDir, 'api-%s.md'),
-      groups: true,
-      pages: true,
-      anchors: true,
-      quiet: true,
-    });
-
-    // Check all expected files were created
     const expectedFiles = [
       'api-bicycle.md',
       'api-mountainbike.md',
@@ -31,11 +41,9 @@ describe('integration', () => {
     ];
 
     for (const file of expectedFiles) {
-      const filepath = join(outputDir, file);
+      const filepath = join(exampleOutputDir, file);
       expect(existsSync(filepath), `${file} should exist`).toBe(true);
-
-      const content = readFileSync(filepath, 'utf8');
-      expect(content.length).toBeGreaterThan(0);
+      expect(read(filepath).length).toBeGreaterThan(0);
     }
   });
 
@@ -46,59 +54,92 @@ describe('integration', () => {
     ];
 
     for (const file of expectedPages) {
-      const filepath = join(outputDir, file);
+      const filepath = join(exampleOutputDir, file);
       expect(existsSync(filepath), `${file} should exist`).toBe(true);
-
-      const content = readFileSync(filepath, 'utf8');
-      expect(content.length).toBeGreaterThan(0);
+      expect(read(filepath).length).toBeGreaterThan(0);
     }
   });
 
-  it('output contains expected class documentation', async () => {
-    const content = readFileSync(join(outputDir, 'api-bicycle.md'), 'utf8');
+  it('outputs expected explicit-group class documentation', async () => {
+    const content = read(join(exampleOutputDir, 'api-bicycle.md'));
 
-    // Should contain the Bicycle class
     expect(content).toContain('Bicycle');
-
-    // Should contain member functions
     expect(content).toContain('PedalHarder');
     expect(content).toContain('RingBell');
-
-    // Should contain clean anchors (not Doxygen refids)
     expect(content).toContain('{#pedalharder}');
-
-    // Should contain section headers
     expect(content).toContain('### Public Methods');
-
-    // Should contain #include directive
     expect(content).toContain('#include <bicycle.h>');
-
-    // Should contain return types in summary
     expect(content).toContain('`void`');
-
-    // Should contain badges
     expect(content).toContain('`virtual`');
-
-    // Should contain description text
     expect(content).toContain('Standard bicycle class');
   });
 
-  it('generates single file output', async () => {
-    const singleOutput = join(outputDir, 'single-api.md');
+  it('recovers grouped output from file-level grouped fixtures', async () => {
+    const outputDir = join(outputRoot, 'file-grouped');
 
     await run({
-      directory: xmlDir,
+      directory: fileGroupedXmlDir,
+      output: join(outputDir, '%s.md'),
+      groups: true,
+      anchors: true,
+      quiet: true,
+      sourceRoot: fileGroupedSourceDir,
+    });
+
+    const filepath = join(outputDir, 'widget.md');
+    expect(existsSync(filepath), 'widget.md should exist').toBe(true);
+
+    const content = read(filepath);
+    expect(content.length).toBeGreaterThan(0);
+    expect(content).toContain('# widget');
+    expect(content).toContain('Module page for a widget API documented with file-level grouping.');
+    expect(content).toContain('documented via file-level grouping only.');
+    expect(content).toContain('createWidget');
+    expect(content).toContain('Returns the current widget size.');
+    expect(content).toContain('## Options');
+    expect(content).toContain('nested inside [Widget](#widget)');
+  });
+
+  it('preserves ungrouped namespace and class output', async () => {
+    const outputDir = join(outputRoot, 'ungrouped');
+
+    await run({
+      directory: ungroupedXmlDir,
+      output: join(outputDir, '%s.md'),
+      classes: true,
+      anchors: true,
+      quiet: true,
+    });
+
+    const namespacePath = join(outputDir, 'demo.md');
+    const classPath = join(outputDir, 'demo--Plain.md');
+
+    expect(existsSync(namespacePath), 'demo.md should exist').toBe(true);
+    expect(existsSync(classPath), 'demo--Plain.md should exist').toBe(true);
+
+    const namespaceContent = read(namespacePath);
+    expect(namespaceContent).toContain('# demo');
+    expect(namespaceContent).toContain('namespace-scoped type for ungrouped rendering.');
+    expect(namespaceContent).toContain('demo--Plain.md#plain');
+
+    const classContent = read(classPath);
+    expect(classContent).toContain('## Plain');
+    expect(classContent).toContain('#include <plain.h>');
+    expect(classContent).toContain('Returns a stable value.');
+  });
+
+  it('generates single file output', async () => {
+    const singleOutput = join(outputRoot, 'single-api.md');
+
+    await run({
+      directory: exampleXmlDir,
       output: singleOutput,
       quiet: true,
     });
 
     expect(existsSync(singleOutput)).toBe(true);
-    const content = readFileSync(singleOutput, 'utf8');
-
-    // Should contain the Moxygen footer
+    const content = read(singleOutput);
     expect(content).toContain('Generated by [Moxygen]');
-
-    // Should contain classes from all groups
     expect(content).toContain('Bicycle');
     expect(content).toContain('MountainBike');
     expect(content).toContain('RacingBike');

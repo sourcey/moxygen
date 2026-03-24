@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespacedemo" kind="namespace" language="C++">
+    <compoundname>demo</compoundname>
+    <innerclass refid="classdemo_1_1Widget" prot="public">demo::Widget</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespacedemo_1a0fa68db4f02fb4b0d10b0039d91208c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classdemo_1_1Widget" kindref="compound">Widget</ref></type>
+        <definition>Widget demo::createWidget</definition>
+        <argsstring>()</argsstring>
+        <name>createWidget</name>
+        <qualifiedname>demo::createWidget</qualifiedname>
+        <briefdescription>
+<para>Creates a default widget instance. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/widget.cpp" line="12" column="8" bodyfile="src/widget.cpp" bodystart="12" bodyend="15" declfile="src/widget.h" declline="25" declcolumn="8"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/widget.cpp" line="3" column="1"/>
+  </compounddef>
+</doxygen>

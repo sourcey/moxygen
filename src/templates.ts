@@ -167,6 +167,8 @@ export function render(compound: Compound): string | undefined {
       templateName = 'page';
       break;
     case 'group':
+      templateName = 'namespace';
+      break;
     case 'namespace': {
       const keys = Object.keys(compound.compounds);
       if (

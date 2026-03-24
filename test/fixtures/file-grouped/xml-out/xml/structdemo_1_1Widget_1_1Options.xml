@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structdemo_1_1Widget_1_1Options" kind="struct" language="C++" prot="public">
+    <compoundname>demo::Widget::Options</compoundname>
+    <includes refid="widget_8h" local="no">widget.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdemo_1_1Widget_1_1Options_1a4f7c9b0fbc1d2a1e16e5dcd0d1f22fcd" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int demo::Widget::Options::capacity</definition>
+        <argsstring></argsstring>
+        <name>capacity</name>
+        <qualifiedname>demo::Widget::Options::capacity</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/widget.h" line="15" column="13" bodyfile="src/widget.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="structdemo_1_1Widget_1_1Options" kindref="compound">Options</ref> nested inside <ref refid="classdemo_1_1Widget" kindref="compound">Widget</ref> should still render on the class page. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/widget.h" line="13" column="5" bodyfile="src/widget.h" bodystart="14" bodyend="16"/>
+    <listofallmembers>
+      <member refid="structdemo_1_1Widget_1_1Options_1a4f7c9b0fbc1d2a1e16e5dcd0d1f22fcd" prot="public" virt="non-virtual"><scope>demo::Widget::Options</scope><name>capacity</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

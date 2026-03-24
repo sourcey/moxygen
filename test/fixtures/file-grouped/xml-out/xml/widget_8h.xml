@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="widget_8h" kind="file" language="C++">
+    <compoundname>widget.h</compoundname>
+    <includedby refid="module_8h" local="yes">src/module.h</includedby>
+    <includedby refid="widget_8cpp" local="yes">src/widget.cpp</includedby>
+    <invincdepgraph>
+      <node id="2">
+        <label>src/module.h</label>
+        <link refid="module_8h"/>
+      </node>
+      <node id="3">
+        <label>src/widget.cpp</label>
+        <link refid="widget_8cpp"/>
+      </node>
+      <node id="1">
+        <label>src/widget.h</label>
+        <link refid="widget_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classdemo_1_1Widget" prot="public">demo::Widget</innerclass>
+    <innerclass refid="structdemo_1_1Widget_1_1Options" prot="public">demo::Widget::Options</innerclass>
+    <innernamespace refid="namespacedemo">demo</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacedemo" kindref="compound">demo</ref><sp/>{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9" refid="classdemo_1_1Widget" refkind="compound"><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classdemo_1_1Widget" kindref="compound">Widget</ref></highlight></codeline>
+<codeline lineno="10"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="13" refid="structdemo_1_1Widget_1_1Options" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structdemo_1_1Widget_1_1Options" kindref="compound">Options</ref></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="15" refid="structdemo_1_1Widget_1_1Options_1a4f7c9b0fbc1d2a1e16e5dcd0d1f22fcd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structdemo_1_1Widget_1_1Options_1a4f7c9b0fbc1d2a1e16e5dcd0d1f22fcd" kindref="member">capacity</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="classdemo_1_1Widget_1ad56d53bd603a1d81a5ad3623f5f873a8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classdemo_1_1Widget_1ad56d53bd603a1d81a5ad3623f5f873a8" kindref="member">Widget</ref>();</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classdemo_1_1Widget_1aa86e1979ddb314612c44b1038cbd1a9f" kindref="member">size</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><ref refid="classdemo_1_1Widget" kindref="compound">Widget</ref><sp/><ref refid="namespacedemo_1a0fa68db4f02fb4b0d10b0039d91208c3" kindref="member">createWidget</ref>();</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>demo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/widget.h"/>
+  </compounddef>
+</doxygen>

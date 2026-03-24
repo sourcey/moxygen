@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.8" xml:lang="en-US">
+  <compound refid="classdemo_1_1Plain" kind="class"><name>demo::Plain</name>
+    <member refid="classdemo_1_1Plain_1adf0afb5cd4356a97afc6ba0a10322f05" kind="function"><name>value</name></member>
+  </compound>
+  <compound refid="namespacedemo" kind="namespace"><name>demo</name>
+  </compound>
+  <compound refid="plain_8cpp" kind="file"><name>plain.cpp</name>
+  </compound>
+  <compound refid="plain_8h" kind="file"><name>plain.h</name>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+</doxygenindex>

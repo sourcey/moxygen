@@ -5,7 +5,8 @@
  * @license MIT
  */
 
-import { join, dirname } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+import { join, dirname, isAbsolute, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { toArray, toFilteredArray, filterChildren, filterNoise, groupMembersBySection } from './compound.js';
 import { writeCompound, renderCompound, compoundPath, writeFile, buildCleanAnchorMap } from './helpers.js';
@@ -176,6 +177,183 @@ function prepareCompound(compound: Compound): void {
   compound.filtered.sections = groupMembersBySection(compound);
 }
 
+const GROUP_MARKER_RE = /(?:@|\\)(?:addtogroup|ingroup)\s+([A-Za-z_][\w:-]*)/g;
+
+function resolveSourcePath(location: string, options: MoxygenOptions): string | undefined {
+  const candidates: string[] = [];
+  const seen = new Set<string>();
+
+  const pushCandidate = (candidate: string): void => {
+    const resolved = resolve(candidate);
+    if (seen.has(resolved)) return;
+    seen.add(resolved);
+    candidates.push(resolved);
+  };
+
+  if (isAbsolute(location)) {
+    pushCandidate(location);
+  } else {
+    if (options.sourceRoot) {
+      pushCandidate(join(options.sourceRoot, location));
+    }
+
+    pushCandidate(location);
+
+    let current = resolve(options.directory);
+    while (true) {
+      pushCandidate(join(current, location));
+      const parent = dirname(current);
+      if (parent === current) break;
+      current = parent;
+    }
+  }
+
+  return candidates.find((candidate) => existsSync(candidate));
+}
+
+function readFileGroupTags(file: Compound, options: MoxygenOptions): string[] {
+  if (Array.isArray(file.fileGroupTags)) {
+    return file.fileGroupTags as string[];
+  }
+
+  const location = typeof file.location === 'string' ? file.location : '';
+  if (!location) {
+    file.fileGroupTags = [];
+    return file.fileGroupTags as string[];
+  }
+
+  const sourcePath = resolveSourcePath(location, options);
+  if (!sourcePath) {
+    file.fileGroupTags = [];
+    return file.fileGroupTags as string[];
+  }
+
+  const source = readFileSync(sourcePath, 'utf8');
+  const tags = new Set<string>();
+  let match: RegExpExecArray | null;
+  while ((match = GROUP_MARKER_RE.exec(source)) !== null) {
+    tags.add(match[1]);
+  }
+
+  file.fileGroupTags = [...tags];
+  return file.fileGroupTags as string[];
+}
+
+function markCompoundGroup(group: Compound, compound: Compound): void {
+  if (compound.groupid && compound.groupid !== group.id) return;
+
+  compound.groupid = group.id;
+  compound.groupname = group.name;
+
+  for (const member of compound.members) {
+    if (member.groupid && member.groupid !== group.id) continue;
+    member.groupid = group.id;
+    member.groupname = group.name;
+  }
+
+  for (const child of Object.values(compound.compounds)) {
+    markCompoundGroup(group, child);
+  }
+}
+
+function attachCompoundToGroup(group: Compound, compound: Compound): void {
+  if (compound.groupid && compound.groupid !== group.id) return;
+  group.compounds[compound.id] = compound;
+  markCompoundGroup(group, compound);
+}
+
+function attachMemberToGroup(group: Compound, member: Compound['members'][number]): void {
+  if (member.groupid && member.groupid !== group.id) return;
+  member.groupid = group.id;
+  member.groupname = group.name;
+  if (!group.members.some((existing) => existing.refid === member.refid)) {
+    group.members.push(member);
+  }
+}
+
+function isNestedCompound(compound: Compound): boolean {
+  const parent = compound.parent;
+  return !!parent && ['class', 'struct', 'union', 'interface'].includes(parent.kind);
+}
+
+function hasAncestorRefid(compound: Compound, refids: Set<string>): boolean {
+  let current = compound.parent;
+  while (current) {
+    if (refids.has(current.refid)) {
+      return true;
+    }
+    current = current.parent;
+  }
+  return false;
+}
+
+function pruneTopLevelGroupCompounds(group: Compound): void {
+  const topLevelRefids = new Set(
+    Object.values(group.compounds).map((compound) => compound.refid),
+  );
+
+  for (const [id, compound] of Object.entries(group.compounds)) {
+    let current = compound.parent;
+    while (current) {
+      if (topLevelRefids.has(current.refid)) {
+        delete group.compounds[id];
+        break;
+      }
+      current = current.parent;
+    }
+  }
+}
+
+function augmentGroupsFromFiles(root: Compound, groups: Compound[], options: MoxygenOptions): void {
+  const files = toArray(root, 'compounds', 'file') as Compound[];
+  if (!files.length) return;
+  const compoundsByRefid = new Map<string, Compound>();
+  for (const compound of toArray(root, 'compounds') as Compound[]) {
+    compoundsByRefid.set(compound.refid, compound);
+  }
+
+  const groupsByName = new Map<string, Compound>();
+  for (const group of groups) {
+    groupsByName.set(group.name, group);
+  }
+
+  for (const file of files) {
+    const tags = readFileGroupTags(file, options);
+    if (!tags.length) continue;
+
+    for (const tag of tags) {
+      const group = groupsByName.get(tag);
+      if (!group) continue;
+
+      const attachedNamespaceRefs = new Set<string>();
+      for (const refid of (file.fileNamespaceRefs ?? [])) {
+        const candidate = compoundsByRefid.get(refid);
+        if (!candidate || isJunkCompound(candidate)) continue;
+        attachCompoundToGroup(group, candidate);
+        attachedNamespaceRefs.add(refid);
+      }
+
+      for (const refid of (file.fileCompoundRefs ?? [])) {
+        const candidate = compoundsByRefid.get(refid);
+        if (!candidate) continue;
+        if (isJunkCompound(candidate) || isNestedCompound(candidate)) continue;
+        if (hasAncestorRefid(candidate, attachedNamespaceRefs)) continue;
+        attachCompoundToGroup(group, candidate);
+      }
+
+      for (const member of file.members) {
+        attachMemberToGroup(group, member);
+      }
+    }
+  }
+}
+
+function finalizeGroups(groups: Compound[]): void {
+  for (const group of groups) {
+    pruneTopLevelGroupCompounds(group);
+  }
+}
+
 /**
  * Parse Doxygen XML and return structured pages with rendered markdown.
  * Markdown is the body only; metadata is in the structured fields.
@@ -200,6 +378,8 @@ export async function generate(
 
   if (useGroups) {
     const seenPrep = new Set<string>();
+    augmentGroupsFromFiles(root, groups, opts);
+    finalizeGroups(groups);
 
     // Group-based: each @defgroup becomes a module
     for (const group of groups) {
@@ -377,6 +557,8 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
     if (!groups.length) {
       throw new Error('You have enabled `groups` output, but no groups were located in your doxygen XML files.');
     }
+    augmentGroupsFromFiles(root, groups, opts);
+    finalizeGroups(groups);
     for (const group of groups) {
       filterChildren(group, opts.filters, group.id);
       prepareCompound(group);

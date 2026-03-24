@@ -32,6 +32,7 @@ program
   .option('-H, --html-anchors', 'add HTML anchors to internal links', false)
   .option('-l, --language <lang>', 'programming language', 'cpp')
   .option('-t, --templates <dir>', 'custom templates directory')
+  .option('-s, --source-root <dir>', 'source root used to resolve file-level group membership')
   .option('-f, --frontmatter', 'prepend YAML frontmatter to output files', false)
   .option('-L, --logfile [file]', 'output log messages to file (default: "moxygen.log")')
   .option('-q, --quiet', 'quiet mode', false)
@@ -48,6 +49,7 @@ program
         htmlAnchors: opts.htmlAnchors as boolean,
         language: opts.language as string,
         templates: opts.templates as string | undefined,
+        sourceRoot: opts.sourceRoot as string | undefined,
         frontmatter: opts.frontmatter as boolean,
         logfile: opts.logfile as string | boolean | undefined,
         quiet: opts.quiet as boolean,

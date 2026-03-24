@@ -2,9 +2,13 @@
 
 # {{shortname name}}
 
+{{#if (eq kind "group")}}
+{{summary}}
+{{else}}
 {{briefdescription}}
 
 {{detaileddescription}}
+{{/if}}
 
 {{#if filtered.compounds}}
 ### Classes

@@ -1,10 +1,3 @@
-/**
- * Original work Copyright (c) 2016 Philippe FERDINAND
- * Modified work Copyright (c) 2016 Kam Low
- *
- * @license MIT
- */
-
 export function refLink(text: string, refid: string): string {
   return link(text, `{#ref ${refid} #}`);
 }

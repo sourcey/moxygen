@@ -1,10 +1,3 @@
-/**
- * Original work Copyright (c) 2016 Philippe FERDINAND
- * Modified work Copyright (c) 2016 Kam Low
- *
- * @license MIT
- */
-
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import Handlebars from 'handlebars';
@@ -16,17 +9,13 @@ import type { Compound, MoxygenOptions } from './types.js';
 const templates: Record<string, HandlebarsTemplateDelegate> = {};
 let activeAnchorMap: AnchorMap | undefined;
 
-/**
  * Set the anchor map used by cleanAnchor/cleanId helpers.
  * Call before rendering a batch of compounds.
- */
 export function setAnchorMap(map: AnchorMap | undefined): void {
   activeAnchorMap = map;
 }
 
-/**
  * Register Handlebars helpers for template rendering.
- */
 export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlAnchors'>): void {
   const synthesizedMemberSummary = (member: Record<string, unknown>): string => {
     const summary = typeof member.summary === 'string' ? member.summary.trim() : '';
@@ -222,9 +211,7 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
   });
 }
 
-/**
  * Load all .md templates from the given directory.
- */
 export function load(templateDirectory: string): void {
   for (const filename of readdirSync(templateDirectory)) {
     const fullpath = join(templateDirectory, filename);
@@ -239,9 +226,7 @@ export function load(templateDirectory: string): void {
   }
 }
 
-/**
  * Render a single compound using the appropriate template.
- */
 export function render(compound: Compound): string | undefined {
   let templateName: string;
 
@@ -286,9 +271,7 @@ export function render(compound: Compound): string | undefined {
   return templates[templateName](compound).replace(/(\r\n|\r|\n){3,}/g, '$1\n');
 }
 
-/**
  * Render an array of compounds.
- */
 export function renderArray(compounds: Compound[]): (string | undefined)[] {
   return compounds.map((c) => render(c));
 }

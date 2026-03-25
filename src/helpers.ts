@@ -1,10 +1,3 @@
-/**
- * Original work Copyright (c) 2016 Philippe FERDINAND
- * Modified work Copyright (c) 2016 Kam Low
- *
- * @license MIT
- */
-
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, format as formatPath, relative } from 'node:path';
 import { format as utilFormat } from 'node:util';
@@ -14,9 +7,7 @@ import type { Compound, Member, MoxygenOptions, References } from './types.js';
 export type AnchorMap = Map<string, string>;
 export type PagePathMap = Map<string, string>;
 
-/**
  * Wrap code segments in backticks, preserving markdown links and line breaks.
- */
 export function inline(code: string | string[]): string {
   if (!Array.isArray(code)) {
     return `\`${code}\``;
@@ -48,16 +39,12 @@ export function inline(code: string | string[]): string {
   return s + (isInline ? '`' : '');
 }
 
-/**
  * Strip markdown links from generated type/signature text while preserving labels.
- */
 export function stripMarkdownLinks(text: string): string {
   return (text || '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
 }
 
-/**
  * Generate an anchor string based on options.
- */
 export function getAnchor(name: string, options: Pick<MoxygenOptions, 'anchors' | 'htmlAnchors'>): string {
   if (options.anchors) {
     return `{#${name}}`;
@@ -68,9 +55,7 @@ export function getAnchor(name: string, options: Pick<MoxygenOptions, 'anchors' 
   return '';
 }
 
-/**
  * Find the nearest parent compound matching one of the given kinds.
- */
 export function findParent(compound: Compound | Member | undefined, kinds: string[]): Compound | undefined {
   let current = compound as Compound | undefined;
   while (current) {
@@ -80,9 +65,7 @@ export function findParent(compound: Compound | Member | undefined, kinds: strin
   return undefined;
 }
 
-/**
  * Convert a name to a clean URL-safe anchor ID.
- */
 export function cleanId(name: string): string {
   return name
     .toLowerCase()
@@ -91,10 +74,8 @@ export function cleanId(name: string): string {
     .replace(/^-+|-+$/g, '') || 'unknown';
 }
 
-/**
  * Build a map from Doxygen refids to clean, human-readable anchor IDs.
  * Handles deduplication for overloaded names.
- */
 export function buildCleanAnchorMap(compounds: Compound[]): AnchorMap {
   const map = new Map<string, string>();
   const used = new Set<string>();
@@ -138,9 +119,7 @@ export function buildCleanAnchorMap(compounds: Compound[]): AnchorMap {
   return map;
 }
 
-/**
  * Resolve internal reference links to point to correct output files.
- */
 export type SlugMap = Map<string, string>;
 
 export function resolveRefs(
@@ -218,9 +197,7 @@ export function resolveRefs(
   });
 }
 
-/**
  * Calculate the output file path for a compound.
- */
 export function compoundPath(compound: Compound, options: MoxygenOptions): string {
   if (compound.kind === 'page') {
     return `${dirname(options.output)}/page-${compound.name}.md`;
@@ -237,9 +214,7 @@ export function compoundPath(compound: Compound, options: MoxygenOptions): strin
   return options.output;
 }
 
-/**
  * Render a compound's contents to a string, resolving refs.
- */
 export function renderCompound(
   compound: Compound,
   contents: (string | undefined)[],
@@ -255,9 +230,7 @@ export function renderCompound(
   return resolved.filter(Boolean).join('');
 }
 
-/**
  * Write a compound's rendered contents to file, resolving refs first.
- */
 export function writeCompound(
   compound: Compound,
   contents: (string | undefined)[],
@@ -271,9 +244,7 @@ export function writeCompound(
   writeFile(filepath, [output]);
 }
 
-/**
  * Write content array to a file.
- */
 export function writeFile(filepath: string, contents: string[]): void {
   log.verbose(`Writing: ${filepath}`);
   mkdirSync(dirname(filepath), { recursive: true });

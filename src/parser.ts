@@ -1,10 +1,3 @@
-/**
- * Original work Copyright (c) 2016 Philippe FERDINAND
- * Modified work Copyright (c) 2016 Kam Low
- *
- * @license MIT
- */
-
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { Parser as XmlParser } from 'xml2js';
@@ -26,9 +19,7 @@ let parserOptions: MoxygenOptions;
 const references: References = {};
 let root: Compound;
 
-/**
  * Convert a Doxygen XML element tree to Markdown.
- */
 function toMarkdown(element: unknown, context: XmlElement[] = []): string {
   if (typeof element === 'string') {
     return element;
@@ -830,9 +821,7 @@ function parseIndex(
   }
 }
 
-/**
  * Load and parse Doxygen XML index.
- */
 export async function loadIndex(options: MoxygenOptions): Promise<{ root: Compound; references: References }> {
   parserOptions = options;
   root = createCompound();

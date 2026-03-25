@@ -1,12 +1,4 @@
 #!/usr/bin/env node
-
-/**
- * Original work Copyright (c) 2016 Philippe FERDINAND
- * Modified work Copyright (c) 2016 Kam Low
- *
- * @license MIT
- */
-
 import { Command } from 'commander';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';

@@ -23,12 +23,12 @@
 {{#if (hasReturnColumn section)}}
 | Return | Name | Description |
 |--------|------|-------------|
-{{#each members}}| {{returnTypeShort}} | [`{{name}}`](#{{cleanId refid name}}) {{badges}} | {{cell summary}} |
+{{#each members}}| {{returnTypeShort}} | [`{{name}}`](#{{cleanId refid name}}) {{badges}} | {{cell (memberSummary this)}} |
 {{/each}}
 {{else}}
 | Name | Description |
 |------|-------------|
-{{#each members}}| [`{{name}}`](#{{cleanId refid name}}) {{badges}} | {{cell summary}} |
+{{#each members}}| [`{{name}}`](#{{cleanId refid name}}) {{badges}} | {{cell (memberSummary this)}} |
 {{/each}}
 {{/if}}
 
@@ -49,6 +49,12 @@
 {{briefdescription}}
 
 {{detaileddescription}}
+
+{{#unless briefdescription}}
+{{#unless detaileddescription}}
+{{memberSummary this}}
+{{/unless}}
+{{/unless}}
 
 {{#if (hasDocumentedParams params)}}
 | Parameter | Type | Description |

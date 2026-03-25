@@ -28,6 +28,29 @@ export function setAnchorMap(map: AnchorMap | undefined): void {
  * Register Handlebars helpers for template rendering.
  */
 export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlAnchors'>): void {
+  const synthesizedMemberSummary = (member: Record<string, unknown>): string => {
+    const summary = typeof member.summary === 'string' ? member.summary.trim() : '';
+    if (summary) return summary;
+
+    const qualifiers = Array.isArray(member.qualifiers)
+      ? member.qualifiers.filter((q): q is string => typeof q === 'string')
+      : [];
+    const name = typeof member.name === 'string' ? member.name : '';
+    const returnType = typeof member.returnType === 'string' ? member.returnType.trim() : '';
+
+    const adjective = qualifiers.includes('= delete')
+      ? 'Deleted'
+      : qualifiers.includes('= default')
+        ? 'Defaulted'
+        : '';
+
+    if (!adjective) return '';
+    if (name === 'operator=') return `${adjective} assignment operator.`;
+    if (name.startsWith('~')) return `${adjective} destructor.`;
+    if (!returnType) return `${adjective} constructor.`;
+    return `${adjective} member function.`;
+  };
+
   // Classic helpers
   Handlebars.registerHelper('cell', (code: string) =>
     code.replace(/\|/g, '\\|').replace(/\n/g, '<br/>'),
@@ -158,6 +181,10 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
         : '';
       return !!name && !!description;
     });
+  });
+
+  Handlebars.registerHelper('memberSummary', function (this: Record<string, unknown>) {
+    return synthesizedMemberSummary(this);
   });
 
   // Clean anchor: generates a readable anchor, using the anchor map for consistency

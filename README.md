@@ -5,7 +5,9 @@
 [![Node](https://img.shields.io/node/v/moxygen)](https://nodejs.org)
 [![License](https://img.shields.io/npm/l/moxygen)](https://github.com/sourcey/moxygen/blob/master/LICENCE)
 
-Doxygen XML to Markdown converter for C++ and Java developers who want minimal, beautiful API documentation.
+Doxygen XML to Markdown converter. Doxygen's parser is solid; its HTML output looks like 1998. Every tool that tried to replace the parser (Standardese, hdoc, DoxyPress) stalled. The other option is a four-tool Breathe + Exhale + Sphinx pipeline. Moxygen takes a simpler approach: parse the XML, emit clean Markdown, let your docs tool handle the rest.
+
+Used as the C++ documentation engine in [Sourcey](https://github.com/sourcey/sourcey).
 
 ## Features
 
@@ -29,7 +31,7 @@ Requires Node.js 20+.
 
 ## Usage
 
-1. Add `GENERATE_XML=YES` to your `Doxyfile`
+1. Add `GENERATE_XML=YES` to your `Doxyfile` (see [Icey's Doxyfile](https://github.com/sourcey/icey/blob/main/Doxyfile) for a real-world example)
 2. Run `doxygen` to generate the XML documentation
 3. Run `moxygen` pointing to the XML output directory
 
@@ -120,9 +122,12 @@ To create your own templates, copy the `templates/cpp/` directory and modify. Te
 
 ## Programmatic API
 
-```typescript
-import { run } from 'moxygen';
+Two entry points: `run()` writes Markdown files to disk, `generate()` returns structured page objects for library consumers.
 
+```typescript
+import { run, generate } from 'moxygen';
+
+// Write files to disk (CLI equivalent)
 await run({
   directory: '/path/to/doxygen/xml',
   output: 'api.md',
@@ -135,6 +140,18 @@ await run({
   groups: true,
   sourceRoot: '/path/to/project/src',
 });
+
+// Library API - returns GeneratedPage[] (no disk I/O)
+// This is what Sourcey uses internally
+const pages = await generate({
+  directory: '/path/to/doxygen/xml',
+  language: 'cpp',
+});
+
+for (const page of pages) {
+  console.log(page.slug, page.title, page.kind);
+  console.log(page.markdown); // rendered markdown body
+}
 ```
 
 ## Development

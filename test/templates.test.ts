@@ -13,6 +13,8 @@ const renderParamTable = Handlebars.compile(`
 {{/if}}
 `);
 
+const renderMemberSummary = Handlebars.compile(`{{memberSummary this}}`);
+
 describe('template helpers', () => {
   it('omits the parameter table when no parameter has documentation', () => {
     const output = renderParamTable({
@@ -36,5 +38,27 @@ describe('template helpers', () => {
     expect(output).toContain('| Parameter | Type | Description |');
     expect(output).toContain('| `mode` | `uv_run_mode` | libuv run mode. |');
     expect(output).not.toContain('| `loop` | `Loop *` |');
+  });
+
+  it('synthesizes deleted constructor summaries when documentation is missing', () => {
+    const output = renderMemberSummary({
+      name: 'PeerSession',
+      returnType: '',
+      summary: '',
+      qualifiers: ['= delete'],
+    }).trim();
+
+    expect(output).toBe('Deleted constructor.');
+  });
+
+  it('synthesizes defaulted assignment summaries when documentation is missing', () => {
+    const output = renderMemberSummary({
+      name: 'operator=',
+      returnType: 'Foo &',
+      summary: '',
+      qualifiers: ['= default'],
+    }).trim();
+
+    expect(output).toBe('Defaulted assignment operator.');
   });
 });

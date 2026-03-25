@@ -76,11 +76,11 @@
 
 {{detaileddescription}}
 
-{{#if (hasParams)}}
+{{#if (hasDocumentedParams params)}}
 | Parameter | Type | Description |
 |-----------|------|-------------|
-{{#each params}}{{#if name}}| `{{name}}` | `{{type}}` | {{description}} |
-{{/if}}{{/each}}
+{{#each (documentedParams params)}}| `{{name}}` | `{{type}}` | {{description}} |
+{{/each}}
 {{/if}}
 
 {{#if enumvalue}}

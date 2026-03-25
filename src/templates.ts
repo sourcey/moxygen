@@ -126,6 +126,40 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
     return params && params.length > 0 && params.some(p => p.name);
   });
 
+  Handlebars.registerHelper('documentedParams', (params: unknown) => {
+    if (!Array.isArray(params)) {
+      return [];
+    }
+    return params.filter((param) => {
+      if (!param || typeof param !== 'object') {
+        return false;
+      }
+      const record = param as Record<string, unknown>;
+      const name = typeof record.name === 'string' ? record.name.trim() : '';
+      const description = typeof record.description === 'string'
+        ? record.description.trim()
+        : '';
+      return !!name && !!description;
+    });
+  });
+
+  Handlebars.registerHelper('hasDocumentedParams', (params: unknown) => {
+    if (!Array.isArray(params)) {
+      return false;
+    }
+    return params.some((param) => {
+      if (!param || typeof param !== 'object') {
+        return false;
+      }
+      const record = param as Record<string, unknown>;
+      const name = typeof record.name === 'string' ? record.name.trim() : '';
+      const description = typeof record.description === 'string'
+        ? record.description.trim()
+        : '';
+      return !!name && !!description;
+    });
+  });
+
   // Clean anchor: generates a readable anchor, using the anchor map for consistency
   Handlebars.registerHelper('cleanAnchor', (refid: string, name: string) => {
     const id = activeAnchorMap?.get(refid) ?? cleanId(name || refid);

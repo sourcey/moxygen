@@ -19,7 +19,9 @@ let parserOptions: MoxygenOptions;
 const references: References = {};
 let root: Compound;
 
+/**
  * Convert a Doxygen XML element tree to Markdown.
+ */
 function toMarkdown(element: unknown, context: XmlElement[] = []): string {
   if (typeof element === 'string') {
     return element;
@@ -821,7 +823,9 @@ function parseIndex(
   }
 }
 
+/**
  * Load and parse Doxygen XML index.
+ */
 export async function loadIndex(options: MoxygenOptions): Promise<{ root: Compound; references: References }> {
   parserOptions = options;
   root = createCompound();

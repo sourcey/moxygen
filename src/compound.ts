@@ -40,7 +40,9 @@ export function findCompound(
   return compound;
 }
 
+/**
  * Recursively collect compounds (and optionally filter by kind) into a flat array.
+ */
 export function toArray(
   compound: Compound,
   type: 'compounds' | 'members' = 'compounds',
@@ -63,7 +65,9 @@ export function toArray(
   return result;
 }
 
+/**
  * Recursively collect filtered compounds into a flat array.
+ */
 export function toFilteredArray(
   compound: Compound,
   type: 'compounds' | 'members' = 'compounds',
@@ -81,7 +85,9 @@ export function toFilteredArray(
   return result;
 }
 
+/**
  * Filter a collection by a key matching allowed categories, optionally scoped to a group.
+ */
 export function filterCollection(
   collection: Record<string, Compound | Member> | (Compound | Member)[],
   key: string,
@@ -133,7 +139,9 @@ export function filterCollection(
   return result;
 }
 
+/**
  * Apply filters recursively to a compound and all its children.
+ */
 export function filterChildren(
   compound: Compound,
   filters: Filters,
@@ -195,8 +203,10 @@ const SECTION_LABELS: Record<string, string> = {
 
 const NOISE_RE = /^(TYPE|BREAK|DEG|SEP|IMPL)_\d+$/;
 
+/**
  * Remove noisy members: undocumented destructors, internal macros,
  * undocumented copy/move operators.
+ */
 export function filterNoise(members: Member[]): Member[] {
   return members.filter((m) => {
     if (m.section === 'define' && !m.briefdescription && !m.detaileddescription) return false;
@@ -207,7 +217,9 @@ export function filterNoise(members: Member[]): Member[] {
   });
 }
 
+/**
  * Group filtered members by their section kind for structured output.
+ */
 export function groupMembersBySection(compound: Compound): SectionGroup[] {
   const groups: Record<string, Member[]> = {};
   const order: string[] = [];

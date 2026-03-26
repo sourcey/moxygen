@@ -144,7 +144,9 @@ function extractMeta(compound: Compound): CompoundMeta {
   };
 }
 
+/**
  * Generate YAML frontmatter string from metadata.
+ */
 export function generateFrontmatter(meta: CompoundMeta): string {
   const lines = ['---'];
   lines.push(`title: "${meta.title}"`);
@@ -161,7 +163,9 @@ export function generateFrontmatter(meta: CompoundMeta): string {
 // generate() — library API returning structured pages (no disk I/O)
 // ---------------------------------------------------------------------------
 
+/**
  * Apply noise filtering and section grouping to a compound after filterChildren.
+ */
 function prepareCompound(compound: Compound): void {
   compound.filtered.members = filterNoise(compound.filtered.members);
   compound.filtered.sections = groupMembersBySection(compound);
@@ -433,10 +437,12 @@ function finalizeGroups(groups: Compound[], sharedNamespaceRefs: Set<string>): v
   }
 }
 
+/**
  * Parse Doxygen XML and return structured pages with rendered markdown.
  * Markdown is the body only; metadata is in the structured fields.
  * Uses Doxygen groups (@defgroup/@addtogroup) as the primary module
  * organization when available, falling back to namespaces.
+ */
 export async function generate(
   options: Partial<MoxygenOptions> & { directory: string },
 ): Promise<GeneratedPage[]> {
@@ -618,7 +624,9 @@ function lastSegment(ns: string): string {
 // run() — CLI API writing to disk
 // ---------------------------------------------------------------------------
 
+/**
  * Parse Doxygen XML and render Markdown output to disk.
+ */
 export async function run(options: Partial<MoxygenOptions> & { directory: string }): Promise<void> {
   const opts = resolveOptions(options);
   const { root, references } = await loadAndPrepare(opts);
@@ -728,8 +736,10 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
 // Internal helpers
 // ---------------------------------------------------------------------------
 
+/**
  * Write compound to disk, optionally prepending YAML frontmatter.
  * Works for all output modes (groups, classes, pages, single).
+ */
 function writeWithOptionalFrontmatter(
   compound: Compound,
   contents: (string | undefined)[],
@@ -751,8 +761,10 @@ function writeWithOptionalFrontmatter(
 const JUNK_NAMESPACES = new Set(['std', 'detail', 'nlohmann']);
 const JUNK_NAME_RE = /^@\d+$/;
 
+/**
  * Skip compounds that produce junk documentation:
  * std namespace, anonymous groups (@123), deprecated pseudo-pages.
+ */
 function isJunkCompound(compound: Compound): boolean {
   const name = compound.name;
   if (JUNK_NAMESPACES.has(name)) return true;
@@ -761,7 +773,9 @@ function isJunkCompound(compound: Compound): boolean {
   return false;
 }
 
+/**
  * Skip Doxygen pages auto-generated from source tree markdown files.
+ */
 function isJunkPage(page: Compound): boolean {
   return page.name.startsWith('md_') || page.name === 'deprecated';
 }
@@ -796,10 +810,12 @@ function shortname(name: string): string {
   return parts[parts.length - 1] || name;
 }
 
+/**
  * Build a readable title for a compound.
  * Inner classes: "Device::AudioCapability"
  * Deep sub-namespace classes: "ws::ConnectionAdapter"
  * Top-level module classes: "Server" (icy::http::Server stays as Server)
+ */
 function qualifiedTitle(compound: Compound): string {
   const name = shortname(compound.name);
 

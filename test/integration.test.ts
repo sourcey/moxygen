@@ -195,6 +195,38 @@ describe('integration', () => {
     expect(groupPage!.markdown).toContain('demo-PacketStream.html#packetstream');
   });
 
+  it('resolves generated page descriptions with the same cross-links as the body markdown', async () => {
+    const pages = await generate({
+      directory: sharedGroupedXmlDir,
+      groups: true,
+      anchors: true,
+      quiet: true,
+      sourceRoot: sharedGroupedSourceDir,
+    });
+
+    const peerSession = pages.find((page) => page.slug === 'demo-PeerSession');
+    expect(peerSession).toBeDefined();
+    expect(peerSession!.description)
+      .toBe('Session type documented in a different group from [PacketStream](demo-PacketStream.html#packetstream).');
+  });
+
+  it('writes resolved links into frontmatter descriptions', async () => {
+    const outputDir = join(outputRoot, 'shared-grouped-frontmatter');
+
+    await run({
+      directory: sharedGroupedXmlDir,
+      output: join(outputDir, '%s.md'),
+      classes: true,
+      anchors: true,
+      quiet: true,
+      frontmatter: true,
+    });
+
+    const content = read(join(outputDir, 'demo--PeerSession.md'));
+    expect(content)
+      .toContain('description: "Session type documented in a different group from [PacketStream](demo--PacketStream.md#packetstream)."');
+  });
+
   it('generates single file output', async () => {
     const singleOutput = join(outputRoot, 'single-api.md');
 

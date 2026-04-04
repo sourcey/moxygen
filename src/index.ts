@@ -130,7 +130,11 @@ interface CompoundMeta {
   description: string;
 }
 
-function extractMeta(compound: Compound): CompoundMeta {
+function extractRawDescription(compound: Compound): string {
+  return compound.briefdescription || firstSentence(compound.detaileddescription) || '';
+}
+
+function extractMeta(compound: Compound, description = extractRawDescription(compound)): CompoundMeta {
   const ns = findNamespace(compound);
   const group = findGroup(compound);
   return {
@@ -140,8 +144,28 @@ function extractMeta(compound: Compound): CompoundMeta {
     module: group?.name,
     namespace: ns?.fullname,
     header: compound.includes as string | undefined,
-    description: compound.briefdescription || firstSentence(compound.detaileddescription) || '',
+    description,
   };
+}
+
+function extractResolvedMeta(
+  compound: Compound,
+  references: References,
+  options: MoxygenOptions,
+  anchorMap?: AnchorMap,
+  slugMap?: SlugMap,
+  pagePathMap?: PagePathMap,
+): CompoundMeta {
+  const description = renderCompound(
+    compound,
+    [extractRawDescription(compound)],
+    references,
+    options,
+    anchorMap,
+    slugMap,
+    pagePathMap,
+  );
+  return extractMeta(compound, description);
 }
 
 /**
@@ -530,19 +554,17 @@ export async function generate(
 
     const md = templates.render(compound);
     if (!md) return;
+    const meta = extractResolvedMeta(compound, references, opts, anchorMap, slugMap);
+    if (moduleName) meta.module = moduleName;
 
     if (compound.kind === 'group') {
       pages.push({
-        slug: slugify(compound.name),
+        ...meta,
         title: compound.shortname || compound.name,
-        kind: 'group',
         module: compound.name,
-        description: compound.briefdescription || firstSentence(compound.detaileddescription) || '',
         markdown: renderCompound(compound, [md], references, opts, anchorMap, slugMap),
       });
     } else {
-      const meta = extractMeta(compound);
-      if (moduleName) meta.module = moduleName;
       pages.push({ ...meta, markdown: renderCompound(compound, [md], references, opts, anchorMap, slugMap) });
     }
   }
@@ -585,12 +607,13 @@ export async function generate(
     pageCompounds.unshift(page);
     const content = templates.renderArray(pageCompounds);
     const markdown = renderCompound(page, content, references, opts, anchorMap);
+    const meta = extractResolvedMeta(page, references, opts, anchorMap);
     if (markdown) {
       pages.push({
         slug: page.name,
         title: shortname(page.name),
         kind: 'page',
-        description: page.briefdescription || '',
+        description: meta.description,
         markdown,
       });
     }
@@ -751,7 +774,9 @@ function writeWithOptionalFrontmatter(
   if (options.frontmatter) {
     const filepath = compoundPath(compound, options);
     const body = renderCompound(compound, contents, references, options, anchorMap, undefined, pagePathMap);
-    const fm = generateFrontmatter(extractMeta(compound));
+    const fm = generateFrontmatter(
+      extractResolvedMeta(compound, references, options, anchorMap, undefined, pagePathMap),
+    );
     writeFile(filepath, [fm, body]);
   } else {
     writeCompound(compound, contents, references, options, anchorMap, pagePathMap);

@@ -1,0 +1,12 @@
+{
+  "name": "moxygen-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "site:build": "sourcey build -o ../dist",
+    "site:dev": "sourcey dev"
+  },
+  "dependencies": {
+    "sourcey": "^3.4.10"
+  }
+}

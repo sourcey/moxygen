@@ -1,13 +1,13 @@
 # Moxygen
 
-[![CI](https://github.com/nilstate/moxygen/actions/workflows/ci.yml/badge.svg)](https://github.com/nilstate/moxygen/actions/workflows/ci.yml)
+[![CI](https://github.com/sourcey/moxygen/actions/workflows/ci.yml/badge.svg)](https://github.com/sourcey/moxygen/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/moxygen)](https://www.npmjs.com/package/moxygen)
 [![Node](https://img.shields.io/node/v/moxygen)](https://nodejs.org)
-[![License](https://img.shields.io/npm/l/moxygen)](https://github.com/nilstate/moxygen/blob/master/LICENCE)
+[![License](https://img.shields.io/npm/l/moxygen)](https://github.com/sourcey/moxygen/blob/master/LICENCE)
 
 Doxygen XML to Markdown converter. Doxygen's parser is solid; its HTML output looks like 1998. Every tool that tried to replace the parser (Standardese, hdoc, DoxyPress) stalled. The other option is a four-tool Breathe + Exhale + Sphinx pipeline. Moxygen takes a simpler approach: parse the XML, emit clean Markdown, let your docs tool handle the rest.
 
-Used as the C++ documentation engine in [Sourcey](https://github.com/nilstate/sourcey).
+Used as the C++ documentation engine in [Sourcey](https://github.com/sourcey/sourcey).
 
 ## Features
 

@@ -7,6 +7,6 @@
     "site:dev": "sourcey dev"
   },
   "dependencies": {
-    "sourcey": "^3.4.10"
+    "sourcey": "^3.5.0"
   }
 }

@@ -9,6 +9,7 @@ const fileGroupedXmlDir = join(import.meta.dirname, 'fixtures', 'file-grouped', 
 const fileGroupedSourceDir = join(import.meta.dirname, 'fixtures', 'file-grouped', 'src');
 const sharedGroupedXmlDir = join(import.meta.dirname, 'fixtures', 'shared-grouped', 'xml-out', 'xml');
 const sharedGroupedSourceDir = join(import.meta.dirname, 'fixtures', 'shared-grouped', 'src');
+const titleDuplicationXmlDir = join(import.meta.dirname, 'fixtures', 'title-duplication', 'xml-out', 'xml');
 const ungroupedXmlDir = join(import.meta.dirname, 'fixtures', 'ungrouped', 'xml-out', 'xml');
 
 const exampleOutputDir = join(outputRoot, 'example');
@@ -242,5 +243,22 @@ describe('integration', () => {
     expect(content).toContain('Bicycle');
     expect(content).toContain('MountainBike');
     expect(content).toContain('RacingBike');
+  });
+
+  it('does not duplicate Doxygen section titles into the section body', async () => {
+    const outputDir = join(outputRoot, 'title-duplication');
+
+    await run({
+      directory: titleDuplicationXmlDir,
+      output: join(outputDir, '%s.md'),
+      classes: true,
+      anchors: false,
+      quiet: true,
+    });
+
+    const content = read(join(outputDir, 'demo.md')).replace(/\r\n/g, '\n');
+    expect(content).toContain('## Requirements\n\n### Windows\nSupported on Windows 11.');
+    expect(content).not.toContain('## Requirements\nRequirements');
+    expect(content).not.toContain('### Windows\nWindowsSupported on Windows 11.');
   });
 });

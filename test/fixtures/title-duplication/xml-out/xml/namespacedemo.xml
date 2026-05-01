@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespacedemo" kind="namespace" language="C++">
+    <compoundname>demo</compoundname>
+    <briefdescription>
+      <para>Namespace used to reproduce duplicated section headings.</para>
+    </briefdescription>
+    <detaileddescription>
+      <sect1 id="namespacedemo_1autotoc_md0">
+        <title>Requirements</title>
+        <sect2 id="namespacedemo_1autotoc_md1">
+          <title>Windows</title>
+          <para>Supported on Windows 11.</para>
+        </sect2>
+      </sect1>
+    </detaileddescription>
+    <location file="src/demo.hpp" line="1" column="1"/>
+  </compounddef>
+</doxygen>

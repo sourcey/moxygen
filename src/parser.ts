@@ -125,8 +125,8 @@ function toMarkdown(element: unknown, context: XmlElement[] = []): string {
       break;
     case 'title': {
       const level = '#'.repeat(Number(context[context.length - 1]?.['#name']?.slice(-1) ?? '1'));
-      s = `\n#${level} ${el._ ?? ''}\n`;
-      break;
+      const title = trim(el.$$ ? toMarkdown(el.$$, context) : (el._ ?? ''));
+      return `\n#${level} ${title}\n`;
     }
     case 'mdash':
       s = '&mdash;';

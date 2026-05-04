@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespacedemo" kind="namespace" language="C++">
+    <compoundname>demo</compoundname>
+    <briefdescription>
+      <para>Namespace used to verify programlisting language detection.</para>
+    </briefdescription>
+    <detaileddescription>
+      <para><programlisting filename=".py"><codeline><highlight class="normal">print(<sp/></highlight><highlight class="stringliteral">&quot;hello&quot;</highlight><highlight class="normal">)</highlight></codeline>
+</programlisting></para>
+    </detaileddescription>
+    <location file="src/demo.hpp" line="1" column="1"/>
+  </compounddef>
+</doxygen>

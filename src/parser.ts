@@ -63,9 +63,11 @@ function toMarkdown(element: unknown, context: XmlElement[] = []): string {
     case 'parameteritem':
       s = '* ';
       break;
-    case 'programlisting':
-      s = '\n```cpp\n';
+    case 'programlisting': {
+      const lang = el.$?.filename?.match(/\.([a-z0-9]+)$/i)?.[1] ?? 'cpp';
+      s = `\n\`\`\`${lang}\n`;
       break;
+    }
     case 'orderedlist':
       context.push(el);
       s = '\n\n';

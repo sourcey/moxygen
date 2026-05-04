@@ -10,6 +10,7 @@ const fileGroupedSourceDir = join(import.meta.dirname, 'fixtures', 'file-grouped
 const sharedGroupedXmlDir = join(import.meta.dirname, 'fixtures', 'shared-grouped', 'xml-out', 'xml');
 const sharedGroupedSourceDir = join(import.meta.dirname, 'fixtures', 'shared-grouped', 'src');
 const ungroupedXmlDir = join(import.meta.dirname, 'fixtures', 'ungrouped', 'xml-out', 'xml');
+const programlistingLangXmlDir = join(import.meta.dirname, 'fixtures', 'programlisting-language', 'xml-out', 'xml');
 
 const exampleOutputDir = join(outputRoot, 'example');
 
@@ -115,15 +116,15 @@ describe('integration', () => {
     });
 
     const namespacePath = join(outputDir, 'demo.md');
-    const classPath = join(outputDir, 'demo--Plain.md');
+    const classPath = join(outputDir, 'demo-Plain.md');
 
     expect(existsSync(namespacePath), 'demo.md should exist').toBe(true);
-    expect(existsSync(classPath), 'demo--Plain.md should exist').toBe(true);
+    expect(existsSync(classPath), 'demo-Plain.md should exist').toBe(true);
 
     const namespaceContent = read(namespacePath);
     expect(namespaceContent).toContain('# demo');
     expect(namespaceContent).toContain('namespace-scoped type for ungrouped rendering.');
-    expect(namespaceContent).toContain('demo--Plain.md#plain');
+    expect(namespaceContent).toContain('demo-Plain.md#plain');
 
     const classContent = read(classPath);
     expect(classContent).toContain('## Plain');
@@ -222,9 +223,25 @@ describe('integration', () => {
       frontmatter: true,
     });
 
-    const content = read(join(outputDir, 'demo--PeerSession.md'));
+    const content = read(join(outputDir, 'demo-PeerSession.md'));
     expect(content)
-      .toContain('description: "Session type documented in a different group from [PacketStream](demo--PacketStream.md#packetstream)."');
+      .toContain('description: "Session type documented in a different group from [PacketStream](demo-PacketStream.md#packetstream)."');
+  });
+
+  it('uses programlisting filename extension as the code fence language', async () => {
+    const outputDir = join(outputRoot, 'programlisting-language');
+
+    await run({
+      directory: programlistingLangXmlDir,
+      output: join(outputDir, '%s.md'),
+      classes: true,
+      anchors: false,
+      quiet: true,
+    });
+
+    const content = read(join(outputDir, 'demo.md')).replace(/\r\n/g, '\n');
+    expect(content).toContain('```py');
+    expect(content).not.toContain('```cpp');
   });
 
   it('generates single file output', async () => {

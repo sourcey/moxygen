@@ -224,7 +224,7 @@ export function compoundPath(compound: Compound, options: MoxygenOptions): strin
   if (options.classes) {
     return utilFormat(
       options.output,
-      compound.name.replace(/:/g, '-').replace('<', '(').replace('>', ')'),
+      compound.name.replace(/::/g, '-').replace('<', '(').replace('>', ')'),
     );
   }
   return options.output;

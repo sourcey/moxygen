@@ -5,6 +5,7 @@ import {
   findParent,
   stripMarkdownLinks,
   buildCleanAnchorMap,
+  compoundPath,
   resolveRefs,
 } from '../src/helpers.js';
 import { createCompound } from '../src/compound.js';
@@ -209,6 +210,19 @@ describe('helpers', () => {
       );
 
       expect(resolved).toContain('[Widget](demo-Widget.html#widget-1)');
+    });
+  });
+
+  describe('compoundPath', () => {
+    it('collapses namespace separators into a single dash', () => {
+      const compound = createCompound(null, 'classicy_1_1wrtc_1_1MediaBridge', 'icy::wrtc::MediaBridge');
+      compound.kind = 'class';
+
+      const options = makeOptions('/tmp/docs/%s.md');
+      options.classes = true;
+      options.groups = false;
+
+      expect(compoundPath(compound, options)).toBe('/tmp/docs/icy-wrtc-MediaBridge.md');
     });
   });
 });

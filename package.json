@@ -55,6 +55,6 @@
     "@types/xml2js": "^0.4.14",
     "sourcey": "^3.6.0",
     "typescript": "^5.7.0",
-    "vitest": "^3.0.0"
+    "vitest": "^4.1.0"
   }
 }

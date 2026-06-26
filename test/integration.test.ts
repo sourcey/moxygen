@@ -15,6 +15,7 @@ const ungroupedXmlDir = join(import.meta.dirname, 'fixtures', 'ungrouped', 'xml-
 const programlistingLangXmlDir = join(import.meta.dirname, 'fixtures', 'programlisting-language', 'xml-out', 'xml');
 const missingTagsXmlDir = join(import.meta.dirname, 'fixtures', 'missing-tags', 'xml-out', 'xml');
 const memberKindsXmlDir = join(import.meta.dirname, 'fixtures', 'member-kinds', 'xml-out', 'xml');
+const issue97XmlDir = join(import.meta.dirname, 'fixtures', 'issue-97', 'xml-out', 'xml');
 
 const exampleOutputDir = join(outputRoot, 'example');
 
@@ -162,6 +163,33 @@ describe('integration', () => {
     const groupPage = pages.find((page) => page.kind === 'group' && page.slug === 'widget');
     expect(groupPage).toBeDefined();
     expect(groupPage!.markdown).toContain('| [`demo`](#demo) |');
+  });
+
+  it('writes grouped output, page output, and root globals in one run', async () => {
+    const outputDir = join(outputRoot, 'issue-97');
+
+    await run({
+      directory: issue97XmlDir,
+      output: join(outputDir, '%s.md'),
+      groups: true,
+      pages: true,
+      anchors: true,
+      quiet: true,
+    });
+
+    const page = read(join(outputDir, 'page-index.md'));
+    expect(page).toContain('# Main {#main}');
+    expect(page).toContain('Reference [Group 1](g1.md#group1)');
+    expect(page).toContain('Reference [a1](api.md#a1)');
+    expect(page).toContain('Reference [g1_a1](g1.md#g1_a1)');
+
+    const api = read(join(outputDir, 'api.md'));
+    expect(api).toContain('#### a1');
+    expect(api).toContain('a1 is a top level 1');
+    expect(api).not.toContain('g1_a1');
+
+    const group = read(join(outputDir, 'g1.md'));
+    expect(group).toContain('#### g1_a1');
   });
 
   it('keeps root-level classes from shared namespaces on grouped module pages', async () => {

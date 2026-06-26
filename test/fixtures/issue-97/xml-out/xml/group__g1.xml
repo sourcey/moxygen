@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="group__g1" kind="group">
+    <compoundname>g1</compoundname>
+    <title>Group 1</title>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="group__g1_1ga527b7ac6552c449f7e636c7785318a4b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int g1_a1</definition>
+        <argsstring></argsstring>
+        <name>g1_a1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/g1.h" line="11" column="5" bodyfile="src/g1.h" bodystart="11" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

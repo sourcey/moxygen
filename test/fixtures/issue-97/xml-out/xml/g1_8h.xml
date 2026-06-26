@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="g1_8h" kind="file" language="C++">
+    <compoundname>g1.h</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="g1_8h_1a4eaab29a4b95a3df43f309d4db0537f9" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int a1</definition>
+        <argsstring></argsstring>
+        <name>a1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>a1 is a top level 1 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/g1.h" line="4" column="5" bodyfile="src/g1.h" bodystart="4" bodyend="-1"/>
+      </memberdef>
+      <member refid="group__g1_1ga527b7ac6552c449f7e636c7785318a4b" kind="variable"><name>g1_a1</name></member>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4" refid="g1_8h_1a4eaab29a4b95a3df43f309d4db0537f9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="g1_8h_1a4eaab29a4b95a3df43f309d4db0537f9" kindref="member">a1</ref>;</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11" refid="group__g1_1ga527b7ac6552c449f7e636c7785318a4b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="group__g1_1ga527b7ac6552c449f7e636c7785318a4b" kindref="member">g1_a1</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/g1.h"/>
+  </compounddef>
+</doxygen>

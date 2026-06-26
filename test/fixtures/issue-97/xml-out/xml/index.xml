@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.17.0" xml:lang="en-US">
+  <compound refid="g1_8h" kind="file"><name>g1.h</name>
+    <member refid="g1_8h_1a4eaab29a4b95a3df43f309d4db0537f9" kind="variable"><name>a1</name></member>
+    <member refid="group__g1_1ga527b7ac6552c449f7e636c7785318a4b" kind="variable"><name>g1_a1</name></member>
+  </compound>
+  <compound refid="p1_8dox" kind="file"><name>p1.dox</name>
+  </compound>
+  <compound refid="group__g1" kind="group"><name>g1</name>
+    <member refid="group__g1_1ga527b7ac6552c449f7e636c7785318a4b" kind="variable"><name>g1_a1</name></member>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+  <compound refid="indexpage" kind="page"><name>index</name>
+  </compound>
+</doxygenindex>

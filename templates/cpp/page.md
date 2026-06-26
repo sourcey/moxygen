@@ -1,4 +1,4 @@
-# {{shortname name}} {{cleanAnchor refid name}}
+# {{#if this.shortname}}{{this.shortname}}{{else}}{{shortname name}}{{/if}} {{cleanAnchor refid name}}
 
 {{briefdescription}}
 

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="indexpage" kind="page">
+    <compoundname>index</compoundname>
+    <title>Main</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>this is main page</para>
+<para>Reference <ref refid="group__g1" kindref="compound">Group 1</ref> Reference <ref refid="g1_8h_1a4eaab29a4b95a3df43f309d4db0537f9" kindref="member">a1</ref> Reference <ref refid="group__g1_1ga527b7ac6552c449f7e636c7785318a4b" kindref="member">g1_a1</ref> </para>
+    </detaileddescription>
+    <location file="src/p1.dox"/>
+  </compounddef>
+</doxygen>

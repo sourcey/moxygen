@@ -192,6 +192,22 @@ export function resolveRefs(
     return `${relPath || targetPath}#${anchor(refid)}`;
   }
 
+  function mappedHref(refid: string): string | undefined {
+    const targetPath = pagePathMap?.get(refid);
+    if (!targetPath) return undefined;
+
+    const currentPath = outputPath(compound);
+    if (targetPath === currentPath) {
+      return `#${anchor(refid)}`;
+    }
+    if (slugMap) {
+      return `${targetPath}#${anchor(refid)}`;
+    }
+
+    const relPath = relative(dirname(currentPath), targetPath).replace(/\\/g, '/');
+    return `${relPath || targetPath}#${anchor(refid)}`;
+  }
+
   return content.replace(/\{#ref ([^ ]+) #\}/g, (_, refid: string) => {
     const ref = references[refid];
     if (!ref) return `#${anchor(refid)}`;
@@ -200,6 +216,11 @@ export function resolveRefs(
 
     if (page) {
       return hrefTo(page, refid);
+    }
+
+    const directHref = mappedHref(refid);
+    if (directHref) {
+      return directHref;
     }
 
     if (options.groups || slugMap) {
@@ -228,6 +249,9 @@ export function resolveRefs(
 export function compoundPath(compound: Compound, options: MoxygenOptions): string {
   if (compound.kind === 'page') {
     return `${dirname(options.output)}/page-${compound.name}.md`;
+  }
+  if (compound.kind === 'index' && options.groups) {
+    return `${dirname(options.output)}/api.md`;
   }
   if (options.groups) {
     return utilFormat(options.output, compound.groupname);

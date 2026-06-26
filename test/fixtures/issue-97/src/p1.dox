@@ -1,0 +1,9 @@
+/**
+  @mainpage Main
+
+  this is main page
+
+  Reference @ref g1
+  Reference @ref a1
+  Reference @ref g1_a1
+*/

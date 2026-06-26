@@ -27,6 +27,7 @@ program
   .option('-s, --source-root <dir>', 'source root used to resolve file-level group membership')
   .option('-f, --frontmatter', 'prepend YAML frontmatter to output files', false)
   .option('-L, --logfile [file]', 'output log messages to file (default: "moxygen.log")')
+  .option('-I, --inline-groups', 'inline group members into the parent compound instead of generating separate files', false)
   .option('-q, --quiet', 'quiet mode', false)
   .action(async (directory: string, opts: Record<string, unknown>) => {
     try {
@@ -45,6 +46,7 @@ program
         frontmatter: opts.frontmatter as boolean,
         logfile: opts.logfile as string | boolean | undefined,
         quiet: opts.quiet as boolean,
+        inlineGroups: opts.inlineGroups as boolean,
       });
     } catch (err) {
       console.error(err instanceof Error ? err.message : err);

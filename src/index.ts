@@ -64,6 +64,7 @@ export const defaultOptions: MoxygenOptions = {
   quiet: false,
   frontmatter: false,
   filters: defaultFilters,
+  inlineGroups: false,
 };
 
 // ---------------------------------------------------------------------------
@@ -962,6 +963,21 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
     }
   } else {
     const compounds = toFilteredArray(root, 'compounds');
+    if (opts.inlineGroups) {
+      const groups = (toArray(root, 'compounds', 'group') as Compound[])
+        .filter((g) => !isJunkCompound(g));
+      if (groups.length) {
+        augmentGroupsFromFiles(root, groups, opts); // to prepare
+        finalizeGroups(groups, collectSharedNamespaceRefs(toArray(root, 'compounds', 'file') as Compound[], opts));
+        for (const group of groups) {
+          filterChildren(group, opts.filters, group.id);
+          prepareCompound(group);
+          const childCompounds = toFilteredArray(group, 'compounds');
+          for (const c of childCompounds) prepareCompound(c);
+          compounds.push(group, ...childCompounds); // or insert at top or structured
+        }
+      }
+    }
     if (!opts.noindex) {
       compounds.unshift(root);
     }

@@ -38,6 +38,7 @@ export interface MoxygenOptions {
   quiet: boolean;
   frontmatter: boolean;
   filters: Filters;
+  inlineGroups: boolean;
 }
 
 export interface Filters {

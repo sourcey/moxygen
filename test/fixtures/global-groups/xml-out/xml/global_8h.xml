@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="global_8h" kind="file" language="C++">
+    <compoundname>global.h</compoundname>
+    <innerclass refid="classglobal__class" prot="public">global_class</innerclass>
+    <innerclass refid="classnested__class" prot="public">nested_class</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="global_8h_1ab16b63abd4589951d2edeccc54e70c3c" prot="public" static="no">
+        <name>GDEFINE</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This is a global define. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/global.h" line="4" column="9" bodyfile="src/global.h" bodystart="4" bodyend="-1"/>
+      </memberdef>
+      <member refid="group__global__group_1ga6958e7f1a4f816ea5a9d200678619eb3" kind="define"><name>GGROUP_DEFINE</name></member>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="global_8h_1ac14f6201995116bbf1ce58c95908abab" prot="public" static="no" mutable="no">
+        <type><ref refid="classglobal__class" kindref="compound">global_class</ref></type>
+        <definition>global_class global_a</definition>
+        <argsstring></argsstring>
+        <name>global_a</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This is a global variable. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/global.h" line="17" column="14" bodyfile="src/global.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4" refid="global_8h_1ab16b63abd4589951d2edeccc54e70c3c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GDEFINE<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9" refid="classglobal__class" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classglobal__class" kindref="compound">global_class</ref><sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="11" refid="classglobal__class_1affaae1576630cc2b03bd368e65f5bd96" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classglobal__class_1affaae1576630cc2b03bd368e65f5bd96" kindref="member">global_class_a</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="global_8h_1ac14f6201995116bbf1ce58c95908abab" refkind="member"><highlight class="normal"><ref refid="classglobal__class" kindref="compound">global_class</ref><sp/><ref refid="global_8h_1ac14f6201995116bbf1ce58c95908abab" kindref="member">global_a</ref>;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="group__global__group_1ga6958e7f1a4f816ea5a9d200678619eb3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GGROUP_DEFINE<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="classnested__class" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classnested__class" kindref="compound">nested_class</ref><sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="46" refid="classnested__class_1aabd38de5178db924112338506f0b7607" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classnested__class_1aabd38de5178db924112338506f0b7607" kindref="member">nested_class_a</ref>;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/global.h"/>
+  </compounddef>
+</doxygen>

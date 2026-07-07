@@ -1,11 +1,48 @@
 # API Reference
 
-{{#if filtered.compounds}}
+{{#with (compoundsOfKind filtered.compounds "group") as |groups|}}
+{{#if groups}}
+### Groups
+
 | Name | Description |
 |------|-------------|
-{{#each filtered.compounds}}| [`{{shortname name}}`](#{{cleanId refid name}}) | {{cell summary}} |
+{{#each groups}}| {{linkedName shortname refid}} | {{cell summary}} |
 {{/each}}
 {{/if}}
+{{/with}}
+
+{{#with (compoundsOfKind filtered.compounds "namespace") as |namespaces|}}
+{{#if namespaces}}
+### Namespaces
+
+| Name | Description |
+|------|-------------|
+{{#each namespaces}}| {{linkedName name refid}} | {{cell summary}} |
+{{/each}}
+{{/if}}
+{{/with}}
+
+{{#with (compoundsOfKind filtered.compounds "class" "struct" "interface") as |types|}}
+{{#if types}}
+### Classes
+
+| Name | Description |
+|------|-------------|
+{{#each types}}| {{linkedName name refid}} | {{cell summary}} |
+{{/each}}
+{{/if}}
+{{/with}}
+
+{{#with (compoundsOfKind filtered.compounds "enum") as |enums|}}
+{{#if enums}}
+### Enumerations
+
+| Name | Description |
+|------|-------------|
+{{#each enums}}| {{linkedName name refid}} | {{cell summary}} |
+{{/each}}
+{{/if}}
+{{/with}}
 
 {{#each filtered.sections}}
 ## {{label}}

@@ -33,7 +33,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>The modifier value if pedal power is used.</para><para>This definition exists in the default namespace and is ungrouped. It will <emphasis>not</emphasis> be displayed if the <computeroutput>groups</computeroutput> options is used. </para>        </detaileddescription>
+<para>The modifier value if pedal power is used.</para><para>This definition exists in the default namespace and is ungrouped. It is displayed on the root API page when grouped output is used. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
         <location file="src/transport.h" line="47" column="9" bodyfile="src/transport.h" bodystart="47" bodyend="-1"/>
@@ -67,7 +67,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Enum class for transport types.</para><para>This definition exists in the default namespace and is ungrouped. It will <emphasis>not</emphasis> be displayed if the <computeroutput>groups</computeroutput> options is used. </para>        </detaileddescription>
+<para>Enum class for transport types.</para><para>This definition exists in the default namespace and is ungrouped. It is displayed on the root API page when grouped output is used. </para>        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
         <location file="src/transport.h" line="35" column="1" bodyfile="src/transport.h" bodystart="35" bodyend="39"/>

@@ -283,7 +283,34 @@ function attachRelationshipSummaries(compounds: Compound[], references: Referenc
   }
 }
 
-const GROUP_MARKER_RE = /(?:@|\\)(?:addtogroup|ingroup)\s+([A-Za-z_][\w:-]*)/g;
+const DOXYGEN_COMMENT_RE = /\/\*\*[\s\S]*?\*\/|\/\*![\s\S]*?\*\/|(?:^[ \t]*(?:\/\/\/|\/\/!).*(?:\r?\n|$))+/gm;
+const ADDTOGROUP_MARKER_RE = /(?:@|\\)addtogroup\s+([A-Za-z_][\w:-]*)/g;
+const INGROUP_MARKER_RE = /(?:@|\\)ingroup\s+([A-Za-z_][\w:-]*)/g;
+const FILE_MARKER_RE = /(?:@|\\)file(?:\s|$)/;
+
+function addGroupMarkerTags(source: string, marker: RegExp, tags: Set<string>): void {
+  marker.lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = marker.exec(source)) !== null) {
+    tags.add(match[1]);
+  }
+}
+
+function collectSourceGroupTags(source: string): string[] {
+  const tags = new Set<string>();
+  DOXYGEN_COMMENT_RE.lastIndex = 0;
+
+  let comment: RegExpExecArray | null;
+  while ((comment = DOXYGEN_COMMENT_RE.exec(source)) !== null) {
+    const text = comment[0];
+    addGroupMarkerTags(text, ADDTOGROUP_MARKER_RE, tags);
+    if (FILE_MARKER_RE.test(text)) {
+      addGroupMarkerTags(text, INGROUP_MARKER_RE, tags);
+    }
+  }
+
+  return [...tags];
+}
 
 function resolveSourcePath(location: string, options: MoxygenOptions): string | undefined {
   const candidates: string[] = [];
@@ -335,13 +362,7 @@ function readFileGroupTags(file: Compound, options: MoxygenOptions): string[] {
   }
 
   const source = readFileSync(sourcePath, 'utf8');
-  const tags = new Set<string>();
-  let match: RegExpExecArray | null;
-  while ((match = GROUP_MARKER_RE.exec(source)) !== null) {
-    tags.add(match[1]);
-  }
-
-  file.fileGroupTags = [...tags];
+  file.fileGroupTags = collectSourceGroupTags(source);
   return file.fileGroupTags as string[];
 }
 
@@ -574,17 +595,22 @@ export async function generate(
     const seenPrep = new Set<string>();
     augmentGroupsFromFiles(root, groups, opts);
     finalizeGroups(groups, collectSharedNamespaceRefs(toArray(root, 'compounds', 'file') as Compound[], opts));
+    const filters = groupAwareFilters(opts.filters);
 
     // Group-based: each @defgroup becomes a module
     for (const group of groups) {
-      filterChildren(group, opts.filters, group.id);
+      filterChildren(group, filters, group.id);
       prepareCompound(group);
       allCompounds.push(group);
       seenPrep.add(group.refid);
 
       for (const child of toFilteredArray(group, 'compounds')) {
         if (isJunkCompound(child)) continue;
-        filterChildren(child, opts.filters);
+        if (child.kind === 'group') {
+          filterChildren(child, filters, child.id);
+        } else {
+          filterChildren(child, opts.filters);
+        }
         prepareCompound(child);
         allCompounds.push(child);
         seenPrep.add(child.refid);
@@ -631,7 +657,7 @@ export async function generate(
   for (const c of allCompounds) {
     slugMap.set(c.refid, slugify(c.name));
   }
-  const pagePathMap = useGroups ? buildGroupedNamespacePagePathMap(groups) : undefined;
+  const pagePathMap = useGroups ? buildGroupedPagePathMap(groups) : undefined;
   attachRelationshipSummaries(allCompounds, references);
 
   // Second pass: render (dedup by refid)
@@ -778,11 +804,13 @@ function lastSegment(ns: string): string {
   return parts[parts.length - 1] || ns;
 }
 
-function buildGroupedNamespacePagePathMap(groups: Compound[]): PagePathMap {
+function buildGroupedPagePathMap(groups: Compound[]): PagePathMap {
   const map: PagePathMap = new Map();
 
   for (const group of groups) {
     const groupPath = `${slugify(group.name)}.html`;
+    map.set(group.refid, groupPath);
+
     const namespaces = toArray(group, 'compounds', 'namespace') as Compound[];
     for (const namespace of namespaces) {
       if (isJunkCompound(namespace)) continue;
@@ -875,6 +903,61 @@ function searchCategoryForKind(kind: string): string {
 // run() — CLI API writing to disk
 // ---------------------------------------------------------------------------
 
+const CLASS_OUTPUT_KINDS = new Set(['namespace', 'class', 'struct', 'union', 'interface', 'enum', 'concept']);
+
+function groupAwareFilters(filters: Filters): Filters {
+  return {
+    ...filters,
+    compounds: [...new Set(['group', ...filters.compounds])],
+  };
+}
+
+function isClassOutputCompound(compound: Compound): boolean {
+  return CLASS_OUTPUT_KINDS.has(compound.kind) && !isJunkCompound(compound);
+}
+
+function uniqueCompounds(compounds: Compound[]): Compound[] {
+  const seen = new Set<string>();
+  const result: Compound[] = [];
+  for (const compound of compounds) {
+    if (seen.has(compound.refid)) continue;
+    seen.add(compound.refid);
+    result.push(compound);
+  }
+  return result;
+}
+
+function collectClassOutputCompounds(root: Compound): Compound[] {
+  return uniqueCompounds(
+    (toArray(root, 'compounds') as Compound[]).filter(isClassOutputCompound),
+  );
+}
+
+function collectRootIndexCompounds(root: Compound, groups: Compound[]): Compound[] {
+  const topLevelGroups = groups.filter((group) => group.parent?.kind !== 'group');
+  const rootCompounds = Object.values(root.compounds)
+    .filter((compound) => isClassOutputCompound(compound) && !compound.groupid);
+  return uniqueCompounds([...topLevelGroups, ...rootCompounds]);
+}
+
+function prepareRootIndex(root: Compound, groups: Compound[], opts: MoxygenOptions): void {
+  root.filtered.members = filterNoise(
+    filterCollection(root.members, 'section', opts.filters.members) as Member[],
+  );
+  root.filtered.compounds = collectRootIndexCompounds(root, groups);
+  root.filtered.sections = groupMembersBySection(root);
+}
+
+function ensurePathMap(pagePathMap: PagePathMap | undefined): PagePathMap {
+  return pagePathMap ?? new Map<string, string>();
+}
+
+function addCompoundPath(pagePathMap: PagePathMap, compound: Compound, opts: MoxygenOptions): void {
+  if (!pagePathMap.has(compound.refid)) {
+    pagePathMap.set(compound.refid, compoundPath(compound, opts));
+  }
+}
+
 /**
  * Parse Doxygen XML and render Markdown output to disk.
  */
@@ -882,74 +965,89 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
   const opts = resolveOptions(options);
   const { root, references } = await loadAndPrepare(opts);
   let pagePathMap: PagePathMap | undefined;
+  const splitOutput = opts.groups || opts.classes;
 
   // --- Pass 1: filter + prepare all compounds ---
   const allCompounds: Compound[] = [];
   let writeRootIndex = false;
+  let rootBodyCompounds: Compound[] = [];
+  let groups: Compound[] = [];
+  let classOutputCompounds: Compound[] = [];
 
   if (opts.groups) {
-    const groups = toArray(root, 'compounds', 'group') as Compound[];
+    groups = (toArray(root, 'compounds', 'group') as Compound[])
+      .filter((group) => !isJunkCompound(group));
     if (!groups.length) {
       throw new Error('You have enabled `groups` output, but no groups were located in your doxygen XML files.');
     }
     augmentGroupsFromFiles(root, groups, opts);
     finalizeGroups(groups, collectSharedNamespaceRefs(toArray(root, 'compounds', 'file') as Compound[], opts));
+  }
+
+  if (opts.classes) {
+    classOutputCompounds = collectClassOutputCompounds(root);
+    if (!classOutputCompounds.length) {
+      throw new Error('You have enabled `classes` output, but no classes were located in your doxygen XML files.');
+    }
+  }
+
+  if (opts.groups) {
+    const filters = groupAwareFilters(opts.filters);
     for (const group of groups) {
-      filterChildren(group, opts.filters, group.id);
+      filterChildren(group, filters, group.id);
       prepareCompound(group);
       const children = toFilteredArray(group, 'compounds');
       for (const c of children) prepareCompound(c);
-      if (!pagePathMap) {
-        pagePathMap = new Map<string, string>();
-      }
-      const pagePath = compoundPath(group, opts);
-      if (!pagePathMap.has(group.refid)) {
-        pagePathMap.set(group.refid, pagePath);
-      }
+      pagePathMap = ensurePathMap(pagePathMap);
+      addCompoundPath(pagePathMap, group, opts);
       for (const child of children) {
-        if (!pagePathMap.has(child.refid)) {
-          pagePathMap.set(child.refid, pagePath);
+        if (child.kind === 'group') {
+          addCompoundPath(pagePathMap, child, opts);
+        } else if (!opts.classes) {
+          pagePathMap.set(child.refid, compoundPath(group, opts));
         }
       }
       for (const refid of (group.fileScopedNamespaceRefs as string[] | undefined) ?? []) {
         if (!pagePathMap.has(refid)) {
-          pagePathMap.set(refid, pagePath);
+          pagePathMap.set(refid, compoundPath(group, opts));
         }
       }
       allCompounds.push(group, ...children);
     }
+  }
 
-    root.filtered.members = filterNoise(
-      filterCollection(root.members, 'section', opts.filters.members) as Member[],
+  if (opts.classes) {
+    for (const comp of classOutputCompounds) {
+      filterChildren(comp, opts.filters);
+      prepareCompound(comp);
+      allCompounds.push(comp);
+      pagePathMap = ensurePathMap(pagePathMap);
+      addCompoundPath(pagePathMap, comp, opts);
+    }
+  }
+
+  if (splitOutput) {
+    prepareRootIndex(root, groups, opts);
+    rootBodyCompounds = opts.classes
+      ? []
+      : root.filtered.compounds.filter((compound) => compound.kind !== 'group');
+    writeRootIndex = !opts.noindex && (
+      root.filtered.members.length > 0 ||
+      root.filtered.compounds.length > 0
     );
-    root.filtered.compounds = [];
-    root.filtered.sections = groupMembersBySection(root);
-    writeRootIndex = !opts.noindex && root.filtered.members.length > 0;
     if (writeRootIndex) {
-      if (!pagePathMap) {
-        pagePathMap = new Map<string, string>();
-      }
+      pagePathMap = ensurePathMap(pagePathMap);
       const pagePath = compoundPath(root, opts);
       pagePathMap.set(root.refid, pagePath);
       for (const member of root.filtered.members) {
         pagePathMap.set(member.refid, pagePath);
       }
-      allCompounds.push(root);
-    }
-  } else if (opts.classes) {
-    const rootCompounds = toArray(root, 'compounds', 'namespace') as Compound[];
-    if (!rootCompounds.length) {
-      throw new Error('You have enabled `classes` output, but no classes were located in your doxygen XML files.');
-    }
-    for (const comp of rootCompounds) {
-      filterChildren(comp, opts.filters);
-      prepareCompound(comp);
-      allCompounds.push(comp);
-      for (const e of toFilteredArray(comp)) {
-        filterChildren(e, opts.filters);
-        prepareCompound(e);
-        allCompounds.push(e);
+      if (!opts.classes) {
+        for (const compound of rootBodyCompounds) {
+          pagePathMap.set(compound.refid, pagePath);
+        }
       }
+      allCompounds.push(root);
     }
   } else {
     filterChildren(root, opts.filters);
@@ -965,25 +1063,25 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
   attachRelationshipSummaries(allCompounds, references);
 
   // --- Pass 2: render + write ---
-  if (opts.groups) {
+  if (splitOutput) {
     if (writeRootIndex) {
-      const contents = [templates.render(root)];
+      const contents = templates.renderArray([root, ...rootBodyCompounds]);
       contents.push('Generated by [Moxygen](https://0state.com/moxygen)');
       writeWithOptionalFrontmatter(root, contents, references, opts, anchorMap, pagePathMap);
     }
 
-    const groups = toArray(root, 'compounds', 'group') as Compound[];
-    for (const group of groups) {
-      const compounds = toFilteredArray(group, 'compounds');
-      compounds.unshift(group);
-      writeWithOptionalFrontmatter(group, templates.renderArray(compounds), references, opts, anchorMap, pagePathMap);
+    if (opts.groups) {
+      for (const group of groups) {
+        const compounds = toFilteredArray(group, 'compounds')
+          .filter((compound) => compound.kind !== 'group' && !opts.classes && compound.groupid === group.id);
+        compounds.unshift(group);
+        writeWithOptionalFrontmatter(group, templates.renderArray(compounds), references, opts, anchorMap, pagePathMap);
+      }
     }
-  } else if (opts.classes) {
-    const rootCompounds = toArray(root, 'compounds', 'namespace') as Compound[];
-    for (const comp of rootCompounds) {
-      writeWithOptionalFrontmatter(comp, [templates.render(comp)], references, opts, anchorMap);
-      for (const e of toFilteredArray(comp)) {
-        writeWithOptionalFrontmatter(e, [templates.render(e)], references, opts, anchorMap);
+
+    if (opts.classes) {
+      for (const comp of classOutputCompounds) {
+        writeWithOptionalFrontmatter(comp, [templates.render(comp)], references, opts, anchorMap, pagePathMap);
       }
     }
   } else {
@@ -992,14 +1090,16 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
       const groups = (toArray(root, 'compounds', 'group') as Compound[])
         .filter((g) => !isJunkCompound(g));
       if (groups.length) {
-        augmentGroupsFromFiles(root, groups, opts); // to prepare
+        augmentGroupsFromFiles(root, groups, opts);
         finalizeGroups(groups, collectSharedNamespaceRefs(toArray(root, 'compounds', 'file') as Compound[], opts));
+        const filters = groupAwareFilters(opts.filters);
         for (const group of groups) {
-          filterChildren(group, opts.filters, group.id);
+          filterChildren(group, filters, group.id);
           prepareCompound(group);
-          const childCompounds = toFilteredArray(group, 'compounds');
+          const childCompounds = toFilteredArray(group, 'compounds')
+            .filter((compound) => compound.kind !== 'group' && compound.groupid === group.id);
           for (const c of childCompounds) prepareCompound(c);
-          compounds.push(group, ...childCompounds); // or insert at top or structured
+          compounds.push(group, ...childCompounds);
         }
       }
     }

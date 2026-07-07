@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="group__nested__group" kind="group">
+    <compoundname>nested_group</compoundname>
+    <title>Nested Group</title>
+    <innerclass refid="classnested__class" prot="public">nested_class</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This is the nested group&apos;s description. </para>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

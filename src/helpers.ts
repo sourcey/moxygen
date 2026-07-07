@@ -250,10 +250,10 @@ export function compoundPath(compound: Compound, options: MoxygenOptions): strin
   if (compound.kind === 'page') {
     return `${dirname(options.output)}/page-${compound.name}.md`;
   }
-  if (compound.kind === 'index' && options.groups) {
+  if (compound.kind === 'index' && (options.groups || options.classes)) {
     return `${dirname(options.output)}/api.md`;
   }
-  if (options.groups) {
+  if (options.groups && compound.kind === 'group') {
     return utilFormat(options.output, compound.groupname);
   }
   if (options.classes) {
@@ -261,6 +261,9 @@ export function compoundPath(compound: Compound, options: MoxygenOptions): strin
       options.output,
       safePathSegment(compound.name),
     );
+  }
+  if (options.groups) {
+    return utilFormat(options.output, compound.groupname);
   }
   return options.output;
 }

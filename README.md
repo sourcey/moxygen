@@ -67,8 +67,9 @@ Moxygen supports both of the common Doxygen documentation styles:
 1. Explicit grouped compounds.
    - `@defgroup`, `@ingroup`, and related tags produce normal Doxygen group XML.
    - Moxygen renders those groups directly.
+   - The root `api.md` page lists top-level groups before classes, and nested group pages list their child groups with breadcrumbs.
 2. File-level grouped code.
-   - Some codebases group files with `@addtogroup` / `@ingroup`, but Doxygen emits sparse group XML and leaves the real compound ownership in file XML.
+   - Some codebases group files with `@addtogroup` blocks or `@file` comments with `@ingroup`, but Doxygen emits sparse group XML and leaves the real compound ownership in file XML.
    - Moxygen can recover those grouped classes, namespaces, and members when you pass `--source-root`.
    - Shared umbrella namespaces across multiple groups are preserved without dropping group-owned root classes, and cross-page refs are resolved correctly for both markdown mirrors and generated multi-page output.
 
@@ -95,6 +96,8 @@ Multi-file grouped output:
 moxygen --anchors --groups --output api-%s.md /path/to/doxygen/xml
 ```
 
+Grouped output writes group files such as `api-mygroup.md` plus `api.md` for root-level globals and the top-level group/class index, unless `--noindex` is set.
+
 Grouped output recovered from file-level grouping comments:
 ```
 moxygen --anchors --groups --source-root /path/to/project/src \
@@ -105,6 +108,8 @@ Per-class files:
 ```
 moxygen --classes --output api-%s.md /path/to/doxygen/xml
 ```
+
+Per-class output writes class files plus `api.md` for root-level globals and the class/namespace index, unless `--noindex` is set.
 
 Java project:
 ```

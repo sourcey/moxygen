@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.17.0" xml:lang="en-US">
+  <compound refid="classglobal__class" kind="class"><name>global_class</name>
+    <member refid="classglobal__class_1affaae1576630cc2b03bd368e65f5bd96" kind="variable"><name>global_class_a</name></member>
+  </compound>
+  <compound refid="classnested__class" kind="class"><name>nested_class</name>
+    <member refid="classnested__class_1aabd38de5178db924112338506f0b7607" kind="variable"><name>nested_class_a</name></member>
+  </compound>
+  <compound refid="global_8h" kind="file"><name>global.h</name>
+    <member refid="global_8h_1ab16b63abd4589951d2edeccc54e70c3c" kind="define"><name>GDEFINE</name></member>
+    <member refid="group__global__group_1ga6958e7f1a4f816ea5a9d200678619eb3" kind="define"><name>GGROUP_DEFINE</name></member>
+    <member refid="global_8h_1ac14f6201995116bbf1ce58c95908abab" kind="variable"><name>global_a</name></member>
+  </compound>
+  <compound refid="group__global__group" kind="group"><name>global_group</name>
+    <member refid="group__global__group_1ga6958e7f1a4f816ea5a9d200678619eb3" kind="define"><name>GGROUP_DEFINE</name></member>
+  </compound>
+  <compound refid="group__nested__group" kind="group"><name>nested_group</name>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+</doxygenindex>

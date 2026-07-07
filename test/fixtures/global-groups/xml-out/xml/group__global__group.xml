@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="group__global__group" kind="group">
+    <compoundname>global_group</compoundname>
+    <title>Global Group</title>
+    <innergroup refid="group__nested__group">Nested Group</innergroup>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="group__global__group_1ga6958e7f1a4f816ea5a9d200678619eb3" prot="public" static="no">
+        <name>GGROUP_DEFINE</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This is a <ref refid="group__global__group" kindref="compound">Global Group</ref> define. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/global.h" line="30" column="9" bodyfile="src/global.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This is the global group&apos;s description. </para>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

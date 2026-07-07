@@ -15,9 +15,11 @@ Use `@defgroup`, `@ingroup`, and related tags. Doxygen produces normal group XML
 moxygen --groups --output api-%s.md /path/to/xml
 ```
 
+The root `api.md` page lists top-level groups before classes. Group pages list nested groups before classes and include breadcrumbs back to their parent groups.
+
 ## File-level grouped code
 
-Some codebases group files with `@addtogroup` / `@ingroup`, but Doxygen emits sparse group XML and leaves the real compound ownership in file XML.
+Some codebases group files with `@addtogroup` blocks or `@file` comments with `@ingroup`, but Doxygen emits sparse group XML and leaves the real compound ownership in file XML.
 
 Moxygen recovers those grouped classes, namespaces, and members when you pass `--source-root`:
 

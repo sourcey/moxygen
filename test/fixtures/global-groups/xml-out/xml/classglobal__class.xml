@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classglobal__class" kind="class" language="C++" prot="public">
+    <compoundname>global_class</compoundname>
+    <includes refid="global_8h" local="no">global.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classglobal__class_1affaae1576630cc2b03bd368e65f5bd96" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int global_class::global_class_a</definition>
+        <argsstring></argsstring>
+        <name>global_class_a</name>
+        <qualifiedname>global_class::global_class_a</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/global.h" line="11" column="7" bodyfile="src/global.h" bodystart="11" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This is a global class. </para>
+    </detaileddescription>
+    <location file="src/global.h" line="9" column="1" bodyfile="src/global.h" bodystart="9" bodyend="12"/>
+    <listofallmembers>
+      <member refid="classglobal__class_1affaae1576630cc2b03bd368e65f5bd96" prot="public" virt="non-virtual"><scope>global_class</scope><name>global_class_a</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

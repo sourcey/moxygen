@@ -328,6 +328,18 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
     return `\`${short}\``;
   });
 
+  Handlebars.registerHelper('groupBreadcrumbs', (compound: Compound) => {
+    const breadcrumbs: Compound[] = [];
+    let current = compound.parent as Compound | null;
+    while (current) {
+      if (current.kind === 'group') {
+        breadcrumbs.unshift(current);
+      }
+      current = current.parent as Compound | null;
+    }
+    return breadcrumbs;
+  });
+
   // Not helper for conditionals
   Handlebars.registerHelper('not', (value: unknown) => !value);
 

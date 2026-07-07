@@ -28,7 +28,7 @@ If you want private members in the generated Markdown, Doxygen must emit them fi
 EXTRACT_PRIVATE = YES
 ```
 
-For grouped output, keep the XML directory and source tree relationship clear. If Doxygen emits sparse group XML for file-level `@addtogroup` or `@ingroup` comments, pass `--source-root` so Moxygen can inspect the source comments that Doxygen left out of the group compound XML.
+For grouped output, keep the XML directory and source tree relationship clear. If Doxygen emits sparse group XML for file-level `@addtogroup` blocks or `@file` comments with `@ingroup`, pass `--source-root` so Moxygen can inspect the source comments that Doxygen left out of the group compound XML.
 
 ```bash
 moxygen --groups \

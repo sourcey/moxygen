@@ -16,6 +16,7 @@ const programlistingLangXmlDir = join(import.meta.dirname, 'fixtures', 'programl
 const missingTagsXmlDir = join(import.meta.dirname, 'fixtures', 'missing-tags', 'xml-out', 'xml');
 const memberKindsXmlDir = join(import.meta.dirname, 'fixtures', 'member-kinds', 'xml-out', 'xml');
 const issue97XmlDir = join(import.meta.dirname, 'fixtures', 'issue-97', 'xml-out', 'xml');
+const globalGroupsXmlDir = join(import.meta.dirname, 'fixtures', 'global-groups', 'xml-out', 'xml');
 
 const exampleOutputDir = join(outputRoot, 'example');
 
@@ -195,6 +196,126 @@ describe('integration', () => {
 
     const group = read(join(outputDir, 'g1.md'));
     expect(group).toContain('#### g1_a1');
+  });
+
+  it('renders top-level groups, nested groups, and ungrouped globals without losing global classes', async () => {
+    const outputDir = join(outputRoot, 'global-groups');
+
+    await run({
+      directory: globalGroupsXmlDir,
+      output: join(outputDir, '%s.md'),
+      groups: true,
+      anchors: true,
+      quiet: true,
+    });
+
+    const api = read(join(outputDir, 'api.md'));
+    expect(api).toContain('### Groups');
+    expect(api).toContain('| [`Global Group`](global_group.md#globalgroup) | This is the global group');
+    expect(api).toContain('### Classes');
+    expect(api).toContain('| [`global_class`](#global_class) | This is a global class. |');
+    expect(api).toContain('## global_class');
+    expect(api).not.toContain('nested_class');
+
+    const group = read(join(outputDir, 'global_group.md'));
+    expect(group).toContain('# Global Group');
+    expect(group).toContain('### Groups');
+    expect(group).toContain('| [`Nested Group`](nested_group.md#nestedgroup) | This is the nested group');
+    expect(group).not.toContain('global_class');
+    expect(group).not.toContain('GDEFINE');
+
+    const nested = read(join(outputDir, 'nested_group.md'));
+    expect(nested).toContain('# Nested Group');
+    expect(nested).toContain('> [`Global Group`](global_group.md#globalgroup)');
+    expect(nested).toContain('## nested_class');
+
+    const pages = await generate({
+      directory: globalGroupsXmlDir,
+      groups: true,
+      quiet: true,
+    });
+
+    const groupPage = pages.find((page) => page.kind === 'group' && page.slug === 'global_group');
+    expect(groupPage).toBeDefined();
+    expect(groupPage!.markdown).toContain('[`Nested Group`](nested_group.html#nestedgroup)');
+
+    const nestedGroupPage = pages.find((page) => page.kind === 'group' && page.slug === 'nested_group');
+    expect(nestedGroupPage).toBeDefined();
+    expect(nestedGroupPage!.markdown).toContain('> [`Global Group`](global_group.html#globalgroup)');
+  });
+
+  it('writes standalone global class files when classes and groups are both enabled', async () => {
+    const outputDir = join(outputRoot, 'global-groups-classes');
+
+    await run({
+      directory: globalGroupsXmlDir,
+      output: join(outputDir, '%s.md'),
+      groups: true,
+      classes: true,
+      anchors: true,
+      quiet: true,
+    });
+
+    expect(existsSync(join(outputDir, 'api.md'))).toBe(true);
+    expect(existsSync(join(outputDir, 'global_group.md'))).toBe(true);
+    expect(existsSync(join(outputDir, 'nested_group.md'))).toBe(true);
+    expect(existsSync(join(outputDir, 'global_class.md'))).toBe(true);
+    expect(existsSync(join(outputDir, 'nested_class.md'))).toBe(true);
+
+    const api = read(join(outputDir, 'api.md'));
+    expect(api).toContain('| [`global_class`](global_class.md#global_class) | This is a global class. |');
+    expect(api).not.toContain('## global_class');
+
+    const group = read(join(outputDir, 'global_group.md'));
+    expect(group).toContain('| [`Nested Group`](nested_group.md#nestedgroup) | This is the nested group');
+    expect(group).not.toContain('## nested_class');
+
+    const nested = read(join(outputDir, 'nested_group.md'));
+    expect(nested).toContain('| [`nested_class`](nested_class.md#nested_class) | This is a nested grouped class. |');
+    expect(nested).not.toContain('## nested_class');
+
+    const globalClass = read(join(outputDir, 'global_class.md'));
+    expect(globalClass).toContain('## global_class');
+    expect(globalClass).toContain('This is a global class.');
+  });
+
+  it('writes global class files when classes are enabled without namespaces', async () => {
+    const outputDir = join(outputRoot, 'global-classes');
+
+    await run({
+      directory: globalGroupsXmlDir,
+      output: join(outputDir, '%s.md'),
+      classes: true,
+      anchors: true,
+      quiet: true,
+    });
+
+    expect(existsSync(join(outputDir, 'global_class.md'))).toBe(true);
+    expect(existsSync(join(outputDir, 'nested_class.md'))).toBe(true);
+    expect(existsSync(join(outputDir, 'api.md'))).toBe(true);
+
+    const api = read(join(outputDir, 'api.md'));
+    expect(api).toContain('| [`global_class`](global_class.md#global_class) | This is a global class. |');
+    expect(api).not.toContain('## global_class');
+
+    const globalClass = read(join(outputDir, 'global_class.md'));
+    expect(globalClass).toContain('## global_class');
+    expect(globalClass).toContain('This is a global class.');
+  });
+
+  it('keeps global-scope classes in default single-file output', async () => {
+    const output = join(outputRoot, 'global-single.md');
+
+    await run({
+      directory: globalGroupsXmlDir,
+      output,
+      anchors: true,
+      quiet: true,
+    });
+
+    const content = read(output);
+    expect(content).toContain('## global_class');
+    expect(content).toContain('This is a global class.');
   });
 
   it('keeps root-level classes from shared namespaces on grouped module pages', async () => {

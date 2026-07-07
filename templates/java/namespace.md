@@ -1,14 +1,33 @@
 {{cleanAnchor refid name}}
 
-# {{shortname name}}
-
 {{#if (eq kind "group")}}
+# {{#if this.shortname}}{{this.shortname}}{{else}}{{shortname name}}{{/if}}
+
+{{#with (groupBreadcrumbs this) as |breadcrumbs|}}
+{{#if breadcrumbs}}
+> {{#each breadcrumbs}}{{linkedName shortname refid}}{{#unless @last}} / {{/unless}}{{/each}}
+
+{{/if}}
+{{/with}}
 {{summary}}
 {{else}}
+# {{shortname name}}
+
 {{briefdescription}}
 
 {{detaileddescription}}
 {{/if}}
+
+{{#with (compoundsOfKind filtered.compounds "group") as |groups|}}
+{{#if groups}}
+### Groups
+
+| Name | Description |
+|------|-------------|
+{{#each groups}}| {{linkedName shortname refid}} | {{cell summary}} |
+{{/each}}
+{{/if}}
+{{/with}}
 
 {{#with (compoundsOfKind filtered.compounds "namespace") as |namespaces|}}
 {{#if namespaces}}

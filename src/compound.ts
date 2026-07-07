@@ -120,9 +120,18 @@ export function filterCollection(
       }
     }
 
-    // Skip items not belonging to current group
-    if (groupid && (item as Member).groupid !== groupid) {
-      continue;
+    // Skip items not belonging to current group. Nested groups own their
+    // own groupid, but still belong in the parent group's topic list.
+    if (groupid) {
+      if ('filtered' in item) {
+        const compound = item as Compound;
+        const parent = compound.parent as Compound | null;
+        if (compound.groupid !== groupid && !(compound.kind === 'group' && parent?.id === groupid)) {
+          continue;
+        }
+      } else if ((item as Member).groupid !== groupid) {
+        continue;
+      }
     }
 
     const categoryKey = (item as Record<string, unknown>)[key] as string;

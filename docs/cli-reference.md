@@ -26,3 +26,5 @@ moxygen [options] <doxygen XML directory>
 | `-f, --frontmatter` | Prepend YAML frontmatter to output files |
 | `-L, --logfile [file]` | Output log messages to file |
 | `-q, --quiet` | Quiet mode |
+
+When `--groups` or `--classes` is enabled, Moxygen writes the split files and also writes `api.md` for root-level globals and the top-level index unless `--noindex` is set.

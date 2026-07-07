@@ -1,4 +1,6 @@
-# mountainbike {#group__mountainbike}
+{#mountainbikemodule}
+
+# Mountain bike module
 
 Mountain bike module contains the `MountainBike` class. Mountain bikes are a kind of bike for cycling on rough terrain.
 
@@ -6,31 +8,64 @@ Mountain bike module contains the `MountainBike` class. Mountain bikes are a kin
 
 | Name | Description |
 |------|-------------|
-| [`MountainBike`](#classtransport_1_1MountainBike) | Mountain bike implementation of a `[Bicycle](example/doc/api-bicycle.md#classtransport_1_1Bicycle)`. |
+| [`MountainBike`](#mountainbike) | Mountain bike implementation of a `[Bicycle](api-bicycle.md#bicycle)`. |
 
-## MountainBike {#classtransport_1_1MountainBike}
+{#mountainbike}
 
-> **Extends:** `transport::Bicycle`
-> **Defined in:** `mountainbike.h`
+## MountainBike
 
-Mountain bike implementation of a `[Bicycle](example/doc/api-bicycle.md#classtransport_1_1Bicycle)`.
+```cpp
+#include <mountainbike.h>
+```
 
-[MountainBike](#classtransport_1_1MountainBike) is an implementation of a [Bicycle](example/doc/api-bicycle.md#classtransport_1_1Bicycle) providing a bike for cycling on rough terrain. Mountain bikes are pretty cool because they have stuff like **Suspension** (and you can even adjust it using SetSuspension). If you're looking for a bike for use on the road, you might be better off using a [RacingBike](example/doc/api-racingbike.md#classtransport_1_1RacingBike) though.
+```cpp
+class MountainBike
+```
 
-### Members
+Defined in src/mountainbike.h:20
 
-| Name | Description |
-|------|-------------|
-| [`SetSuspension`](#classtransport_1_1MountainBike_1a04caecd7e5ff7572b6ac1dc283510301) | Set suspension stiffness.  the suspension stiffness. |
-| [`ChangeBreak`](#classtransport_1_1MountainBike_1afd02513876a196e98acaacdc555aeb52) | Change the break type.  the break type.  the type of the break. |
+> **Inherits:** [`Bicycle`](api-bicycle.md#bicycle)
+
+Mountain bike implementation of a `[Bicycle](api-bicycle.md#bicycle)`.
+
+[MountainBike](#mountainbike) is an implementation of a [Bicycle](api-bicycle.md#bicycle) providing a bike for cycling on rough terrain. Mountain bikes are pretty cool because they have stuff like **Suspension** (and you can even adjust it using SetSuspension). If you're looking for a bike for use on the road, you might be better off using a [RacingBike](api-racingbike.md#racingbike) though.
+
+### List of all members
+
+| Name | Kind | Owner |
+|------|------|-------|
+| [`SetSuspension`](#setsuspension) | `function` | Declared here |
+| [`ChangeBreak`](#changebreak) | `function` | Declared here |
+| [`PedalHarder`](api-bicycle.md#pedalharder) | `function` | Inherited from [`Bicycle`](api-bicycle.md#bicycle) |
+| [`RingBell`](api-bicycle.md#ringbell) | `function` | Inherited from [`Bicycle`](api-bicycle.md#bicycle) |
+| [`~Bicycle`](api-bicycle.md#bicycle-1) | `function` | Inherited from [`Bicycle`](api-bicycle.md#bicycle) |
+
+### Inherited from [`Bicycle`](api-bicycle.md#bicycle)
+
+| Kind | Name | Description |
+|------|------|-------------|
+| `function` | [`PedalHarder`](api-bicycle.md#pedalharder) `virtual` | PedalHarder makes you go faster (usually). |
+| `function` | [`RingBell`](api-bicycle.md#ringbell) `virtual` | Ring bell on the bike. |
+| `function` | [`~Bicycle`](api-bicycle.md#bicycle-1) `virtual` | Default destructor. |
+
+### Public Methods
+
+| Return | Name | Description |
+|--------|------|-------------|
+| `bool` | [`SetSuspension`](#setsuspension)  | Set suspension stiffness. the suspension stiffness. |
+| `bool` | [`ChangeBreak`](#changebreak) `inline` | Change the break type. the break type. the type of the break. |
 
 ---
 
-#### SetSuspension {#classtransport_1_1MountainBike_1a04caecd7e5ff7572b6ac1dc283510301}
+{#setsuspension}
+
+#### SetSuspension
 
 ```cpp
 bool SetSuspension(double stiffness)
 ```
+
+Defined in src/mountainbike.h:32
 
 Set suspension stiffness.  the suspension stiffness.
 
@@ -39,17 +74,19 @@ SetSuspension changes the stiffness of the suspension on the bike. The method wi
 #### Returns
 true if the suspension was adjusted successfully, false otherwise.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `stiffness` | `double` |  |
-
 ---
 
-#### ChangeBreak {#classtransport_1_1MountainBike_1afd02513876a196e98acaacdc555aeb52}
+{#changebreak}
+
+#### ChangeBreak
+
+`inline`
 
 ```cpp
 template<typename BreakType> inline bool ChangeBreak(BreakType breakType)
 ```
+
+Defined in src/mountainbike.h:46
 
 Change the break type.  the break type.  the type of the break.
 
@@ -57,8 +94,4 @@ ChangesBreak changes the type of break fitted to the bike. The method will retur
 
 #### Returns
 true if the break was adjusted successfully. false otherise
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `breakType` | `BreakType` |  |
 

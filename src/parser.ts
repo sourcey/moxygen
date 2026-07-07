@@ -797,6 +797,14 @@ function assignClassToGroup(compound: Compound, child: Compound): void {
   assignCompoundGroup(child, compound);
 }
 
+function assignGroupToGroup(compound: Compound, child: Compound): void {
+  if (child.parent) {
+    delete (child.parent as Compound).compounds[child.id];
+  }
+  compound.compounds[child.id] = child;
+  child.parent = compound;
+}
+
 function extractPageSections(page: Compound, elements: XmlElement[]): void {
   for (const element of elements) {
     if (element['#name'] === 'sect1' || element['#name'] === 'sect2' || element['#name'] === 'sect3') {
@@ -1013,6 +1021,14 @@ function parseCompound(compound: Compound, compounddef: Record<string, unknown>)
             const ref = references[nsAttrs.refid] as Compound;
             if (ref) assignNamespaceToGroup(compound, ref);
           }
+        }
+      }
+
+      if (compound.kind === 'group' && compounddef.innergroup) {
+        for (const groupdef of compounddef.innergroup as Array<Record<string, unknown>>) {
+          const groupAttrs = groupdef.$ as Record<string, string>;
+          const ref = references[groupAttrs.refid] as Compound;
+          if (ref) assignGroupToGroup(compound, ref);
         }
       }
 

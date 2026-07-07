@@ -30,7 +30,7 @@
  * Enum class for transport types.
  *
  * This definition exists in the default namespace and is ungrouped.
- * It will *not* be displayed if the `groups` options is used.
+ * It is displayed on the root API page when grouped output is used.
  */
 enum class TransportType {
   Bycicle, /*!< Bycicle type */
@@ -42,7 +42,7 @@ enum class TransportType {
  * The modifier value if pedal power is used.
  *
  * This definition exists in the default namespace and is ungrouped.
- * It will *not* be displayed if the `groups` options is used.
+ * It is displayed on the root API page when grouped output is used.
  */
 #define PEDAL_POWER_MODIFIER 9000
 

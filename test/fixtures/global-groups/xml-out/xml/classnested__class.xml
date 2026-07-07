@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classnested__class" kind="class" language="C++" prot="public">
+    <compoundname>nested_class</compoundname>
+    <includes refid="global_8h" local="no">global.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classnested__class_1aabd38de5178db924112338506f0b7607" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int nested_class::nested_class_a</definition>
+        <argsstring></argsstring>
+        <name>nested_class_a</name>
+        <qualifiedname>nested_class::nested_class_a</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/global.h" line="46" column="7" bodyfile="src/global.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This is a nested grouped class. </para>
+    </detaileddescription>
+    <location file="src/global.h" line="44" column="1" bodyfile="src/global.h" bodystart="44" bodyend="47"/>
+    <listofallmembers>
+      <member refid="classnested__class_1aabd38de5178db924112338506f0b7607" prot="public" virt="non-virtual"><scope>nested_class</scope><name>nested_class_a</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

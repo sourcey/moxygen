@@ -9,6 +9,21 @@ import type { Compound, MoxygenOptions, SourceUrlRoute } from './types.js';
 const templates: Record<string, HandlebarsTemplateDelegate> = {};
 let activeAnchorMap: AnchorMap | undefined;
 
+export interface RenderContext {
+  headingBase: number;
+}
+
+const DEFAULT_RENDER_CONTEXT: RenderContext = {
+  headingBase: 1,
+};
+
+function headingLevel(relativeLevel: unknown, context: RenderContext): number {
+  const relative = Number(relativeLevel);
+  const base = Number.isFinite(context.headingBase) ? context.headingBase : 1;
+  const level = base + (Number.isFinite(relative) ? relative : 1) - 1;
+  return Math.min(Math.max(level, 1), 6);
+}
+
 /**
  * Set the anchor map used by cleanAnchor/cleanId helpers.
  * Call before rendering a batch of compounds.
@@ -69,7 +84,7 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
     const lines = (value || '').split(/\n+/);
     const kept: string[] = [];
     for (const line of lines) {
-      if (/^#{2,6}\s+(Parameters|Template Parameters|Exceptions|Returns?)\b/i.test(line.trim())) {
+      if (/^#{2,6}\s+(Parameters|Template Parameters|Exceptions|Returns?|Return Values)\b/i.test(line.trim())) {
         break;
       }
       kept.push(line);
@@ -135,6 +150,11 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
   Handlebars.registerHelper('cell', (code: string) =>
     cleanCellText(code).replace(/\|/g, '\\|').replace(/\n/g, '<br/>'),
   );
+
+  Handlebars.registerHelper('headingMarker', (relativeLevel: unknown, helperOptions: Handlebars.HelperOptions) => {
+    const context = (helperOptions.data?.renderContext ?? DEFAULT_RENDER_CONTEXT) as RenderContext;
+    return '#'.repeat(headingLevel(relativeLevel, context));
+  });
 
   Handlebars.registerHelper('eq', (a: unknown, b: unknown) => a === b);
 
@@ -370,7 +390,7 @@ export function load(templateDirectory: string): void {
 /**
  * Render a single compound using the appropriate template.
  */
-export function render(compound: Compound): string | undefined {
+export function render(compound: Compound, context: RenderContext = DEFAULT_RENDER_CONTEXT): string | undefined {
   let templateName: string;
 
   log.verbose(`Rendering ${compound.kind} ${compound.fullname}`);
@@ -413,12 +433,21 @@ export function render(compound: Compound): string | undefined {
     throw new Error(`Template "${templateName}" not found in your templates directory.`);
   }
 
-  return templates[templateName](compound).replace(/(\r\n|\r|\n){3,}/g, '$1\n');
+  return templates[templateName](compound, {
+    data: {
+      renderContext: context,
+    },
+  }).replace(/(\r\n|\r|\n){3,}/g, '$1\n');
 }
 
 /**
  * Render an array of compounds.
  */
-export function renderArray(compounds: Compound[]): (string | undefined)[] {
-  return compounds.map((c) => render(c));
+export function renderArray(
+  compounds: Compound[],
+  contextFor: (compound: Compound, index: number) => RenderContext = (_compound, index) => ({
+    headingBase: index === 0 ? 1 : 2,
+  }),
+): (string | undefined)[] {
+  return compounds.map((compound, index) => render(compound, contextFor(compound, index)));
 }

@@ -53,6 +53,11 @@ export interface Param {
   defaultValue?: string;
 }
 
+export interface DocListItem {
+  name: string;
+  description: string;
+}
+
 export interface EnumValue {
   name: string;
   briefdescription: string;
@@ -91,6 +96,8 @@ export interface Member {
   // Structured fields for modern templates
   returnType: string;
   params: Param[];
+  returnValues: DocListItem[];
+  exceptions: DocListItem[];
   templateParams: Param[];
   qualifiers: string[];
   prefixQualifiers: string[];

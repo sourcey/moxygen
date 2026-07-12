@@ -7,6 +7,7 @@ import { log } from './logger.js';
 import * as md from './markdown.js';
 import type {
   Compound,
+  DocListItem,
   EnumValue,
   Member,
   MoxygenOptions,
@@ -20,6 +21,17 @@ let parserOptions: MoxygenOptions;
 const references: References = {};
 let root: Compound;
 
+interface MarkdownOptions {
+  skipParameterLists?: boolean;
+}
+
+interface ExtractedDocLists {
+  paramDescriptions: Record<string, string>;
+  templateParamDescriptions: Record<string, string>;
+  returnValues: DocListItem[];
+  exceptions: DocListItem[];
+}
+
 function currentContextName(context: XmlElement[]): string | undefined {
   return context[context.length - 1]?.['#name'];
 }
@@ -30,16 +42,30 @@ function headingLevel(context: XmlElement[]): number {
   return match ? Math.min(Number(match[1]) + 1, 6) : 2;
 }
 
+function parameterListTitle(kind: string | undefined): string {
+  switch (kind) {
+    case 'exception':
+      return 'Exceptions';
+    case 'retval':
+      return 'Return Values';
+    case 'templateparam':
+      return 'Template Parameters';
+    case 'param':
+    default:
+      return 'Parameters';
+  }
+}
+
 /**
  * Convert a Doxygen XML element tree to Markdown.
  */
-function toMarkdown(element: unknown, context: XmlElement[] = []): string {
+function toMarkdown(element: unknown, context: XmlElement[] = [], options: MarkdownOptions = {}): string {
   if (typeof element === 'string') {
     return element;
   }
 
   if (Array.isArray(element)) {
-    return element.map((v) => toMarkdown(v, context)).join('');
+    return element.map((v) => toMarkdown(v, context, options)).join('');
   }
 
   if (typeof element !== 'object' || element === null) {
@@ -53,9 +79,9 @@ function toMarkdown(element: unknown, context: XmlElement[] = []): string {
   switch (el['#name']) {
     case 'ref':
       if (currentContextName(context) === 'programlisting') {
-        return s + toMarkdown(el.$$, context);
+        return s + toMarkdown(el.$$, context, options);
       }
-      return s + md.refLink(toMarkdown(el.$$), el.$?.refid ?? '');
+      return s + md.refLink(toMarkdown(el.$$, context, options), el.$?.refid ?? '');
     case '__text__':
       s = el._ ?? '';
       break;
@@ -70,9 +96,8 @@ function toMarkdown(element: unknown, context: XmlElement[] = []): string {
       s = '`';
       break;
     case 'parameterlist':
-      s = el.$?.kind === 'exception'
-        ? '\n#### Exceptions\n'
-        : '\n#### Parameters\n';
+      if (options.skipParameterLists) return '';
+      s = `\n#### ${parameterListTitle(el.$?.kind)}\n`;
       break;
     case 'parameteritem':
       s = '* ';
@@ -147,7 +172,7 @@ function toMarkdown(element: unknown, context: XmlElement[] = []): string {
         s = '**Copyright**: ';
       } else if (kind === 'par') {
         const title = el.$$?.find((child) => child['#name'] === 'title');
-        const titleText = title ? trim(toMarkdown(title.$$, context)) || trim(title._ ?? '') : '';
+        const titleText = title ? trim(toMarkdown(title.$$, context, options)) || trim(title._ ?? '') : '';
         s = titleText ? `\n#### ${titleText}\n` : '\n#### Notes\n';
       } else {
         log.warn(`simplesect kind '${kind}' not supported`);
@@ -170,7 +195,7 @@ function toMarkdown(element: unknown, context: XmlElement[] = []): string {
       break;
     case 'image': {
       const name = el.$?.name ?? '';
-      const caption = trim(el.$$ ? toMarkdown(el.$$, context) : (el._ ?? ''));
+      const caption = trim(el.$$ ? toMarkdown(el.$$, context, options) : (el._ ?? ''));
       return name ? `![${caption}](${name})` : caption;
     }
     case 'sect1':
@@ -187,7 +212,7 @@ function toMarkdown(element: unknown, context: XmlElement[] = []): string {
         return '';
       }
       const level = '#'.repeat(headingLevel(context));
-      const title = trim(el.$$ ? toMarkdown(el.$$, context) : (el._ ?? ''));
+      const title = trim(el.$$ ? toMarkdown(el.$$, context, options) : (el._ ?? ''));
       return `\n${level} ${title}\n`;
     }
     case 'mdash':
@@ -219,7 +244,7 @@ function toMarkdown(element: unknown, context: XmlElement[] = []): string {
 
   // Recurse on children
   if (el.$$) {
-    s += toMarkdown(el.$$, context);
+    s += toMarkdown(el.$$, context, options);
   }
 
   // Closing
@@ -318,16 +343,25 @@ function trim(text: string): string {
   return text.trim();
 }
 
+function textContent(element: unknown): string {
+  if (typeof element === 'string') return element;
+  if (Array.isArray(element)) return element.map(textContent).join('');
+  if (typeof element !== 'object' || element === null) return '';
+
+  const el = element as XmlElement;
+  return el._ ?? (el.$$ ? textContent(el.$$) : '');
+}
+
 /** Convert a named XML field to trimmed Markdown. */
-function mdField(def: Record<string, unknown>, property: string): string {
-  return trim(toMarkdown(def[property]));
+function mdField(def: Record<string, unknown>, property: string, options: MarkdownOptions = {}): string {
+  return trim(toMarkdown(def[property], [], options));
 }
 
 /** Extract a summary from brief or detailed description. */
-function mdSummary(def: Record<string, unknown>): string {
-  let summary = trim(toMarkdown(def['briefdescription']));
+function mdSummary(def: Record<string, unknown>, options: MarkdownOptions = {}): string {
+  let summary = trim(toMarkdown(def['briefdescription'], [], options));
   if (!summary) {
-    summary = trim(toMarkdown(def['detaileddescription']));
+    summary = trim(toMarkdown(def['detaileddescription'], [], options));
     if (summary) {
       const firstSentence = summary.split('\n', 1)[0];
       if (firstSentence) summary = firstSentence;
@@ -341,7 +375,7 @@ function cleanSummary(summary: string): string {
   const kept: string[] = [];
 
   for (const line of lines) {
-    if (/^#{2,6}\s+(Parameters|Template Parameters|Exceptions|Returns?)\b/i.test(line.trim())) {
+    if (/^#{2,6}\s+(Parameters|Template Parameters|Exceptions|Returns?|Return Values)\b/i.test(line.trim())) {
       break;
     }
     kept.push(line);
@@ -350,17 +384,18 @@ function cleanSummary(summary: string): string {
   return kept.join(' ').replace(/\s+/g, ' ').trim();
 }
 
-function parseTemplateParams(def: Record<string, unknown>): Param[] {
+function parseTemplateParams(def: Record<string, unknown>, descriptions: Record<string, string> = {}): Param[] {
   const result: Param[] = [];
   const tpl = def.templateparamlist as Array<Record<string, unknown>> | undefined;
   if (!tpl?.length || !(tpl[0] as Record<string, unknown>).param) return result;
 
   const params = (tpl[0] as Record<string, unknown>).param as Array<Record<string, unknown>>;
   for (const param of params) {
+    const name = param.declname ? trim(toMarkdown(param.declname)) : '';
     result.push({
       type: trim(toMarkdown(param.type)),
-      name: param.declname ? trim(toMarkdown(param.declname)) : '',
-      description: '',
+      name,
+      description: descriptions[name] ?? '',
       defaultValue: param.defval ? trim(toMarkdown(param.defval)) : undefined,
     });
   }
@@ -452,6 +487,8 @@ function parseMembers(
         enumvalue: [],
         returnType: '',
         params: [],
+        returnValues: [],
+        exceptions: [],
         templateParams: [],
         qualifiers: [],
         prefixQualifiers: [],
@@ -482,38 +519,71 @@ function parseMembers(
   }
 }
 
-/** Extract parameter descriptions from detaileddescription XML. */
-function extractParamDescriptions(memberdef: Record<string, unknown>): Record<string, string> {
-  const descriptions: Record<string, string> = {};
-  const detailed = memberdef.detaileddescription as Record<string, unknown>;
-  if (!detailed || !detailed.$$) return descriptions;
+function extractDocListItem(item: XmlElement): DocListItem | undefined {
+  if (!item.$$) return undefined;
 
-  const elements = (detailed as XmlElement).$$!;
-  for (const para of elements) {
-    if (para['#name'] !== 'para' || !para.$$) continue;
-    for (const child of para.$$) {
-      if (child['#name'] !== 'parameterlist') continue;
-      if (!child.$$) continue;
-      for (const item of child.$$) {
-        if (item['#name'] !== 'parameteritem' || !item.$$) continue;
-        let paramName = '';
-        let paramDesc = '';
-        for (const part of item.$$) {
-          if (part['#name'] === 'parameternamelist' && part.$$) {
-            for (const pn of part.$$) {
-              if (pn['#name'] === 'parametername') {
-                paramName = toMarkdown(pn).trim();
-              }
-            }
-          } else if (part['#name'] === 'parameterdescription') {
-            paramDesc = trim(toMarkdown(part));
-          }
-        }
-        if (paramName) descriptions[paramName] = paramDesc;
-      }
+  let name = '';
+  let description = '';
+
+  for (const part of item.$$) {
+    if (part['#name'] === 'parameternamelist' && part.$$) {
+      const names = part.$$
+        .filter((pn) => pn['#name'] === 'parametername')
+        .map((pn) => trim(textContent(pn)))
+        .filter(Boolean);
+      name = names.join(', ');
+    } else if (part['#name'] === 'parameterdescription') {
+      description = trim(toMarkdown(part, [], { skipParameterLists: true }));
     }
   }
-  return descriptions;
+
+  return name ? { name, description } : undefined;
+}
+
+function collectDocLists(element: XmlElement, lists: ExtractedDocLists): void {
+  if (element['#name'] === 'parameterlist') {
+    const kind = element.$?.kind ?? 'param';
+    for (const child of element.$$ ?? []) {
+      if (child['#name'] !== 'parameteritem') continue;
+      const item = extractDocListItem(child);
+      if (!item) continue;
+
+      if (kind === 'retval') {
+        lists.returnValues.push(item);
+      } else if (kind === 'exception') {
+        lists.exceptions.push(item);
+      } else if (kind === 'templateparam') {
+        lists.templateParamDescriptions[item.name] = item.description;
+      } else {
+        lists.paramDescriptions[item.name] = item.description;
+      }
+    }
+    return;
+  }
+
+  for (const child of element.$$ ?? []) {
+    collectDocLists(child, lists);
+  }
+}
+
+/** Extract structured parameter-style lists from detaileddescription XML. */
+function extractDocLists(memberdef: Record<string, unknown>): ExtractedDocLists {
+  const lists: ExtractedDocLists = {
+    paramDescriptions: {},
+    templateParamDescriptions: {},
+    returnValues: [],
+    exceptions: [],
+  };
+  const detailed = memberdef.detaileddescription as XmlElement[] | XmlElement | undefined;
+  if (!detailed) return lists;
+
+  const roots = Array.isArray(detailed) ? detailed : [detailed];
+  for (const rootElement of roots) {
+    for (const child of rootElement.$$ ?? []) {
+      collectDocLists(child, lists);
+    }
+  }
+  return lists;
 }
 
 function parseMember(
@@ -524,9 +594,11 @@ function parseMember(
   log.verbose(`Processing member ${member.kind} ${member.name}`);
   member.section = section;
 
+  const docLists = extractDocLists(memberdef);
+
   member.briefdescription = mdField(memberdef, 'briefdescription');
-  member.detaileddescription = mdField(memberdef, 'detaileddescription');
-  member.summary = mdSummary(memberdef);
+  member.detaileddescription = mdField(memberdef, 'detaileddescription', { skipParameterLists: true });
+  member.summary = mdSummary(memberdef, { skipParameterLists: true });
 
   const attrs = memberdef.$ as Record<string, string>;
 
@@ -563,10 +635,9 @@ function parseMember(
     member.argsstring = argsArr?.[0]?._ ?? '';
   }
 
-  // Extract parameter descriptions from the detailed description XML
-  const paramDescs = extractParamDescriptions(memberdef);
-
-  member.templateParams = parseTemplateParams(memberdef);
+  member.returnValues = docLists.returnValues;
+  member.exceptions = docLists.exceptions;
+  member.templateParams = parseTemplateParams(memberdef, docLists.templateParamDescriptions);
   member.references = parseRelationRefs(memberdef, 'references');
   member.referencedBy = parseRelationRefs(memberdef, 'referencedby');
   member.reimplements = parseRelationRefs(memberdef, 'reimplements');
@@ -581,7 +652,7 @@ function parseMember(
       member.params.push({
         type: trim(toMarkdown(param.type)),
         name: paramName,
-        description: paramDescs[paramName] ?? '',
+        description: docLists.paramDescriptions[paramName] ?? '',
         defaultValue: param.defval ? trim(toMarkdown(param.defval)) : undefined,
       });
     }
@@ -826,6 +897,8 @@ function extractPageSections(page: Compound, elements: XmlElement[]): void {
         enumvalue: [],
         returnType: '',
         params: [],
+        returnValues: [],
+        exceptions: [],
         templateParams: [],
         qualifiers: [],
         prefixQualifiers: [],

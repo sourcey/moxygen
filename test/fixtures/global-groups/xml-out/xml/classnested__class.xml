@@ -16,7 +16,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/global.h" line="46" column="7" bodyfile="src/global.h" bodystart="46" bodyend="-1"/>
+        <location file="src/global.h" line="60" column="7" bodyfile="src/global.h" bodystart="60" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -24,7 +24,7 @@
     <detaileddescription>
 <para>This is a nested grouped class. </para>
     </detaileddescription>
-    <location file="src/global.h" line="44" column="1" bodyfile="src/global.h" bodystart="44" bodyend="47"/>
+    <location file="src/global.h" line="58" column="1" bodyfile="src/global.h" bodystart="58" bodyend="61"/>
     <listofallmembers>
       <member refid="classnested__class_1aabd38de5178db924112338506f0b7607" prot="public" virt="non-virtual"><scope>nested_class</scope><name>nested_class_a</name></member>
     </listofallmembers>

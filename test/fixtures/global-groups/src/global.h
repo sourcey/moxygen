@@ -12,6 +12,20 @@ class global_class {
 };
 
 /**
+  Create a temporary file.
+
+  @details
+  The temporary file is created in a location specified by the mysql
+  server configuration (--tmpdir option).  The caller does not need to
+  delete the file, it will be deleted automatically.
+
+  @param prefix  prefix for temporary file name
+  @retval -1    error
+  @retval >= 0  a file handle that can be passed to dup or my_close
+*/
+int mysql_tmpfile(const char *prefix);
+
+/**
   This is a global variable.
 */
 global_class global_a;

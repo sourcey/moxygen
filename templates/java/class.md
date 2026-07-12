@@ -1,6 +1,6 @@
 {{cleanAnchor refid name}}
 
-## {{shortname name}}
+{{headingMarker 1}} {{shortname name}}
 
 {{#if basecompoundref}}> **Extends:** {{#each basecompoundref}}{{linkedName name refid}}{{#unless @last}}, {{/unless}}{{/each}}
 {{/if}}
@@ -12,7 +12,7 @@
 {{detaileddescription}}
 
 {{#each filtered.sections}}
-### {{label}}
+{{headingMarker 2}} {{label}}
 
 {{#if (hasReturnColumn section)}}
 | Return | Name | Description |
@@ -32,7 +32,7 @@
 
 {{cleanAnchor refid name}}
 
-#### {{name}}
+{{headingMarker 3}} {{name}}
 
 {{badges}}
 
@@ -51,9 +51,29 @@
 {{/unless}}
 
 {{#if (hasDocumentedParams params)}}
+{{headingMarker 4}} Parameters
+
 | Parameter | Type | Description |
 |-----------|------|-------------|
 {{#each (documentedParams params)}}| `{{name}}` | `{{type}}` | {{description}} |
+{{/each}}
+{{/if}}
+
+{{#if returnValues}}
+{{headingMarker 4}} Return Values
+
+| Value | Description |
+|-------|-------------|
+{{#each returnValues}}| `{{name}}` | {{description}} |
+{{/each}}
+{{/if}}
+
+{{#if exceptions}}
+{{headingMarker 4}} Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+{{#each exceptions}}| `{{name}}` | {{description}} |
 {{/each}}
 {{/if}}
 

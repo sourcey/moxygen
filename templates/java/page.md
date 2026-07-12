@@ -1,11 +1,11 @@
-# {{#if this.shortname}}{{this.shortname}}{{else}}{{shortname name}}{{/if}} {{cleanAnchor refid name}}
+{{headingMarker 1}} {{#if this.shortname}}{{this.shortname}}{{else}}{{shortname name}}{{/if}} {{cleanAnchor refid name}}
 
 {{briefdescription}}
 
 {{detaileddescription}}
 
 {{#if filtered.members}}
-## Contents
+{{headingMarker 2}} Contents
 
 | Section |
 |---------|

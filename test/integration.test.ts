@@ -81,7 +81,7 @@ describe('integration', () => {
     expect(content).toContain('PedalHarder');
     expect(content).toContain('RingBell');
     expect(content).toContain('{#pedalharder}');
-    expect(content).toContain('### Public Methods');
+    expect(content).toContain('#### Public Methods');
     expect(content).toContain('#include <bicycle.h>');
     expect(content).toContain('`void`');
     expect(content).toContain('`virtual`');
@@ -107,11 +107,11 @@ describe('integration', () => {
     expect(content.length).toBeGreaterThan(0);
     expect(content).toContain('# Widget module');
     expect(content).toContain('Module page for a widget API documented with file-level grouping.');
-    expect(content).toContain('### Namespaces');
+    expect(content).toContain('## Namespaces');
     expect(content).toContain('documented via file-level grouping only.');
     expect(content).toContain('createWidget');
     expect(content).toContain('Returns the current widget size.');
-    expect(content).toContain('## Options');
+    expect(content).toContain('### Options');
     expect(content).toContain('nested inside [Widget](#widget)');
   });
 
@@ -138,7 +138,7 @@ describe('integration', () => {
     expect(namespaceContent).toContain('demo-Plain.md#plain');
 
     const classContent = read(classPath);
-    expect(classContent).toContain('## Plain');
+    expect(classContent).toContain('# Plain');
     expect(classContent).toContain('#include <plain.h>');
     expect(classContent).toContain('Returns a stable value.');
   });
@@ -190,12 +190,12 @@ describe('integration', () => {
     expect(page).toContain('Reference [g1_a1](g1.md#g1_a1)');
 
     const api = read(join(outputDir, 'api.md'));
-    expect(api).toContain('#### a1');
+    expect(api).toContain('### a1');
     expect(api).toContain('a1 is a top level 1');
     expect(api).not.toContain('g1_a1');
 
     const group = read(join(outputDir, 'g1.md'));
-    expect(group).toContain('#### g1_a1');
+    expect(group).toContain('### g1_a1');
   });
 
   it('renders top-level groups, nested groups, and ungrouped globals without losing global classes', async () => {
@@ -210,16 +210,25 @@ describe('integration', () => {
     });
 
     const api = read(join(outputDir, 'api.md'));
-    expect(api).toContain('### Groups');
+    expect(api).toContain('## Groups');
     expect(api).toContain('| [`Global Group`](global_group.md#globalgroup) | This is the global group');
-    expect(api).toContain('### Classes');
+    expect(api).toContain('## Classes');
     expect(api).toContain('| [`global_class`](#global_class) | This is a global class. |');
-    expect(api).toContain('## global_class');
+    expect(api).toContain('## Functions');
+    expect(api).toContain('### mysql_tmpfile');
+    expect(api).toContain('#### Parameters');
+    expect(api).toContain('| `prefix` | `const char *` | prefix for temporary file name |');
+    expect(api).toContain('#### Return Values');
+    expect(api).toContain('| `-1` | error |');
+    expect(api).toContain('| `>=` | 0 a file handle that can be passed to dup or my_close |');
+    expect(api.match(/^#### Parameters$/gm)).toHaveLength(1);
+    expect(api).toContain('## Class Definitions');
+    expect(api).toContain('### global_class');
     expect(api).not.toContain('nested_class');
 
     const group = read(join(outputDir, 'global_group.md'));
     expect(group).toContain('# Global Group');
-    expect(group).toContain('### Groups');
+    expect(group).toContain('## Groups');
     expect(group).toContain('| [`Nested Group`](nested_group.md#nestedgroup) | This is the nested group');
     expect(group).not.toContain('global_class');
     expect(group).not.toContain('GDEFINE');
@@ -227,7 +236,12 @@ describe('integration', () => {
     const nested = read(join(outputDir, 'nested_group.md'));
     expect(nested).toContain('# Nested Group');
     expect(nested).toContain('> [`Global Group`](global_group.md#globalgroup)');
-    expect(nested).toContain('## nested_class');
+    expect(nested).toContain('## Classes');
+    expect(nested).toContain('## Class Definitions');
+    expect(nested).toContain('### nested_class');
+    expect(nested).toContain('#### List of all members');
+    expect(nested).toContain('#### Public Attributes');
+    expect(nested).toContain('##### nested_class_a');
 
     const pages = await generate({
       directory: globalGroupsXmlDir,
@@ -275,7 +289,9 @@ describe('integration', () => {
     expect(nested).not.toContain('## nested_class');
 
     const globalClass = read(join(outputDir, 'global_class.md'));
-    expect(globalClass).toContain('## global_class');
+    expect(globalClass).toContain('# global_class');
+    expect(globalClass).toContain('## Public Attributes');
+    expect(globalClass).toContain('### global_class_a');
     expect(globalClass).toContain('This is a global class.');
   });
 
@@ -299,7 +315,9 @@ describe('integration', () => {
     expect(api).not.toContain('## global_class');
 
     const globalClass = read(join(outputDir, 'global_class.md'));
-    expect(globalClass).toContain('## global_class');
+    expect(globalClass).toContain('# global_class');
+    expect(globalClass).toContain('## Public Attributes');
+    expect(globalClass).toContain('### global_class_a');
     expect(globalClass).toContain('This is a global class.');
   });
 
@@ -494,23 +512,23 @@ describe('integration', () => {
     });
 
     const utility = read(join(outputDir, 'demo-Utility.md'));
-    expect(utility).toContain('### Public Static Methods');
+    expect(utility).toContain('## Public Static Methods');
     expect(utility).toContain('| `Utility` | [`create`](#create) `static` | Creates a utility instance. |');
     expect(utility).toContain('static Utility create()');
-    expect(utility).toContain('### Public Methods');
+    expect(utility).toContain('## Public Methods');
     expect(utility).toContain('| `auto` | [`modern`](#modern) `virtual` `const` `inline` `nodiscard` `constexpr` `&` `noexcept(noexcept(std::declval<T>()))` `-> int` `requires std::integral<T>` | Modern qualified member. |');
     expect(utility).toContain('template<typename T> [[nodiscard]] constexpr virtual inline auto modern() const & noexcept(noexcept(std::declval<T>())) -> int requires std::integral<T>');
-    expect(utility).toContain('### Private Methods');
+    expect(utility).toContain('## Private Methods');
     expect(utility).toContain('Hidden helper method.');
-    expect(utility).toContain('### Private Attributes');
+    expect(utility).toContain('## Private Attributes');
     expect(utility).toContain('Private instance state.');
-    expect(utility).toContain('### Private Static Attributes');
+    expect(utility).toContain('## Private Static Attributes');
     expect(utility).toContain('| `int` | [`globalSecret`](#globalsecret) `static` | Private static state. |');
 
     const union = read(join(outputDir, 'demo-Value.md'));
-    expect(union).toContain('## Value');
+    expect(union).toContain('# Value');
     expect(union).toContain('Union value representation.');
-    expect(union).toContain('### Public Attributes');
+    expect(union).toContain('## Public Attributes');
     expect(union).toContain('Integer representation.');
   });
 });

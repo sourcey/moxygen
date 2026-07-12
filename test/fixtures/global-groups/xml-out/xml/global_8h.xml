@@ -32,7 +32,55 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/global.h" line="17" column="14" bodyfile="src/global.h" bodystart="17" bodyend="-1"/>
+        <location file="src/global.h" line="31" column="14" bodyfile="src/global.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="global_8h_1a37e6542028a7752a547921ff60551b96" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int mysql_tmpfile</definition>
+        <argsstring>(const char *prefix)</argsstring>
+        <name>mysql_tmpfile</name>
+        <param>
+          <type>const char *</type>
+          <declname>prefix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Create a temporary file.</para>
+<para>The temporary file is created in a location specified by the mysql server configuration (<ndash/>tmpdir option). The caller does not need to delete the file, it will be deleted automatically.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>prefix for temporary file name </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>-1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>error </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>&gt;=</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>0 a file handle that can be passed to dup or my_close </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/global.h" line="26" column="5" declfile="src/global.h" declline="26" declcolumn="5"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -48,18 +96,20 @@
 <codeline lineno="11" refid="classglobal__class_1affaae1576630cc2b03bd368e65f5bd96" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classglobal__class_1affaae1576630cc2b03bd368e65f5bd96" kindref="member">global_class_a</ref>;</highlight></codeline>
 <codeline lineno="12"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="13"><highlight class="normal"></highlight></codeline>
-<codeline lineno="17" refid="global_8h_1ac14f6201995116bbf1ce58c95908abab" refkind="member"><highlight class="normal"><ref refid="classglobal__class" kindref="compound">global_class</ref><sp/><ref refid="global_8h_1ac14f6201995116bbf1ce58c95908abab" kindref="member">global_a</ref>;</highlight></codeline>
-<codeline lineno="18"><highlight class="normal"></highlight></codeline>
-<codeline lineno="26"><highlight class="normal"></highlight></codeline>
-<codeline lineno="30" refid="group__global__group_1ga6958e7f1a4f816ea5a9d200678619eb3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GGROUP_DEFINE<sp/>1</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="global_8h_1a37e6542028a7752a547921ff60551b96" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="global_8h_1a37e6542028a7752a547921ff60551b96" kindref="member">mysql_tmpfile</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*prefix);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="global_8h_1ac14f6201995116bbf1ce58c95908abab" refkind="member"><highlight class="normal"><ref refid="classglobal__class" kindref="compound">global_class</ref><sp/><ref refid="global_8h_1ac14f6201995116bbf1ce58c95908abab" kindref="member">global_a</ref>;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
 <codeline lineno="40"><highlight class="normal"></highlight></codeline>
-<codeline lineno="44" refid="classnested__class" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classnested__class" kindref="compound">nested_class</ref><sp/>{</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="46" refid="classnested__class_1aabd38de5178db924112338506f0b7607" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classnested__class_1aabd38de5178db924112338506f0b7607" kindref="member">nested_class_a</ref>;</highlight></codeline>
-<codeline lineno="47"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="group__global__group_1ga6958e7f1a4f816ea5a9d200678619eb3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GGROUP_DEFINE<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="classnested__class" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classnested__class" kindref="compound">nested_class</ref><sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="60" refid="classnested__class_1aabd38de5178db924112338506f0b7607" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classnested__class_1aabd38de5178db924112338506f0b7607" kindref="member">nested_class_a</ref>;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="src/global.h"/>
   </compounddef>

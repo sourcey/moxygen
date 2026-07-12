@@ -1,7 +1,7 @@
 {{cleanAnchor refid name}}
 
 {{#if (eq kind "group")}}
-# {{#if this.shortname}}{{this.shortname}}{{else}}{{shortname name}}{{/if}}
+{{headingMarker 1}} {{#if this.shortname}}{{this.shortname}}{{else}}{{shortname name}}{{/if}}
 
 {{#with (groupBreadcrumbs this) as |breadcrumbs|}}
 {{#if breadcrumbs}}
@@ -11,7 +11,7 @@
 {{/with}}
 {{summary}}
 {{else}}
-# {{shortname name}}
+{{headingMarker 1}} {{shortname name}}
 
 {{briefdescription}}
 
@@ -20,7 +20,7 @@
 
 {{#with (compoundsOfKind filtered.compounds "group") as |groups|}}
 {{#if groups}}
-### Groups
+{{headingMarker 2}} Groups
 
 | Name | Description |
 |------|-------------|
@@ -31,7 +31,7 @@
 
 {{#with (compoundsOfKind filtered.compounds "namespace") as |namespaces|}}
 {{#if namespaces}}
-### Namespaces
+{{headingMarker 2}} Namespaces
 
 | Name | Description |
 |------|-------------|
@@ -42,7 +42,7 @@
 
 {{#with (compoundsOfKind filtered.compounds "class" "struct" "interface") as |types|}}
 {{#if types}}
-### Classes
+{{headingMarker 2}} Classes
 
 | Name | Description |
 |------|-------------|
@@ -53,7 +53,7 @@
 
 {{#with (compoundsOfKind filtered.compounds "enum") as |enums|}}
 {{#if enums}}
-### Enumerations
+{{headingMarker 2}} Enumerations
 
 | Name | Description |
 |------|-------------|
@@ -63,7 +63,7 @@
 {{/with}}
 
 {{#each filtered.sections}}
-### {{label}}
+{{headingMarker 2}} {{label}}
 
 {{#if (hasReturnColumn section)}}
 | Return | Name | Description |
@@ -83,7 +83,7 @@
 
 {{cleanAnchor refid name}}
 
-#### {{name}}
+{{headingMarker 3}} {{name}}
 
 {{badges}}
 
@@ -102,9 +102,29 @@
 {{/unless}}
 
 {{#if (hasDocumentedParams params)}}
+{{headingMarker 4}} Parameters
+
 | Parameter | Type | Description |
 |-----------|------|-------------|
 {{#each (documentedParams params)}}| `{{name}}` | `{{type}}` | {{description}} |
+{{/each}}
+{{/if}}
+
+{{#if returnValues}}
+{{headingMarker 4}} Return Values
+
+| Value | Description |
+|-------|-------------|
+{{#each returnValues}}| `{{name}}` | {{description}} |
+{{/each}}
+{{/if}}
+
+{{#if exceptions}}
+{{headingMarker 4}} Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+{{#each exceptions}}| `{{name}}` | {{description}} |
 {{/each}}
 {{/if}}
 

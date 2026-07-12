@@ -15,7 +15,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/global.h" line="30" column="9" bodyfile="src/global.h" bodystart="30" bodyend="-1"/>
+        <location file="src/global.h" line="44" column="9" bodyfile="src/global.h" bodystart="44" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

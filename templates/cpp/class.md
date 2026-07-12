@@ -1,6 +1,6 @@
 {{cleanAnchor refid name}}
 
-## {{shortname name}}
+{{headingMarker 1}} {{shortname name}}
 
 {{#if includes}}
 ```cpp
@@ -25,7 +25,7 @@
 {{detaileddescription}}
 
 {{#if allMembers}}
-### List of all members
+{{headingMarker 2}} List of all members
 
 | Name | Kind | Owner |
 |------|------|-------|
@@ -34,7 +34,7 @@
 
 {{/if}}
 {{#each inheritedMemberGroups}}
-### Inherited from {{linkedName name refid}}
+{{headingMarker 2}} Inherited from {{linkedName name refid}}
 
 | Kind | Name | Description |
 |------|------|-------------|
@@ -43,7 +43,7 @@
 
 {{/each}}
 {{#each filtered.sections}}
-### {{label}}
+{{headingMarker 2}} {{label}}
 
 {{#if (hasReturnColumn section)}}
 | Return | Name | Description |
@@ -63,7 +63,7 @@
 
 {{cleanAnchor refid name}}
 
-#### {{name}}
+{{headingMarker 3}} {{name}}
 
 {{badges}}
 
@@ -79,28 +79,28 @@
 {{detaileddescription}}
 
 {{#if referencedBy}}
-##### Referenced by
+{{headingMarker 4}} Referenced by
 
 {{#each referencedBy}}- {{linkedName name refid}}
 {{/each}}
 
 {{/if}}
 {{#if references}}
-##### References
+{{headingMarker 4}} References
 
 {{#each references}}- {{linkedName name refid}}
 {{/each}}
 
 {{/if}}
 {{#if reimplements}}
-##### Reimplements
+{{headingMarker 4}} Reimplements
 
 {{#each reimplements}}- {{linkedName name refid}}
 {{/each}}
 
 {{/if}}
 {{#if reimplementedBy}}
-##### Reimplemented by
+{{headingMarker 4}} Reimplemented by
 
 {{#each reimplementedBy}}- {{linkedName name refid}}
 {{/each}}
@@ -114,9 +114,29 @@
 {{/unless}}
 
 {{#if (hasDocumentedParams params)}}
+{{headingMarker 4}} Parameters
+
 | Parameter | Type | Description |
 |-----------|------|-------------|
 {{#each (documentedParams params)}}| `{{name}}` | `{{type}}` | {{description}} |
+{{/each}}
+{{/if}}
+
+{{#if returnValues}}
+{{headingMarker 4}} Return Values
+
+| Value | Description |
+|-------|-------------|
+{{#each returnValues}}| `{{name}}` | {{description}} |
+{{/each}}
+{{/if}}
+
+{{#if exceptions}}
+{{headingMarker 4}} Exceptions
+
+| Exception | Description |
+|-----------|-------------|
+{{#each exceptions}}| `{{name}}` | {{description}} |
 {{/each}}
 {{/if}}
 

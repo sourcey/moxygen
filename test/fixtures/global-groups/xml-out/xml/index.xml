@@ -10,6 +10,7 @@
     <member refid="global_8h_1ab16b63abd4589951d2edeccc54e70c3c" kind="define"><name>GDEFINE</name></member>
     <member refid="group__global__group_1ga6958e7f1a4f816ea5a9d200678619eb3" kind="define"><name>GGROUP_DEFINE</name></member>
     <member refid="global_8h_1ac14f6201995116bbf1ce58c95908abab" kind="variable"><name>global_a</name></member>
+    <member refid="global_8h_1a37e6542028a7752a547921ff60551b96" kind="function"><name>mysql_tmpfile</name></member>
   </compound>
   <compound refid="group__global__group" kind="group"><name>global_group</name>
     <member refid="group__global__group_1ga6958e7f1a4f816ea5a9d200678619eb3" kind="define"><name>GGROUP_DEFINE</name></member>

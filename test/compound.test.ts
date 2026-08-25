@@ -225,14 +225,15 @@ describe('compound', () => {
   });
 
   describe('filterNoise', () => {
-    it('drops undocumented macros but keeps documented ones', () => {
+    it('keeps undocumented macros and keeps documented ones', () => {
       const undocumented = makeMember('HTTP_API', 'define');
       const documented = makeMember('DECLARE_THING', 'define');
       documented.briefdescription = 'Macro docs';
 
       const result = filterNoise([undocumented, documented]);
-      expect(result).toHaveLength(1);
-      expect(result[0].name).toBe('DECLARE_THING');
+      expect(result).toHaveLength(2);
+      expect(result[0].name).toBe('HTTP_API');
+      expect(result[1].name).toBe('DECLARE_THING');
     });
   });
 });

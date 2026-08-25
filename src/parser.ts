@@ -645,10 +645,11 @@ function parseMember(
 
   // Function parameters
   const hasCallableArgs = member.kind !== 'friend' || !!member.argsstring.trim();
-  if (memberdef.param && hasCallableArgs && (member.kind === 'function' || member.kind === 'signal' || member.kind === 'slot' || member.kind === 'friend')) {
+  if (memberdef.param && hasCallableArgs && (member.kind === 'function' || member.kind === 'signal' || member.kind === 'slot' || member.kind === 'friend' || member.kind === 'define')) {
     const params = memberdef.param as Array<Record<string, unknown>>;
     for (const param of params) {
-      const paramName = param.declname ? trim(toMarkdown(param.declname)) : '';
+      const pName= member.kind === 'define' ? param.defname : param.declname;
+      const paramName = pName ? trim(toMarkdown(pName)) : '';
       member.params.push({
         type: trim(toMarkdown(param.type)),
         name: paramName,
@@ -802,6 +803,20 @@ function parseMember(
         }
       }
       m.push(member.kind, ' ', md.refLink(member.name, member.refid));
+      break;
+
+    case 'define':
+      m.push(member.kind, ' ', md.refLink(member.name, member.refid));
+      if (member.params.length > 0) {
+        m.push('(');
+        member.params.forEach((param, i) => {
+          if (i > 0) m.push(', ');
+          if (param.type) m.push(param.type, ' ');
+          if (param.name) m.push(param.name);
+          if (param.defaultValue) m.push(' = ', param.defaultValue);
+        });
+        m.push(')');
+      }
       break;
 
     default:

@@ -231,7 +231,13 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
       ? params.map((p) => {
         const type = stripMarkdownLinks(p.type);
         const defaultValue = stripMarkdownLinks(String((p as { defaultValue?: string }).defaultValue ?? '')).trim();
-        return `${p.name ? `${type} ${p.name}` : type}${defaultValue ? ` = ${defaultValue}` : ''}`;
+	if (type && p.name && defaultValue) {
+	  return `${type} ${p.name} = ${defaultValue}`;
+	}
+	if (type && p.name) {
+	  return `${type} ${p.name}`;
+	}
+	return `${p.name}`;
       }).join(', ')
       : '';
     parts.push(`${member.name}(${paramStr})`);

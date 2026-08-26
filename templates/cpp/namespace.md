@@ -9,14 +9,14 @@
 
 {{/if}}
 {{/with}}
-{{summary}}
 {{else}}
 {{headingMarker 1}} {{shortname name}}
+{{/if}}
 
+{{headingMarker 2}} Description
 {{briefdescription}}
 
 {{detaileddescription}}
-{{/if}}
 
 {{#with (compoundsOfKind filtered.compounds "group") as |groups|}}
 {{#if groups}}

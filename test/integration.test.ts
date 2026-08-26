@@ -19,6 +19,7 @@ const issue97XmlDir = join(import.meta.dirname, 'fixtures', 'issue-97', 'xml-out
 const globalGroupsXmlDir = join(import.meta.dirname, 'fixtures', 'global-groups', 'xml-out', 'xml');
 
 const exampleOutputDir = join(outputRoot, 'example');
+const groupCompLongDescr = join(import.meta.dirname, 'fixtures', 'group_compound_longdescription', 'xml-out', 'xml');
 
 function read(path: string): string {
   return readFileSync(path, 'utf8');
@@ -530,5 +531,21 @@ describe('integration', () => {
     expect(union).toContain('Union value representation.');
     expect(union).toContain('## Public Attributes');
     expect(union).toContain('Integer representation.');
+  });
+
+  it('a group with a very long detailed description gets truncated', async () => {
+    const outputDir = join(outputRoot, 'group_compound_longdescription');
+
+    await run({
+      directory: groupCompLongDescr,
+      output: join(outputDir, '%s.md'),
+      groups: true,
+      pages: false,
+      anchors: true,
+      quiet: true,
+    });
+
+    const group = read(join(outputDir, 'g1.md'));
+    expect(group).toContain('Group 1 long description 25');
   });
 });

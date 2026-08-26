@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="g1_8h" kind="file" language="C++">
+    <compoundname>g1.h</compoundname>
+    <sectiondef kind="var">
+      <member refid="group__g1_1ga88dad81d303b2945a1280df3e8f1d0f4" kind="variable"><name>group_member1</name></member>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="group__g1_1ga88dad81d303b2945a1280df3e8f1d0f4" refkind="member"><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="group__g1_1ga88dad81d303b2945a1280df3e8f1d0f4" kindref="member">group_member1</ref>;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/></highlight></codeline>
+    </programlisting>
+    <location file="src/g1.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="group__g1" kind="group">
+    <compoundname>g1</compoundname>
+    <title>Group 1 title</title>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="group__g1_1ga88dad81d303b2945a1280df3e8f1d0f4" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int group_member1</definition>
+        <argsstring></argsstring>
+        <name>group_member1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>group member 1 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/g1.h" line="36" column="6" bodyfile="src/g1.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Group 1 brief description. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Group 1 long description 1 Group 1 long description 2 Group 1 long description 3 Group 1 long description 4 Group 1 long description 5 Group 1 long description 6 Group 1 long description 7 Group 1 long description 8 Group 1 long description 9 Group 1 long description 10 Group 1 long description 11 Group 1 long description 12 Group 1 long description 13 Group 1 long description 14 Group 1 long description 15 Group 1 long description 16 Group 1 long description 17 Group 1 long description 18 Group 1 long description 19 Group 1 long description 20 Group 1 long description 21 Group 1 long description 22 Group 1 long description 23 Group 1 long description 24 Group 1 long description 25 </para>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

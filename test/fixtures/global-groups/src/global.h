@@ -32,6 +32,7 @@ global_class global_a;
 
 /**
   @defgroup global_group Global Group
+  @brief The group holding global entities.
 
   This is the global group's description.
 

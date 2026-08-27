@@ -26,7 +26,8 @@
     "test:watch": "vitest",
     "lint": "tsc --noEmit",
     "prepublishOnly": "npm run build",
-    "example": "npm run build && node dist/cli.js --groups --pages --anchors --output=example/doc/api-%s.md example/xml"
+    "example": "npm run build && node dist/cli.js --groups --pages --anchors --output=example/doc/api-%s.md example/xml",
+    "fixtures": "node scripts/regen-fixture.mjs"
   },
   "repository": {
     "type": "git",

@@ -13,7 +13,6 @@
 {{headingMarker 1}} {{shortname name}}
 {{/if}}
 
-{{headingMarker 2}} Description
 {{briefdescription}}
 
 {{detaileddescription}}

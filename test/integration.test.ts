@@ -212,7 +212,7 @@ describe('integration', () => {
 
     const api = read(join(outputDir, 'api.md'));
     expect(api).toContain('## Groups');
-    expect(api).toContain('| [`Global Group`](global_group.md#globalgroup) | This is the global group');
+    expect(api).toContain('| [`Global Group`](global_group.md#globalgroup) | The group holding global entities. |');
     expect(api).toContain('## Classes');
     expect(api).toContain('| [`global_class`](#global_class) | This is a global class. |');
     expect(api).toContain('## Functions');
@@ -229,6 +229,10 @@ describe('integration', () => {
 
     const group = read(join(outputDir, 'global_group.md'));
     expect(group).toContain('# Global Group');
+    // A group with both descriptions keeps the detailed body, not just the brief.
+    expect(group).toContain('The group holding global entities.');
+    expect(group).toContain("This is the global group's description.");
+    expect(group).not.toContain('## Description');
     expect(group).toContain('## Groups');
     expect(group).toContain('| [`Nested Group`](nested_group.md#nestedgroup) | This is the nested group');
     expect(group).not.toContain('global_class');

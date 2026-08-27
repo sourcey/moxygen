@@ -218,16 +218,16 @@ const SECTION_LABELS: Record<string, string> = {
 const NOISE_RE = /^(TYPE|BREAK|DEG|SEP|IMPL)_\d+$/;
 
 /**
- * Remove noisy members: undocumented destructors, internal macros,
- * undocumented copy/move operators.
+ * Remove members that are structurally noise rather than API: internal macros
+ * left behind by expansion.
+ *
+ * Missing documentation is deliberately not a signal. Doxygen only emits a
+ * member when the project asked for it, either by documenting it, by placing
+ * it in a documented group, or by setting `EXTRACT_ALL`. Include guards are
+ * dropped by Doxygen itself and never reach this point.
  */
 export function filterNoise(members: Member[]): Member[] {
-  return members.filter((m) => {
-    if (m.name.startsWith('~') && !m.briefdescription && !m.detaileddescription) return false;
-    if (NOISE_RE.test(m.name)) return false;
-    if (m.name === 'operator=' && !m.briefdescription && !m.detaileddescription) return false;
-    return true;
-  });
+  return members.filter((m) => !NOISE_RE.test(m.name));
 }
 
 /**

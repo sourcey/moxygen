@@ -225,15 +225,26 @@ describe('compound', () => {
   });
 
   describe('filterNoise', () => {
-    it('keeps undocumented macros and keeps documented ones', () => {
+    it('keeps undocumented members that Doxygen chose to emit', () => {
       const undocumented = makeMember('HTTP_API', 'define');
       const documented = makeMember('DECLARE_THING', 'define');
       documented.briefdescription = 'Macro docs';
 
       const result = filterNoise([undocumented, documented]);
-      expect(result).toHaveLength(2);
-      expect(result[0].name).toBe('HTTP_API');
-      expect(result[1].name).toBe('DECLARE_THING');
+      expect(result.map((m) => m.name)).toEqual(['HTTP_API', 'DECLARE_THING']);
+    });
+
+    it('keeps undocumented destructors and assignment operators', () => {
+      const members = [makeMember('~Bicycle', 'public-func'), makeMember('operator=', 'public-func')];
+
+      expect(filterNoise(members)).toHaveLength(2);
+    });
+
+    it('drops internal macros left behind by expansion', () => {
+      const members = [makeMember('TYPE_1', 'define'), makeMember('IMPL_42', 'define'), makeMember('MAX_RETRIES', 'define')];
+
+      const result = filterNoise(members);
+      expect(result.map((m) => m.name)).toEqual(['MAX_RETRIES']);
     });
   });
 });

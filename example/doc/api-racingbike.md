@@ -4,15 +4,18 @@
 
 Racing bike module contains the `RacingBike` class. Racing bikes are a special kind of bike which can go much faster on the road, with much less effort.
 
-### Classes
+## Classes
 
 | Name | Description |
 |------|-------------|
 | [`RacingBike`](#racingbike) | Racing bike class. |
 
+
+## Class Definitions
+
 {#racingbike}
 
-## RacingBike
+### RacingBike
 
 ```cpp
 #include <racingbike.h>
@@ -30,7 +33,7 @@ Racing bike class.
 
 [RacingBike](#racingbike) is a special kind of bike which can go much faster on the road, with much less effort (even uphill!). It doesn't make sense to call `RingBell` on a racing bike for they don't have bells.
 
-### List of all members
+#### List of all members
 
 | Name | Kind | Owner |
 |------|------|-------|
@@ -40,7 +43,7 @@ Racing bike class.
 | [`RingBell`](api-bicycle.md#ringbell) | `function` | Inherited from [`Bicycle`](api-bicycle.md#bicycle) |
 | [`~Bicycle`](api-bicycle.md#bicycle-1) | `function` | Inherited from [`Bicycle`](api-bicycle.md#bicycle) |
 
-### Inherited from [`Bicycle`](api-bicycle.md#bicycle)
+#### Inherited from [`Bicycle`](api-bicycle.md#bicycle)
 
 | Kind | Name | Description |
 |------|------|-------------|
@@ -48,7 +51,7 @@ Racing bike class.
 | `function` | [`RingBell`](api-bicycle.md#ringbell) `virtual` | Ring bell on the bike. |
 | `function` | [`~Bicycle`](api-bicycle.md#bicycle-1) `virtual` | Default destructor. |
 
-### Public Methods
+#### Public Methods
 
 | Return | Name | Description |
 |--------|------|-------------|
@@ -59,7 +62,7 @@ Racing bike class.
 
 {#pedalharder-1}
 
-#### PedalHarder
+##### PedalHarder
 
 `virtual`
 
@@ -71,7 +74,7 @@ Defined in src/racingbike.h:20
 
 PedalHarder makes you go faster (usually).
 
-##### Reimplements
+###### Reimplements
 
 - [`PedalHarder`](api-bicycle.md#pedalharder)
 
@@ -79,7 +82,7 @@ PedalHarder makes you go faster (usually).
 
 {#ringbell-1}
 
-#### RingBell
+##### RingBell
 
 `virtual`
 
@@ -93,7 +96,7 @@ Ring bell on the bike.
 
 RingBell rings the bell on the bike. Note that not all bikes have bells.
 
-##### Reimplements
+###### Reimplements
 
 - [`RingBell`](api-bicycle.md#ringbell)
 

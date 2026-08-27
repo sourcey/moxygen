@@ -4,15 +4,18 @@
 
 Mountain bike module contains the `MountainBike` class. Mountain bikes are a kind of bike for cycling on rough terrain.
 
-### Classes
+## Classes
 
 | Name | Description |
 |------|-------------|
 | [`MountainBike`](#mountainbike) | Mountain bike implementation of a `[Bicycle](api-bicycle.md#bicycle)`. |
 
+
+## Class Definitions
+
 {#mountainbike}
 
-## MountainBike
+### MountainBike
 
 ```cpp
 #include <mountainbike.h>
@@ -30,7 +33,7 @@ Mountain bike implementation of a `[Bicycle](api-bicycle.md#bicycle)`.
 
 [MountainBike](#mountainbike) is an implementation of a [Bicycle](api-bicycle.md#bicycle) providing a bike for cycling on rough terrain. Mountain bikes are pretty cool because they have stuff like **Suspension** (and you can even adjust it using SetSuspension). If you're looking for a bike for use on the road, you might be better off using a [RacingBike](api-racingbike.md#racingbike) though.
 
-### List of all members
+#### List of all members
 
 | Name | Kind | Owner |
 |------|------|-------|
@@ -40,7 +43,7 @@ Mountain bike implementation of a `[Bicycle](api-bicycle.md#bicycle)`.
 | [`RingBell`](api-bicycle.md#ringbell) | `function` | Inherited from [`Bicycle`](api-bicycle.md#bicycle) |
 | [`~Bicycle`](api-bicycle.md#bicycle-1) | `function` | Inherited from [`Bicycle`](api-bicycle.md#bicycle) |
 
-### Inherited from [`Bicycle`](api-bicycle.md#bicycle)
+#### Inherited from [`Bicycle`](api-bicycle.md#bicycle)
 
 | Kind | Name | Description |
 |------|------|-------------|
@@ -48,7 +51,7 @@ Mountain bike implementation of a `[Bicycle](api-bicycle.md#bicycle)`.
 | `function` | [`RingBell`](api-bicycle.md#ringbell) `virtual` | Ring bell on the bike. |
 | `function` | [`~Bicycle`](api-bicycle.md#bicycle-1) `virtual` | Default destructor. |
 
-### Public Methods
+#### Public Methods
 
 | Return | Name | Description |
 |--------|------|-------------|
@@ -59,7 +62,7 @@ Mountain bike implementation of a `[Bicycle](api-bicycle.md#bicycle)`.
 
 {#setsuspension}
 
-#### SetSuspension
+##### SetSuspension
 
 ```cpp
 bool SetSuspension(double stiffness)
@@ -78,7 +81,7 @@ true if the suspension was adjusted successfully, false otherwise.
 
 {#changebreak}
 
-#### ChangeBreak
+##### ChangeBreak
 
 `inline`
 

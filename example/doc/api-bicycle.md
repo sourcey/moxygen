@@ -4,15 +4,18 @@
 
 Bicycle module contains the bicycle class. Bicycles are a useful way of transporting oneself, without too much effort.
 
-### Classes
+## Classes
 
 | Name | Description |
 |------|-------------|
 | [`Bicycle`](#bicycle) | Standard bicycle class. |
 
+
+## Class Definitions
+
 {#bicycle}
 
-## Bicycle
+### Bicycle
 
 ```cpp
 #include <bicycle.h>
@@ -30,7 +33,7 @@ Standard bicycle class.
 
 [Bicycle](#bicycle) implements a standard bicycle. Bicycles are a useful way of transporting oneself, without too much effort (unless you go uphill or against the wind). If there are a lot of people on the road, you can use `RingBell` to ring your bell (**note**, not all bicycles have bells!).
 
-### List of all members
+#### List of all members
 
 | Name | Kind | Owner |
 |------|------|-------|
@@ -38,7 +41,7 @@ Standard bicycle class.
 | [`RingBell`](#ringbell) | `function` | Declared here |
 | [`~Bicycle`](#bicycle-1) | `function` | Declared here |
 
-### Public Methods
+#### Public Methods
 
 | Return | Name | Description |
 |--------|------|-------------|
@@ -50,7 +53,7 @@ Standard bicycle class.
 
 {#pedalharder}
 
-#### PedalHarder
+##### PedalHarder
 
 `virtual`
 
@@ -62,7 +65,7 @@ Defined in src/bicycle.h:20
 
 PedalHarder makes you go faster (usually).
 
-##### Reimplemented by
+###### Reimplemented by
 
 - [`PedalHarder`](api-racingbike.md#pedalharder-1)
 
@@ -70,7 +73,7 @@ PedalHarder makes you go faster (usually).
 
 {#ringbell}
 
-#### RingBell
+##### RingBell
 
 `virtual`
 
@@ -84,7 +87,7 @@ Ring bell on the bike.
 
 RingBell rings the bell on the bike. Note that not all bikes have bells.
 
-##### Reimplemented by
+###### Reimplemented by
 
 - [`RingBell`](api-racingbike.md#ringbell-1)
 
@@ -92,7 +95,7 @@ RingBell rings the bell on the bike. Note that not all bikes have bells.
 
 {#bicycle-1}
 
-#### ~Bicycle
+##### ~Bicycle
 
 `virtual`
 

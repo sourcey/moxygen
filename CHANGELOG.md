@@ -2,6 +2,15 @@
 
 Notable changes per release. Older history is in the git log.
 
+## 2.1.14 - 2026-08-27
+
+### Changed
+
+- `commander` moved to ^15.0.0. New installs resolve a different major of the CLI argument parser, verified against the full CLI surface: help, version, every flag, `%s` output patterns and the missing-argument error path.
+- Development dependencies moved to TypeScript ^7.0.2, vitest ^4.1.11 and @types/node ^26.2.0.
+
+No change to generated output.
+
 ## 2.1.13 - 2026-08-27
 
 ### Fixed

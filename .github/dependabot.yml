@@ -7,10 +7,16 @@ updates:
     schedule:
       interval: weekly
     groups:
+      # Majors stay out of the group so they arrive as individual PRs. The
+      # first grouped run swept commander, TypeScript and vitest majors into
+      # one PR, which is not something to review as a batch.
       npm-versions:
         applies-to: version-updates
         patterns:
           - "*"
+        update-types:
+          - minor
+          - patch
       npm-security:
         applies-to: security-updates
         patterns:

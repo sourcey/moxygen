@@ -1,12 +1,20 @@
 name: Release
 
+# Releases are driven by the version in package.json, not by remembering to
+# tag. Land a bump on main and the tag, GitHub release and npm publish follow.
+# Every other push to main resolves to a no-op in seconds.
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Release even though the tag already exists, to finish a partial release
+        type: boolean
+        default: false
 
 concurrency:
-  group: release-${{ github.ref_name }}
+  group: release
   cancel-in-progress: false
 
 jobs:
@@ -16,6 +24,7 @@ jobs:
       contents: read
     outputs:
       version: ${{ steps.version.outputs.version }}
+      release: ${{ steps.version.outputs.release }}
 
     steps:
       - uses: actions/checkout@v7
@@ -26,36 +35,64 @@ jobs:
           cache: npm
 
       - id: version
-        name: Verify package version matches tag
+        name: Decide whether this commit releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORCE: ${{ inputs.force }}
         run: |
           set -eu
-          version="${GITHUB_REF_NAME#v}"
-          node -e '
-            const pkg = require("./package.json");
-            const expected = process.argv[1];
-            if (pkg.version !== expected) {
-              console.error(`package.json version ${pkg.version} does not match tag ${expected}`);
-              process.exit(1);
-            }
-          ' "$version"
+          version="$(node -p 'require("./package.json").version')"
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - run: npm ci
-      - run: npm run build
-      - run: npm test
+          lock_version="$(node -p 'require("./package-lock.json").version')"
+          if [ "$lock_version" != "$version" ]; then
+            echo "package-lock.json is at $lock_version but package.json is at $version." >&2
+            echo "Bump with 'npm version <patch|minor|major>' so both stay in step." >&2
+            exit 1
+          fi
 
-      - name: Pack npm artifact
+          if [ "${FORCE:-false}" = "true" ]; then
+            echo "Forced run: releasing v$version even if the tag exists."
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          elif gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v${version}" >/dev/null 2>&1; then
+            echo "v$version is already released; nothing to do."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "v$version is not released yet."
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Before the expensive steps, so a missing changelog entry fails fast.
+      - if: steps.version.outputs.release == 'true'
+        name: Extract release notes
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           mkdir -p .stage/release
-          npm pack --pack-destination .stage/release
+          node scripts/changelog-section.mjs "$VERSION" > .stage/release/notes.md
 
-      - uses: actions/upload-artifact@v7
+      - if: steps.version.outputs.release == 'true'
+        run: npm ci
+
+      - if: steps.version.outputs.release == 'true'
+        run: npm run build
+
+      - if: steps.version.outputs.release == 'true'
+        run: npm test
+
+      - if: steps.version.outputs.release == 'true'
+        name: Pack npm artifact
+        run: npm pack --pack-destination .stage/release
+
+      - if: steps.version.outputs.release == 'true'
+        uses: actions/upload-artifact@v7
         with:
           name: moxygen-npm-package
-          path: .stage/release/moxygen-*.tgz
+          path: .stage/release
 
   github-release:
     needs: validate
+    if: needs.validate.outputs.release == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -66,14 +103,17 @@ jobs:
           name: moxygen-npm-package
           path: .stage/release
 
-      - name: Create GitHub release
+      - name: Create tag and GitHub release
         uses: softprops/action-gh-release@v3
         with:
-          generate_release_notes: true
+          tag_name: v${{ needs.validate.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          body_path: .stage/release/notes.md
           files: .stage/release/moxygen-*.tgz
 
   publish-npm:
-    needs: validate
+    needs: [validate, github-release]
+    if: needs.validate.outputs.release == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read

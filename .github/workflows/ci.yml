@@ -22,3 +22,10 @@ jobs:
       - run: npm run build
       - run: npm run lint
       - run: npm test
+
+      # example/doc is committed output. Regenerating it must be a no-op, or
+      # the published example is describing behaviour the code no longer has.
+      - name: Verify committed example output is current
+        run: |
+          npm run example
+          git diff --exit-code -- example/doc

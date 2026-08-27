@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="macros_8h" kind="file" language="C++">
+    <compoundname>macros.h</compoundname>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="macros_8h_1aecf13b8dc783db2202ca5c34fe117fc3" prot="public" static="no">
+        <name>MAX_RETRIES</name>
+        <initializer>5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The maximum number of retries. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/macros.h" line="7" column="9" bodyfile="src/macros.h" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="macros_8h_1a318c6ec23f270a54557c2012c4dd0bce" prot="public" static="no">
+        <name>CLAMP</name>
+        <param><defname>VALUE</defname></param>
+        <param><defname>LO</defname></param>
+        <param><defname>HI</defname></param>
+        <initializer>((VALUE) &lt; (LO) ? (LO) : ((VALUE) &gt; (HI) ? (HI) : (VALUE)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Clamp a value into an inclusive range.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>VALUE</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the value to clamp </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>LO</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the lower bound </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>HI</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the upper bound </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/macros.h" line="16" column="9" bodyfile="src/macros.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="macros_8h_1a0bc63b24b654ca433be7b97a3edde132" prot="public" static="no">
+        <name>UNREACHABLE</name>
+        <param></param>
+        <initializer>__builtin_unreachable()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Mark a code path as unreachable. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/macros.h" line="21" column="9" bodyfile="src/macros.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="macros_8h_1a920685f0ba8f8eebd13a8feb6ae286f6" prot="public" static="no">
+        <name>UNDOCUMENTED_FLAG</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/macros.h" line="23" column="9" bodyfile="src/macros.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="macros_8h_1aa77e5763e57ffef3a8c0f08af40a73f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void reset</definition>
+        <argsstring>(int)</argsstring>
+        <name>reset</name>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset the retry counter. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/macros.h" line="28" column="6" declfile="src/macros.h" declline="28" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>__MACROS_H__</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>__MACROS_H__</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="macros_8h_1aecf13b8dc783db2202ca5c34fe117fc3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MAX_RETRIES<sp/>5</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="macros_8h_1a318c6ec23f270a54557c2012c4dd0bce" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CLAMP(VALUE,<sp/>LO,<sp/>HI)<sp/>((VALUE)<sp/>&lt;<sp/>(LO)<sp/>?<sp/>(LO)<sp/>:<sp/>((VALUE)<sp/>&gt;<sp/>(HI)<sp/>?<sp/>(HI)<sp/>:<sp/>(VALUE)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="macros_8h_1a0bc63b24b654ca433be7b97a3edde132" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>UNREACHABLE()<sp/>__builtin_unreachable()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="macros_8h_1a920685f0ba8f8eebd13a8feb6ae286f6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>UNDOCUMENTED_FLAG<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="macros_8h_1aa77e5763e57ffef3a8c0f08af40a73f8" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="macros_8h_1aa77e5763e57ffef3a8c0f08af40a73f8" kindref="member">reset</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>__MACROS_H__<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="src/macros.h"/>
+  </compounddef>
+</doxygen>

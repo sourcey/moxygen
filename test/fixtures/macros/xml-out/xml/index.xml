@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.17.0" xml:lang="en-US">
+  <compound refid="macros_8h" kind="file"><name>macros.h</name>
+    <member refid="macros_8h_1aecf13b8dc783db2202ca5c34fe117fc3" kind="define"><name>MAX_RETRIES</name></member>
+    <member refid="macros_8h_1a318c6ec23f270a54557c2012c4dd0bce" kind="define"><name>CLAMP</name></member>
+    <member refid="macros_8h_1a0bc63b24b654ca433be7b97a3edde132" kind="define"><name>UNREACHABLE</name></member>
+    <member refid="macros_8h_1a920685f0ba8f8eebd13a8feb6ae286f6" kind="define"><name>UNDOCUMENTED_FLAG</name></member>
+    <member refid="macros_8h_1aa77e5763e57ffef3a8c0f08af40a73f8" kind="function"><name>reset</name></member>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+</doxygenindex>

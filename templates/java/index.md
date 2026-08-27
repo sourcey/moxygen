@@ -73,7 +73,7 @@
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-{{#each (documentedParams params)}}| `{{name}}` | `{{type}}` | {{description}} |
+{{#each (documentedParams params)}}| `{{name}}` | {{#if type}}`{{type}}`{{/if}} | {{description}} |
 {{/each}}
 {{/if}}
 

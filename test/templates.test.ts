@@ -77,6 +77,52 @@ describe('template helpers', () => {
     expect(output).toBe('AsyncQueue(int limit = 2048)');
   });
 
+  it('keeps the type of unnamed parameters in function signatures', () => {
+    const output = renderSignature({
+      kind: 'function',
+      name: 'reset',
+      returnType: 'void',
+      params: [{ type: 'int', name: '' }, { type: 'char', name: 'tag' }],
+      templateParams: [],
+      qualifiers: [],
+    }).trim();
+
+    expect(output).toBe('void reset(int, char tag)');
+  });
+
+  it('renders object-like macros without an argument list', () => {
+    const output = renderSignature({
+      kind: 'define',
+      name: 'MAX_RETRIES',
+      initializer: '5',
+      params: [],
+    }).trim();
+
+    expect(output).toBe('#define MAX_RETRIES 5');
+  });
+
+  it('renders function-like macros with their parameters', () => {
+    const output = renderSignature({
+      kind: 'define',
+      name: 'CLAMP',
+      initializer: '',
+      params: [{ type: '', name: 'VALUE' }, { type: '', name: 'LO' }, { type: '', name: 'HI' }],
+    }).trim();
+
+    expect(output).toBe('#define CLAMP(VALUE, LO, HI)');
+  });
+
+  it('renders zero-argument function-like macros with empty parens', () => {
+    const output = renderSignature({
+      kind: 'define',
+      name: 'UNREACHABLE',
+      initializer: '__builtin_unreachable()',
+      params: [{ type: '', name: '' }],
+    }).trim();
+
+    expect(output).toBe('#define UNREACHABLE() __builtin_unreachable()');
+  });
+
   it('renders typedefs as aliases instead of fake functions', () => {
     const output = renderSignature({
       kind: 'typedef',

@@ -613,6 +613,10 @@ function parseMember(
   member.isConsteval = attrs.consteval === 'yes';
   member.returnType = trim(toMarkdown(memberdef.type));
 
+  if (memberdef.initializer) {
+    member.initializer = (memberdef.initializer as Array<Record<string, string>>)[0]?._ ?? '';
+  }
+
   if (memberdef.location) {
     const locations = memberdef.location as Array<Record<string, Record<string, string>>>;
     const locationAttrs = locations?.[0]?.$;
@@ -643,13 +647,14 @@ function parseMember(
   member.reimplements = parseRelationRefs(memberdef, 'reimplements');
   member.reimplementedBy = parseRelationRefs(memberdef, 'reimplementedby');
 
-  // Function parameters
+  // Function parameters. Function-like macros carry their argument names in
+  // `defname` rather than `declname`, and have no types.
   const hasCallableArgs = member.kind !== 'friend' || !!member.argsstring.trim();
   if (memberdef.param && hasCallableArgs && (member.kind === 'function' || member.kind === 'signal' || member.kind === 'slot' || member.kind === 'friend' || member.kind === 'define')) {
     const params = memberdef.param as Array<Record<string, unknown>>;
     for (const param of params) {
-      const pName= member.kind === 'define' ? param.defname : param.declname;
-      const paramName = pName ? trim(toMarkdown(pName)) : '';
+      const declaredName = member.kind === 'define' ? param.defname : param.declname;
+      const paramName = declaredName ? trim(toMarkdown(declaredName)) : '';
       member.params.push({
         type: trim(toMarkdown(param.type)),
         name: paramName,
@@ -767,13 +772,7 @@ function parseMember(
       if (attrs.mutable === 'yes') m.push('mutable', ' ');
       m.push(toMarkdown(memberdef.type), ' ');
       m.push(md.refLink(member.name, member.refid));
-      if (memberdef.initializer) {
-        const init = (memberdef.initializer as Array<Record<string, string>>)[0]?._ ?? '';
-        if (init) {
-          m.push(' ', init);
-          member.initializer = init;
-        }
-      }
+      if (member.initializer) m.push(' ', member.initializer);
       break;
 
     case 'property':
@@ -803,20 +802,6 @@ function parseMember(
         }
       }
       m.push(member.kind, ' ', md.refLink(member.name, member.refid));
-      break;
-
-    case 'define':
-      m.push(member.kind, ' ', md.refLink(member.name, member.refid));
-      if (member.params.length > 0) {
-        m.push('(');
-        member.params.forEach((param, i) => {
-          if (i > 0) m.push(', ');
-          if (param.type) m.push(param.type, ' ');
-          if (param.name) m.push(param.name);
-          if (param.defaultValue) m.push(' = ', param.defaultValue);
-        });
-        m.push(')');
-      }
       break;
 
     default:

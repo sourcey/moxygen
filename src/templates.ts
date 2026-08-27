@@ -211,6 +211,16 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
     if (kind === 'property') {
       return `${stripMarkdownLinks(member.returnType as string)} ${member.name}`;
     }
+    if (kind === 'define') {
+      // Object-like macros take no argument list at all, so parens are only
+      // correct when Doxygen reported macro parameters.
+      const macroParams = (member.params ?? []) as Array<{ name: string }>;
+      const args = macroParams.length
+        ? `(${macroParams.map((p) => p.name).filter(Boolean).join(', ')})`
+        : '';
+      const init = stripMarkdownLinks(String(member.initializer ?? '')).trim();
+      return `#define ${member.name}${args}${init ? ` ${init}` : ''}`;
+    }
 
     // function/signal/slot
     const parts: string[] = [];
@@ -231,13 +241,9 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
       ? params.map((p) => {
         const type = stripMarkdownLinks(p.type);
         const defaultValue = stripMarkdownLinks(String((p as { defaultValue?: string }).defaultValue ?? '')).trim();
-	if (type && p.name && defaultValue) {
-	  return `${type} ${p.name} = ${defaultValue}`;
-	}
-	if (type && p.name) {
-	  return `${type} ${p.name}`;
-	}
-	return `${p.name}`;
+        // Either half can be absent: unnamed parameters carry only a type.
+        const declaration = [type, p.name].filter(Boolean).join(' ');
+        return `${declaration}${defaultValue ? ` = ${defaultValue}` : ''}`;
       }).join(', ')
       : '';
     parts.push(`${member.name}(${paramStr})`);

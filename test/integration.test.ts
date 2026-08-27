@@ -17,6 +17,7 @@ const missingTagsXmlDir = join(import.meta.dirname, 'fixtures', 'missing-tags', 
 const memberKindsXmlDir = join(import.meta.dirname, 'fixtures', 'member-kinds', 'xml-out', 'xml');
 const issue97XmlDir = join(import.meta.dirname, 'fixtures', 'issue-97', 'xml-out', 'xml');
 const globalGroupsXmlDir = join(import.meta.dirname, 'fixtures', 'global-groups', 'xml-out', 'xml');
+const macrosXmlDir = join(import.meta.dirname, 'fixtures', 'macros', 'xml-out', 'xml');
 
 const exampleOutputDir = join(outputRoot, 'example');
 
@@ -530,5 +531,31 @@ describe('integration', () => {
     expect(union).toContain('Union value representation.');
     expect(union).toContain('## Public Attributes');
     expect(union).toContain('Integer representation.');
+  });
+
+  it('renders macros by their real shape and keeps undocumented ones', async () => {
+    const output = join(outputRoot, 'macros', 'api.md');
+
+    await run({
+      directory: macrosXmlDir,
+      output,
+      anchors: true,
+      quiet: true,
+    });
+
+    const api = read(output);
+    expect(api).toContain('## Macros');
+    expect(api).toContain('#define MAX_RETRIES 5');
+    expect(api).toContain('#define CLAMP(VALUE, LO, HI)');
+    expect(api).toContain('#define UNREACHABLE() __builtin_unreachable()');
+    expect(api).toContain('the value to clamp');
+
+    // EXTRACT_ALL asked for this one, so moxygen must not silently drop it.
+    expect(api).toContain('UNDOCUMENTED_FLAG');
+    // Doxygen never emits the include guard in the first place.
+    expect(api).not.toContain('__MACROS_H__');
+
+    // Unnamed parameters keep their type.
+    expect(api).toContain('void reset(int)');
   });
 });

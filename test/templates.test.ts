@@ -123,6 +123,28 @@ describe('template helpers', () => {
     expect(output).toBe('#define UNREACHABLE() __builtin_unreachable()');
   });
 
+  it('flattens cross-references in macro initializers', () => {
+    const output = renderSignature({
+      kind: 'define',
+      name: 'RETRY_HOOK',
+      initializer: '[registry](#registry)->retry',
+      params: [],
+    }).trim();
+
+    expect(output).toBe('#define RETRY_HOOK registry->retry');
+  });
+
+  it('flattens cross-references in variable initializers', () => {
+    const output = renderSignature({
+      kind: 'variable',
+      name: 'fallback',
+      returnType: 'handlers *',
+      initializer: '&[registry](#registry)',
+    }).trim();
+
+    expect(output).toBe('handlers * fallback &registry');
+  });
+
   it('renders typedefs as aliases instead of fake functions', () => {
     const output = renderSignature({
       kind: 'typedef',

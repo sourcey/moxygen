@@ -613,8 +613,11 @@ function parseMember(
   member.isConsteval = attrs.consteval === 'yes';
   member.returnType = trim(toMarkdown(memberdef.type));
 
+  // Initializers can reference other documented symbols, so they go through
+  // the markdown conversion rather than being read as flat text. Reading `_`
+  // alone drops every <ref> child, turning `registry->retry` into `->retry`.
   if (memberdef.initializer) {
-    member.initializer = (memberdef.initializer as Array<Record<string, string>>)[0]?._ ?? '';
+    member.initializer = mdField(memberdef, 'initializer');
   }
 
   if (memberdef.location) {

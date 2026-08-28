@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
   <compounddef id="macros_8h" kind="file" language="C++">
     <compoundname>macros.h</compoundname>
+    <innerclass refid="structhandlers" prot="public">handlers</innerclass>
     <sectiondef kind="define">
       <memberdef kind="define" id="macros_8h_1aecf13b8dc783db2202ca5c34fe117fc3" prot="public" static="no">
         <name>MAX_RETRIES</name>
@@ -80,6 +81,33 @@
         </inbodydescription>
         <location file="src/macros.h" line="23" column="9" bodyfile="src/macros.h" bodystart="23" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="define" id="macros_8h_1a1ee636c8ea8ef76556c00290eb5a289b" prot="public" static="no">
+        <name>RETRY_HOOK</name>
+        <initializer><ref refid="macros_8h_1a37285142ae15ca3cdc36f3a03faeb0c9" kindref="member">registry</ref>-&gt;retry</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Shorthand for the registry retry hook. Its initializer references another documented symbol, so Doxygen emits a cross-reference inside the initializer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/macros.h" line="41" column="9" bodyfile="src/macros.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="macros_8h_1a37285142ae15ca3cdc36f3a03faeb0c9" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structhandlers" kindref="compound">handlers</ref> *</type>
+        <definition>struct handlers * registry</definition>
+        <argsstring></argsstring>
+        <name>registry</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/macros.h" line="35" column="11"/>
+      </memberdef>
     </sectiondef>
     <sectiondef kind="func">
       <memberdef kind="function" id="macros_8h_1aa77e5763e57ffef3a8c0f08af40a73f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
@@ -118,7 +146,13 @@
 <codeline lineno="24"><highlight class="normal"></highlight></codeline>
 <codeline lineno="28" refid="macros_8h_1aa77e5763e57ffef3a8c0f08af40a73f8" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="macros_8h_1aa77e5763e57ffef3a8c0f08af40a73f8" kindref="member">reset</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="29"><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>__MACROS_H__<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+<codeline lineno="33" refid="structhandlers" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>{</highlight></codeline>
+<codeline lineno="34" refid="structhandlers_1a2edd8bed07fb12f754f9f167de9ed903" refkind="member"><highlight class="normal"><sp/><sp/>void<sp/>(*<ref refid="structhandlers_1a2edd8bed07fb12f754f9f167de9ed903" kindref="member">retry</ref>)();</highlight></codeline>
+<codeline lineno="35" refid="macros_8h_1a37285142ae15ca3cdc36f3a03faeb0c9" refkind="member"><highlight class="normal">}<sp/>*<ref refid="macros_8h_1a37285142ae15ca3cdc36f3a03faeb0c9" kindref="member">registry</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="macros_8h_1a1ee636c8ea8ef76556c00290eb5a289b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>RETRY_HOOK<sp/>registry-&gt;retry</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>__MACROS_H__<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
     <location file="src/macros.h"/>
   </compounddef>

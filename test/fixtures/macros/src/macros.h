@@ -27,4 +27,17 @@
 */
 void reset(int);
 
+/**
+  Registry of handler hooks.
+*/
+struct handlers {
+  void (*retry)();
+} *registry;
+
+/**
+  Shorthand for the registry retry hook. Its initializer references another
+  documented symbol, so Doxygen emits a cross-reference inside the initializer.
+*/
+#define RETRY_HOOK registry->retry
+
 #endif /* __MACROS_H__ */

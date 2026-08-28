@@ -561,5 +561,9 @@ describe('integration', () => {
 
     // Unnamed parameters keep their type.
     expect(api).toContain('void reset(int)');
+
+    // An initializer that cross-references another symbol keeps the reference
+    // as text. Reading the XML as flat text would leave "#define RETRY_HOOK ->retry".
+    expect(api).toContain('#define RETRY_HOOK registry->retry');
   });
 });

@@ -203,7 +203,9 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
         .join(' ');
     }
     if (kind === 'variable') {
-      const init = member.initializer as string;
+      // Signatures render inside a code fence, where markdown links stay
+      // literal, so an initializer carrying refs is flattened to its text.
+      const init = stripMarkdownLinks(String(member.initializer ?? '')).trim();
       return init
         ? `${stripMarkdownLinks(member.returnType as string)} ${member.name} ${init}`
         : `${stripMarkdownLinks(member.returnType as string)} ${member.name}`;

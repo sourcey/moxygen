@@ -2,6 +2,14 @@
 
 Notable changes per release. Older history is in the git log.
 
+## 2.1.15 - 2026-08-28
+
+### Fixed
+
+- Initializers that cross-reference another documented symbol keep the reference. `#define RETRY_HOOK registry->retry` rendered as `#define RETRY_HOOK ->retry`, because the initializer was read as flat text and every `<ref>` child was discarded. Reported by @gkodinov in #127.
+
+  Macros gained initializer rendering in 2.1.13, so they showed this from that release. Variable initializers were affected for longer, and are fixed by the same change.
+
 ## 2.1.14 - 2026-08-27
 
 ### Changed

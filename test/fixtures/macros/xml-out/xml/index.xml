@@ -11,6 +11,7 @@
     <member refid="macros_8h_1a1ee636c8ea8ef76556c00290eb5a289b" kind="define"><name>RETRY_HOOK</name></member>
     <member refid="macros_8h_1a37285142ae15ca3cdc36f3a03faeb0c9" kind="variable"><name>registry</name></member>
     <member refid="macros_8h_1aa77e5763e57ffef3a8c0f08af40a73f8" kind="function"><name>reset</name></member>
+    <member refid="macros_8h_1af6f5804d6181b428b0abd148e8005ff6" kind="function"><name>configure</name></member>
   </compound>
   <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
   </compound>

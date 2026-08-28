@@ -17,6 +17,28 @@ const DEFAULT_RENDER_CONTEXT: RenderContext = {
   headingBase: 1,
 };
 
+const MARKDOWN_LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+/**
+ * Render a type for a table cell.
+ *
+ * Types carry cross-references to other documented symbols. Wrapping the whole
+ * type in a code span turns those into literal `[name](href)` text, because a
+ * link cannot live inside a code span. So a type holding references keeps them
+ * as links, styling each reference the way names are styled elsewhere, and a
+ * plain type stays fully inline code.
+ */
+function typeCell(type: string): string {
+  const trimmed = (type || '').trim();
+  if (!trimmed) return '';
+
+  MARKDOWN_LINK.lastIndex = 0;
+  if (!MARKDOWN_LINK.test(trimmed)) return `\`${trimmed}\``;
+
+  MARKDOWN_LINK.lastIndex = 0;
+  return trimmed.replace(MARKDOWN_LINK, '[`$1`]($2)');
+}
+
 function headingLevel(relativeLevel: unknown, context: RenderContext): number {
   const relative = Number(relativeLevel);
   const base = Number.isFinite(context.headingBase) ? context.headingBase : 1;
@@ -349,10 +371,10 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
   });
 
   // Return type for summary tables: strip markdown links to plain text
+  Handlebars.registerHelper('typeCell', (type: unknown) => typeCell(String(type ?? '')));
+
   Handlebars.registerHelper('returnTypeShort', function (this: Record<string, unknown>) {
-    const rt = (this.returnType as string) || '';
-    const clean = rt.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').trim();
-    return clean ? `\`${clean}\`` : '';
+    return typeCell((this.returnType as string) || '');
   });
 
   // Linked name: renders as markdown link if refid exists

@@ -565,5 +565,9 @@ describe('integration', () => {
     // An initializer that cross-references another symbol keeps the reference
     // as text. Reading the XML as flat text would leave "#define RETRY_HOOK ->retry".
     expect(api).toContain('#define RETRY_HOOK registry->retry');
+
+    // A parameter whose type is another documented symbol stays clickable.
+    // Wrapping the whole type in a code span would print the link literally.
+    expect(api).toContain('| `target` | struct [`handlers`](#handlers) * | the registry to configure |');
   });
 });

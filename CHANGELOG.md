@@ -2,6 +2,13 @@
 
 Notable changes per release. Older history is in the git log.
 
+## 2.1.16 - 2026-08-28
+
+### Fixed
+
+- Parameter types that cross-reference another documented symbol rendered their link literally, as `` `struct [handlers](#handlers) *` ``, because a link cannot live inside a code span. Referenced types now keep the link and style the symbol the way names are styled elsewhere: `struct [`handlers`](#handlers) *`. Types with no reference are unchanged. Raised by @gkodinov in #127.
+- Return types in member summary tables link to the referenced symbol instead of being flattened to plain text.
+
 ## 2.1.15 - 2026-08-28
 
 ### Fixed

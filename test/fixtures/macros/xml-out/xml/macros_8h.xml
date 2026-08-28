@@ -127,6 +127,48 @@
         </inbodydescription>
         <location file="src/macros.h" line="28" column="6" declfile="src/macros.h" declline="28" declcolumn="6"/>
       </memberdef>
+      <memberdef kind="function" id="macros_8h_1af6f5804d6181b428b0abd148e8005ff6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>struct <ref refid="structhandlers" kindref="compound">handlers</ref> *</type>
+        <definition>struct handlers * configure</definition>
+        <argsstring>(struct handlers *target, int count)</argsstring>
+        <name>configure</name>
+        <param>
+          <type>struct <ref refid="structhandlers" kindref="compound">handlers</ref> *</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>count</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Configure a handler registry.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the registry to configure </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>count</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>how many retries to allow </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the configured registry </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/macros.h" line="50" column="15" declfile="src/macros.h" declline="50" declcolumn="15"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
@@ -152,7 +194,9 @@
 <codeline lineno="36"><highlight class="normal"></highlight></codeline>
 <codeline lineno="41" refid="macros_8h_1a1ee636c8ea8ef76556c00290eb5a289b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>RETRY_HOOK<sp/>registry-&gt;retry</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="42"><highlight class="normal"></highlight></codeline>
-<codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>__MACROS_H__<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+<codeline lineno="50" refid="macros_8h_1af6f5804d6181b428b0abd148e8005ff6" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>*<ref refid="macros_8h_1af6f5804d6181b428b0abd148e8005ff6" kindref="member">configure</ref>(</highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>*target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>count);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>__MACROS_H__<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
     <location file="src/macros.h"/>
   </compounddef>

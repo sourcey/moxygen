@@ -40,4 +40,13 @@ struct handlers {
 */
 #define RETRY_HOOK registry->retry
 
+/**
+  Configure a handler registry.
+
+  @param target the registry to configure
+  @param count how many retries to allow
+  @return the configured registry
+*/
+struct handlers *configure(struct handlers *target, int count);
+
 #endif /* __MACROS_H__ */

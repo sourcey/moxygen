@@ -8,10 +8,10 @@ const renderParamTable = Handlebars.compile(`
 {{#if (hasDocumentedParams params)}}
 | Parameter | Type | Description |
 |-----------|------|-------------|
-{{#each (documentedParams params)}}| \`{{name}}\` | \`{{type}}\` | {{description}} |
+{{#each (documentedParams params)}}| \`{{name}}\` | {{typeCell type}} | {{description}} |
 {{/each}}
 {{/if}}
-`);
+`, { noEscape: true }); // matches how loadTemplates compiles the real templates
 
 const renderMemberSummary = Handlebars.compile(`{{memberSummary this}}`);
 const renderSignature = Handlebars.compile(`{{signature}}`, { noEscape: true });
@@ -40,6 +40,28 @@ describe('template helpers', () => {
     expect(output).toContain('| Parameter | Type | Description |');
     expect(output).toContain('| `mode` | `uv_run_mode` | libuv run mode. |');
     expect(output).not.toContain('| `loop` | `Loop *` |');
+  });
+
+  it('keeps cross-referenced types clickable in parameter tables', () => {
+    const output = renderParamTable({
+      params: [
+        { name: 'target', type: 'struct [handlers]({#ref structhandlers #}) *', description: 'the registry' },
+        { name: 'count', type: 'int', description: 'how many' },
+      ],
+    });
+
+    // A link cannot live inside a code span, so a referenced type keeps the
+    // link and styles the symbol the way names are styled elsewhere.
+    expect(output).toContain('| `target` | struct [`handlers`]({#ref structhandlers #}) * | the registry |');
+    expect(output).toContain('| `count` | `int` | how many |');
+  });
+
+  it('leaves the type cell empty for parameters with no type', () => {
+    const output = renderParamTable({
+      params: [{ name: 'VALUE', type: '', description: 'the value to clamp' }],
+    });
+
+    expect(output).toContain('| `VALUE` |  | the value to clamp |');
   });
 
   it('synthesizes deleted constructor summaries when documentation is missing', () => {

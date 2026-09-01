@@ -2,6 +2,18 @@
 
 Notable changes per release. Older history is in the git log.
 
+## 2.1.19 - 2026-09-01
+
+### Added
+
+- `--flavour github` renders admonitions as GitHub alerts, so `@note` becomes `> [!NOTE]` rather than the Pandoc `:::note` container that GitHub shows as literal text. `@warning` maps to `[!WARNING]`, `@attention` to `[!IMPORTANT]`, `@remark` to `[!NOTE]`. The default stays `pandoc` with unchanged output, and `--flavor` is accepted too. Requested by @gkodinov in #126.
+
+### Fixed
+
+- Nested lists keep their nesting, and list items no longer have a blank line between them. Indentation is measured against the parent item's marker, so a list under `1. ` indents three spaces and one under `* ` indents two, which is what Markdown requires to nest. Reported by @gkodinov in #115.
+- Definition lists no longer put a blank line between terms.
+- An admonition inside a list item sits at the item's content column instead of ending the list.
+
 ## 2.1.18 - 2026-09-01
 
 ### Changed

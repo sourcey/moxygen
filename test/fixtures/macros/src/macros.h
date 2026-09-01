@@ -31,7 +31,14 @@ void reset(int);
   Registry of handler hooks.
 */
 struct handlers {
-  void (*retry)();
+  /**
+    Called when a retry is scheduled.
+
+    @param attempt the attempt number, starting at one
+    @param reason why the retry was scheduled
+    @return zero to stop retrying
+  */
+  int (*retry)(int attempt, const char *reason);
 } *registry;
 
 /**

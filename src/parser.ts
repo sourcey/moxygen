@@ -658,12 +658,14 @@ function parseMember(
   member.reimplements = parseRelationRefs(memberdef, 'reimplements');
   member.reimplementedBy = parseRelationRefs(memberdef, 'reimplementedby');
 
-  // Function parameters. Function-like macros carry their argument names in
-  // `defname` rather than `declname`, and have no types.
-  const hasCallableArgs = member.kind !== 'friend' || !!member.argsstring.trim();
-  if (memberdef.param && hasCallableArgs && (member.kind === 'function' || member.kind === 'signal' || member.kind === 'slot' || member.kind === 'friend' || member.kind === 'define')) {
-    const params = memberdef.param as Array<Record<string, unknown>>;
-    for (const param of params) {
+  // Parameters, taken from whatever evidence Doxygen supplied rather than from
+  // a list of kinds. Declared `<param>` elements are the usual source. Members
+  // declared through a type, function pointers among them, have none of those
+  // and are described only by an @param list, which is still worth rendering.
+  if (memberdef.param) {
+    // Function-like macros carry their argument names in `defname`, not
+    // `declname`, and have no types.
+    for (const param of memberdef.param as Array<Record<string, unknown>>) {
       const declaredName = member.kind === 'define' ? param.defname : param.declname;
       const paramName = declaredName ? trim(toMarkdown(declaredName)) : '';
       member.params.push({
@@ -672,6 +674,10 @@ function parseMember(
         description: docLists.paramDescriptions[paramName] ?? '',
         defaultValue: param.defval ? trim(toMarkdown(param.defval)) : undefined,
       });
+    }
+  } else {
+    for (const [name, description] of Object.entries(docLists.paramDescriptions)) {
+      member.params.push({ type: '', name, description });
     }
   }
 

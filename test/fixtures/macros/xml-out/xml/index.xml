@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.17.0" xml:lang="en-US">
   <compound refid="structhandlers" kind="struct"><name>handlers</name>
-    <member refid="structhandlers_1a2edd8bed07fb12f754f9f167de9ed903" kind="variable"><name>retry</name></member>
+    <member refid="structhandlers_1a996535b7879fb9713680e41af2b2791a" kind="variable"><name>retry</name></member>
   </compound>
   <compound refid="macros_8h" kind="file"><name>macros.h</name>
     <member refid="macros_8h_1aecf13b8dc783db2202ca5c34fe117fc3" kind="define"><name>MAX_RETRIES</name></member>

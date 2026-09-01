@@ -1,0 +1,3 @@
+api.md
+g1.md
+page-index.md

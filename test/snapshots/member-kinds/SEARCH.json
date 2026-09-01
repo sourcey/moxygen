@@ -1,0 +1,68 @@
+[
+  {
+    "title": "modern",
+    "content": "demo::Utility::modern - Utility - auto demo::Utility::modern - Modern qualified member.",
+    "anchor": "modern",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::Utility",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Utility::modern"
+  },
+  {
+    "title": "create",
+    "content": "demo::Utility::create - Utility - Utility demo::Utility::create - Creates a utility instance.",
+    "anchor": "create",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::Utility",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Utility::create"
+  },
+  {
+    "title": "secret",
+    "content": "demo::Utility::secret - Utility - int demo::Utility::secret - Private instance state.",
+    "anchor": "secret",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "demo::Utility",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Utility::secret"
+  },
+  {
+    "title": "hidden",
+    "content": "demo::Utility::hidden - Utility - void demo::Utility::hidden - Hidden helper method.",
+    "anchor": "hidden",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::Utility",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Utility::hidden"
+  },
+  {
+    "title": "globalSecret",
+    "content": "demo::Utility::globalSecret - Utility - int demo::Utility::globalSecret - Private static state.",
+    "anchor": "globalsecret",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "demo::Utility",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Utility::globalSecret"
+  },
+  {
+    "title": "integer",
+    "content": "demo::Value::integer - Value - int demo::Value::integer - Integer representation.",
+    "anchor": "integer",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "demo::Value",
+    "ownerKind": "union",
+    "namespace": "demo",
+    "qualifiedName": "demo::Value::integer"
+  }
+]

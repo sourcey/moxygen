@@ -1,0 +1,45 @@
+[
+  {
+    "title": "createWidget",
+    "content": "demo::createWidget - demo - Widget demo::createWidget - Creates a default widget instance.",
+    "anchor": "createwidget",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo",
+    "ownerKind": "namespace",
+    "qualifiedName": "demo::createWidget"
+  },
+  {
+    "title": "Widget",
+    "content": "demo::Widget::Widget - Widget - demo::Widget::Widget",
+    "anchor": "widget-1",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::Widget",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Widget::Widget"
+  },
+  {
+    "title": "size",
+    "content": "demo::Widget::size - Widget - int demo::Widget::size - Returns the current widget size.",
+    "anchor": "size",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::Widget",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Widget::size"
+  },
+  {
+    "title": "capacity",
+    "content": "demo::Widget::Options::capacity - Widget::Options - int demo::Widget::Options::capacity",
+    "anchor": "capacity",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "demo::Widget::Options",
+    "ownerKind": "struct",
+    "namespace": "demo::Widget",
+    "qualifiedName": "demo::Widget::Options::capacity"
+  }
+]

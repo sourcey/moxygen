@@ -3,6 +3,7 @@ import { join, dirname, isAbsolute, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { toArray, toFilteredArray, filterChildren, filterCollection, filterNoise, groupMembersBySection } from './compound.js';
 import { renderSignature } from './signature.js';
+import { searchCategoryForKind } from './vocabulary.js';
 import { writeCompound, renderCompound, compoundPath, writeFile, buildCleanAnchorMap, safePathSegment, stripMarkdownLinks } from './helpers.js';
 import type { AnchorMap, PagePathMap, SlugMap } from './helpers.js';
 import { log } from './logger.js';
@@ -877,28 +878,6 @@ function collectSearchEntries(compound: Compound, separator: string, anchorMap?:
   return entries;
 }
 
-function searchCategoryForKind(kind: string): string {
-  switch (kind) {
-    case 'function':
-    case 'signal':
-    case 'slot':
-      return 'Functions';
-    case 'typedef':
-      return 'Types';
-    case 'enum':
-      return 'Enums';
-    case 'variable':
-      return 'Variables';
-    case 'friend':
-      return 'Friends';
-    case 'property':
-      return 'Properties';
-    case 'define':
-      return 'Macros';
-    default:
-      return 'Members';
-  }
-}
 
 // ---------------------------------------------------------------------------
 // run() — CLI API writing to disk

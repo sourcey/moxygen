@@ -1,4 +1,5 @@
 import type { Compound, Filters, Member, SectionGroup } from './types.js';
+import { sectionLabel } from './vocabulary.js';
 
 export function createCompound(
   parent: Compound | null = null,
@@ -189,30 +190,6 @@ export function filterChildren(
   ) as Compound[];
 }
 
-const SECTION_LABELS: Record<string, string> = {
-  'public-type': 'Public Types',
-  'public-func': 'Public Methods',
-  'public-static-func': 'Public Static Methods',
-  'protected-func': 'Protected Methods',
-  'private-func': 'Private Methods',
-  'private-static-func': 'Private Static Methods',
-  'public-attrib': 'Public Attributes',
-  'public-static-attrib': 'Public Static Attributes',
-  'protected-attrib': 'Protected Attributes',
-  'private-attrib': 'Private Attributes',
-  'private-static-attrib': 'Private Static Attributes',
-  'signal': 'Signals',
-  'public-slot': 'Public Slots',
-  'protected-slot': 'Protected Slots',
-  'private-slot': 'Private Slots',
-  'property': 'Properties',
-  'enum': 'Enumerations',
-  'typedef': 'Typedefs',
-  'friend': 'Friends',
-  'define': 'Macros',
-  'func': 'Functions',
-  'var': 'Variables',
-};
 
 const NOISE_RE = /^(TYPE|BREAK|DEG|SEP|IMPL)_\d+$/;
 
@@ -247,7 +224,7 @@ export function groupMembersBySection(compound: Compound): SectionGroup[] {
 
   return order.map((section) => ({
     section,
-    label: SECTION_LABELS[section] || section,
+    label: sectionLabel(section),
     members: groups[section],
   }));
 }

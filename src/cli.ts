@@ -23,6 +23,7 @@ program
   .option('-a, --anchors', 'add anchors to internal links', false)
   .option('-H, --html-anchors', 'add HTML anchors to internal links', false)
   .option('-l, --language <lang>', 'programming language', 'cpp')
+  .option('-F, --flavour <name>', 'markdown dialect for admonitions: pandoc or github', 'pandoc')
   .option('-t, --templates <dir>', 'custom templates directory')
   .option('-s, --source-root <dir>', 'source root used to resolve file-level group membership')
   .option('-f, --frontmatter', 'prepend YAML frontmatter to output files', false)
@@ -41,6 +42,7 @@ program
         anchors: opts.anchors as boolean,
         htmlAnchors: opts.htmlAnchors as boolean,
         language: opts.language as string,
+        flavour: opts.flavour as string,
         templates: opts.templates as string | undefined,
         sourceRoot: opts.sourceRoot as string | undefined,
         frontmatter: opts.frontmatter as boolean,

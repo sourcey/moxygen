@@ -50,6 +50,7 @@ Options:
   -a, --anchors          add anchors to internal links
   -H, --html-anchors     add HTML anchors to internal links
   -l, --language <lang>  programming language (default: cpp)
+  -F, --flavour <name>   markdown dialect for admonitions: pandoc or github (default: pandoc)
   -t, --templates <dir>  custom templates directory
   -s, --source-root <dir>
                          source root used to resolve file-level group membership

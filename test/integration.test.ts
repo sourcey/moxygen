@@ -540,6 +540,19 @@ describe('integration', () => {
     expect(union).toContain('Integer representation.');
   });
 
+  it('renders admonitions as GitHub alerts when that flavour is chosen', async () => {
+    const output = join(outputRoot, 'macros-github', 'api.md');
+
+    await run({ directory: macrosXmlDir, output, anchors: true, quiet: true, flavour: 'github' });
+
+    const api = read(output);
+    expect(api).toContain('> [!NOTE]\n> Flushing is best effort.');
+    expect(api).toContain('> [!WARNING]\n> Blocks until the queue is empty.');
+    expect(api).toContain('> [!IMPORTANT]\n> Never call this from a signal handler.');
+    // GitHub renders the Pandoc container syntax as literal text.
+    expect(api).not.toContain(':::');
+  });
+
   it('renders macros by their real shape and keeps undocumented ones', async () => {
     const output = join(outputRoot, 'macros', 'api.md');
 

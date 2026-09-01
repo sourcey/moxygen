@@ -91,7 +91,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/macros.h" line="72" column="9" bodyfile="src/macros.h" bodystart="72" bodyend="-1"/>
+        <location file="src/macros.h" line="83" column="9" bodyfile="src/macros.h" bodystart="83" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -106,7 +106,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/macros.h" line="66" column="11"/>
+        <location file="src/macros.h" line="77" column="11"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -126,6 +126,33 @@
         <inbodydescription>
         </inbodydescription>
         <location file="src/macros.h" line="28" column="6" declfile="src/macros.h" declline="28" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="macros_8h_1a0a9e9396972b76c5947592479860020d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void flush</definition>
+        <argsstring>(void)</argsstring>
+        <name>flush</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Flush pending work.</para>
+<para><simplesect kind="note"><para>Flushing is best effort. </para>
+</simplesect>
+<simplesect kind="remark"><para>Callers usually prefer <ref refid="macros_8h_1a8168e46e61860b969b9ee6c101bbc1c9" kindref="member">drain()</ref>. </para>
+</simplesect>
+<simplesect kind="warning"><para>Blocks until the queue is empty. </para>
+</simplesect>
+<simplesect kind="attention"><para>Never call this from a signal handler.</para>
+</simplesect>
+<xrefsect id="deprecated_1_deprecated000001"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Use <ref refid="macros_8h_1a8168e46e61860b969b9ee6c101bbc1c9" kindref="member">drain()</ref> instead. </para>
+</xrefdescription></xrefsect></para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/macros.h" line="39" column="6" declfile="src/macros.h" declline="39" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="macros_8h_1a8168e46e61860b969b9ee6c101bbc1c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -166,7 +193,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/macros.h" line="49" column="6" declfile="src/macros.h" declline="49" declcolumn="6"/>
+        <location file="src/macros.h" line="60" column="6" declfile="src/macros.h" declline="60" declcolumn="6"/>
       </memberdef>
       <memberdef kind="function" id="macros_8h_1af6f5804d6181b428b0abd148e8005ff6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>struct <ref refid="structhandlers" kindref="compound">handlers</ref> *</type>
@@ -208,7 +235,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/macros.h" line="81" column="15" declfile="src/macros.h" declline="81" declcolumn="15"/>
+        <location file="src/macros.h" line="92" column="15" declfile="src/macros.h" declline="92" declcolumn="15"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -229,19 +256,21 @@
 <codeline lineno="24"><highlight class="normal"></highlight></codeline>
 <codeline lineno="28" refid="macros_8h_1aa77e5763e57ffef3a8c0f08af40a73f8" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="macros_8h_1aa77e5763e57ffef3a8c0f08af40a73f8" kindref="member">reset</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="29"><highlight class="normal"></highlight></codeline>
-<codeline lineno="49" refid="macros_8h_1a8168e46e61860b969b9ee6c101bbc1c9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="macros_8h_1a8168e46e61860b969b9ee6c101bbc1c9" kindref="member">drain</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="50"><highlight class="normal"></highlight></codeline>
-<codeline lineno="54" refid="structhandlers" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>{</highlight></codeline>
-<codeline lineno="62" refid="structhandlers_1a996535b7879fb9713680e41af2b2791a" refkind="member"><highlight class="normal"><sp/><sp/>int<sp/>(*<ref refid="structhandlers_1a996535b7879fb9713680e41af2b2791a" kindref="member">retry</ref>)(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>attempt,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*reason);</highlight></codeline>
-<codeline lineno="63"><highlight class="normal"></highlight></codeline>
-<codeline lineno="65" refid="structhandlers_1adb541f4c21033e417256fd5cab26e6b2" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>*<ref refid="structhandlers_1adb541f4c21033e417256fd5cab26e6b2" kindref="member">fallback</ref>;</highlight></codeline>
-<codeline lineno="66" refid="macros_8h_1a37285142ae15ca3cdc36f3a03faeb0c9" refkind="member"><highlight class="normal">}<sp/>*<ref refid="macros_8h_1a37285142ae15ca3cdc36f3a03faeb0c9" kindref="member">registry</ref>;</highlight></codeline>
-<codeline lineno="67"><highlight class="normal"></highlight></codeline>
-<codeline lineno="72" refid="macros_8h_1a1ee636c8ea8ef76556c00290eb5a289b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>RETRY_HOOK<sp/>registry-&gt;retry</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="73"><highlight class="normal"></highlight></codeline>
-<codeline lineno="81" refid="macros_8h_1af6f5804d6181b428b0abd148e8005ff6" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>*<ref refid="macros_8h_1af6f5804d6181b428b0abd148e8005ff6" kindref="member">configure</ref>(</highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>*target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>count);</highlight></codeline>
-<codeline lineno="82"><highlight class="normal"></highlight></codeline>
-<codeline lineno="83"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>__MACROS_H__<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+<codeline lineno="39" refid="macros_8h_1a0a9e9396972b76c5947592479860020d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="macros_8h_1a0a9e9396972b76c5947592479860020d" kindref="member">flush</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="macros_8h_1a8168e46e61860b969b9ee6c101bbc1c9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="macros_8h_1a8168e46e61860b969b9ee6c101bbc1c9" kindref="member">drain</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="structhandlers" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>{</highlight></codeline>
+<codeline lineno="73" refid="structhandlers_1a996535b7879fb9713680e41af2b2791a" refkind="member"><highlight class="normal"><sp/><sp/>int<sp/>(*<ref refid="structhandlers_1a996535b7879fb9713680e41af2b2791a" kindref="member">retry</ref>)(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>attempt,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*reason);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="structhandlers_1adb541f4c21033e417256fd5cab26e6b2" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>*<ref refid="structhandlers_1adb541f4c21033e417256fd5cab26e6b2" kindref="member">fallback</ref>;</highlight></codeline>
+<codeline lineno="77" refid="macros_8h_1a37285142ae15ca3cdc36f3a03faeb0c9" refkind="member"><highlight class="normal">}<sp/>*<ref refid="macros_8h_1a37285142ae15ca3cdc36f3a03faeb0c9" kindref="member">registry</ref>;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="macros_8h_1a1ee636c8ea8ef76556c00290eb5a289b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>RETRY_HOOK<sp/>registry-&gt;retry</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="macros_8h_1af6f5804d6181b428b0abd148e8005ff6" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>*<ref refid="macros_8h_1af6f5804d6181b428b0abd148e8005ff6" kindref="member">configure</ref>(</highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="structhandlers" kindref="compound">handlers</ref><sp/>*target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>count);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>__MACROS_H__<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
     <location file="src/macros.h"/>
   </compounddef>

@@ -38,6 +38,34 @@ function currentContextName(context: XmlElement[]): string | undefined {
 
 const LIST_ELEMENTS = new Set(['orderedlist', 'itemizedlist', 'variablelist']);
 
+/** Doxygen sections that read as a callout rather than as prose. */
+const ADMONITIONS: Record<string, { container: string; alert: string }> = {
+  note: { container: 'note', alert: 'NOTE' },
+  remark: { container: 'note', alert: 'NOTE' },
+  warning: { container: 'warning', alert: 'WARNING' },
+  attention: { container: 'warning', alert: 'IMPORTANT' },
+  deprecated: { container: 'warning', alert: 'CAUTION' },
+};
+
+/**
+ * Render a callout in the configured dialect. Pandoc-style containers are the
+ * default; GitHub renders those as literal text and wants blockquote alerts,
+ * where every line of the body carries the quote marker.
+ */
+function renderAdmonition(kind: string, body: string, flavour: string): string {
+  const admonition = ADMONITIONS[kind];
+  const prefixed = kind === 'deprecated' ? `**Deprecated.** ${body}` : body;
+
+  if (flavour !== 'github') {
+    return `\n:::${admonition.container}\n${prefixed}\n:::\n\n`;
+  }
+
+  const quoted = prefixed.trim().split('\n')
+    .map((line) => (line.trim() ? `> ${line}` : '>'))
+    .join('\n');
+  return `\n> [!${admonition.alert}]\n${quoted}\n\n`;
+}
+
 function listMarker(name: string | undefined): string {
   return name === 'orderedlist' ? '1. ' : name === 'variablelist' ? ': ' : '* ';
 }
@@ -170,12 +198,10 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
     case 'simplesect': {
       const kind = el.$?.kind;
       context.push(el);
-      if (kind === 'attention' || kind === 'warning') {
-        s = '\n:::warning\n';
-      } else if (kind === 'note' || kind === 'remark') {
-        s = '\n:::note\n';
-      } else if (kind === 'deprecated') {
-        s = '\n:::warning\n**Deprecated.** ';
+      if (kind && ADMONITIONS[kind]) {
+        // The body is wrapped when the section closes, once its content is
+        // known: GitHub alerts have to prefix every line of it.
+        s = '';
       } else if (kind === 'return') {
         s = '\n#### Returns\n';
       } else if (kind === 'see') {
@@ -273,11 +299,9 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
   switch (el['#name']) {
     case 'simplesect': {
       const closeKind = el.$?.kind;
-      if (closeKind === 'attention' || closeKind === 'warning' || closeKind === 'note' || closeKind === 'remark' || closeKind === 'deprecated') {
-        s += '\n:::\n\n';
-      } else {
-        s += '\n\n';
-      }
+      s = closeKind && ADMONITIONS[closeKind]
+        ? renderAdmonition(closeKind, s, parserOptions?.flavour ?? 'pandoc')
+        : `${s}\n\n`;
       context.pop();
       break;
     }

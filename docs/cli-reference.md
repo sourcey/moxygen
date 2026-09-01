@@ -21,6 +21,7 @@ moxygen [options] <doxygen XML directory>
 | `-a, --anchors` | Add anchors to internal links |
 | `-H, --html-anchors` | Add HTML anchors to internal links |
 | `-l, --language <lang>` | Programming language (default: `cpp`) |
+| `-F, --flavour <name>` | Markdown dialect for admonitions: `pandoc` or `github` (default: `pandoc`) |
 | `-t, --templates <dir>` | Custom templates directory |
 | `-s, --source-root <dir>` | Source root for file-level group resolution |
 | `-f, --frontmatter` | Prepend YAML frontmatter to output files |

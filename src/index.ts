@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname, isAbsolute, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { toArray, toFilteredArray, filterChildren, filterCollection, filterNoise, groupMembersBySection } from './compound.js';
+import { renderSignature } from './signature.js';
 import { writeCompound, renderCompound, compoundPath, writeFile, buildCleanAnchorMap, safePathSegment, stripMarkdownLinks } from './helpers.js';
 import type { AnchorMap, PagePathMap, SlugMap } from './helpers.js';
 import { log } from './logger.js';
@@ -839,7 +840,7 @@ function collectSearchEntries(compound: Compound, separator: string, anchorMap?:
     const qualifiedName = owner ? `${owner}::${member.name}` : member.name;
     const signature = typeof member.definition === 'string' && member.definition
       ? stripMarkdownLinks(member.definition)
-      : stripMarkdownLinks(member.proto || member.name);
+      : renderSignature(member) || member.name;
     const summary = stripMarkdownLinks(member.summary || member.briefdescription || '').replace(/\s+/g, ' ').trim();
     entries.push({
       title: `${member.name}`,

@@ -20,7 +20,6 @@ function makeMember(name: string, section: string, groupid?: string): Member {
     prot: 'public',
     static: 'no',
     virtual: 'no',
-    proto: '',
     briefdescription: '',
     detaileddescription: '',
     summary: '',

@@ -23,7 +23,6 @@ export function createCompound(
     briefdescription: '',
     detaileddescription: '',
     summary: '',
-    proto: '',
     namespace: '',
     templateParams: [],
   };

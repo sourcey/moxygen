@@ -2,6 +2,12 @@
 
 Notable changes per release. Older history is in the git log.
 
+## 2.1.18 - 2026-09-01
+
+### Changed
+
+- Republished 2.1.17 through the release pipeline so the artifact carries npm provenance. No code changes.
+
 ## 2.1.17 - 2026-09-01
 
 ### Fixed

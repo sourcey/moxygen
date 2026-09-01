@@ -33,14 +33,6 @@ Standard bicycle class.
 
 [Bicycle](#bicycle) implements a standard bicycle. Bicycles are a useful way of transporting oneself, without too much effort (unless you go uphill or against the wind). If there are a lot of people on the road, you can use `RingBell` to ring your bell (**note**, not all bicycles have bells!).
 
-#### List of all members
-
-| Name | Kind | Owner |
-|------|------|-------|
-| [`PedalHarder`](#pedalharder) | `function` | Declared here |
-| [`RingBell`](#ringbell) | `function` | Declared here |
-| [`~Bicycle`](#bicycle-1) | `function` | Declared here |
-
 #### Public Methods
 
 | Return | Name | Description |

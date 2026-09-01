@@ -10,16 +10,6 @@ Defined in src/member_kinds.h:5
 
 Utility type with static and private members.
 
-## List of all members
-
-| Name | Kind | Owner |
-|------|------|-------|
-| [`modern`](#modern) | `function` | Declared here |
-| [`create`](#create) | `function` | Declared here |
-| [`secret`](#secret) | `variable` | Declared here |
-| [`hidden`](#hidden) | `function` | Declared here |
-| [`globalSecret`](#globalsecret) | `variable` | Declared here |
-
 ## Public Methods
 
 | Return | Name | Description |

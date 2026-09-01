@@ -39,14 +39,39 @@
         </inbodydescription>
         <location file="src/macros.h" line="41" column="3" bodyfile="src/macros.h" bodystart="41" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="structhandlers_1adb541f4c21033e417256fd5cab26e6b2" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structhandlers" kindref="compound">handlers</ref> *</type>
+        <definition>struct handlers* handlers::fallback</definition>
+        <argsstring></argsstring>
+        <name>fallback</name>
+        <qualifiedname>handlers::fallback</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The registry consulted when this one has no handler. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/macros.h" line="44" column="17" bodyfile="src/macros.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
 <para>Registry of handler hooks. </para>
     </detaileddescription>
-    <location file="src/macros.h" line="33" column="1" bodyfile="src/macros.h" bodystart="33" bodyend="42"/>
+    <collaborationgraph>
+      <node id="1">
+        <label>handlers</label>
+        <link refid="structhandlers"/>
+        <childnode refid="1" relation="usage">
+          <edgelabel>fallback</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="src/macros.h" line="33" column="1" bodyfile="src/macros.h" bodystart="33" bodyend="45"/>
     <listofallmembers>
+      <member refid="structhandlers_1adb541f4c21033e417256fd5cab26e6b2" prot="public" virt="non-virtual"><scope>handlers</scope><name>fallback</name></member>
       <member refid="structhandlers_1a996535b7879fb9713680e41af2b2791a" prot="public" virt="non-virtual"><scope>handlers</scope><name>retry</name></member>
     </listofallmembers>
   </compounddef>

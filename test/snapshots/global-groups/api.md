@@ -14,6 +14,8 @@
 
 ## Macros
 
+---
+
 {#gdefine}
 
 ### GDEFINE
@@ -22,9 +24,13 @@
 #define GDEFINE 1
 ```
 
+Defined in src/global.h:4
+
 This is a global define.
 
 ## Functions
+
+---
 
 {#mysql_tmpfile}
 
@@ -33,6 +39,8 @@ This is a global define.
 ```cpp
 int mysql_tmpfile(const char * prefix)
 ```
+
+Defined in src/global.h:26
 
 Create a temporary file.
 
@@ -53,6 +61,8 @@ The temporary file is created in a location specified by the mysql server config
 
 ## Variables
 
+---
+
 {#global_a}
 
 ### global_a
@@ -60,6 +70,10 @@ The temporary file is created in a location specified by the mysql server config
 ```cpp
 global_class global_a
 ```
+
+Type: [`global_class`](global_class.md#global_class)
+
+Defined in src/global.h:31
 
 This is a global variable.
 

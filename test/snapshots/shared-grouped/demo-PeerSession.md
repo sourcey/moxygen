@@ -14,13 +14,6 @@ Defined in src/webrtc.h:12
 
 Session type documented in a different group from [PacketStream](demo-PacketStream.md#packetstream).
 
-## List of all members
-
-| Name | Kind | Owner |
-|------|------|-------|
-| [`attach`](#attach) | `function` | Declared here |
-| [`bindLoop`](#bindloop) | `function` | Declared here |
-
 ## Public Methods
 
 | Return | Name | Description |

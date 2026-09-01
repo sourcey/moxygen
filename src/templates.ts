@@ -321,6 +321,24 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
   Handlebars.registerHelper('not', (value: unknown) => !value);
 
   Handlebars.registerHelper('hasReturnColumn', sectionHasReturnColumn);
+
+  // A member's own section shows its declaration in a code fence, where a link
+  // cannot exist. Echo the type as a link when it points somewhere, so the
+  // reader can reach it without hunting back up to the summary table. Types
+  // with nothing to point at add no line.
+  Handlebars.registerHelper('linkedType', function (this: Record<string, unknown>) {
+    // Callable members already link their types: the return type in the
+    // summary table, the argument types in the parameter table. Only a plain
+    // typed member has nowhere else to show it.
+    const callable = String(this.argsstring ?? '').trim() || (this.params as unknown[])?.length;
+    if (callable) return '';
+
+    const type = String(this.returnType ?? '');
+    return /\[[^\]]+\]\([^)]+\)/.test(type) ? typeCell(type) : '';
+  });
+
+  Handlebars.registerHelper('hasInheritedMembers', (entries: unknown) =>
+    Array.isArray(entries) && entries.some((entry) => (entry as { inherited?: boolean }).inherited));
 }
 
 /**
@@ -333,10 +351,21 @@ export function load(templateDirectory: string): void {
     if (!match) continue;
 
     const content = readFileSync(fullpath, 'utf8');
-    templates[match[1]] = Handlebars.compile(content, {
+    const compiled = Handlebars.compile(content, {
       noEscape: true,
       strict: true,
     });
+
+    // A leading underscore marks a partial: shared markup included by the
+    // page templates rather than a page in its own right. Compiled here so it
+    // gets the same options, and loaded from the active template directory so
+    // a copied directory keeps working.
+    if (match[1].startsWith('_')) {
+      Handlebars.registerPartial(match[1].slice(1), compiled);
+      continue;
+    }
+
+    templates[match[1]] = compiled;
   }
 }
 

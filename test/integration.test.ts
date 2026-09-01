@@ -244,7 +244,10 @@ describe('integration', () => {
     expect(nested).toContain('## Classes');
     expect(nested).toContain('## Class Definitions');
     expect(nested).toContain('### nested_class');
-    expect(nested).toContain('#### List of all members');
+    // nested_class inherits nothing, so the all-members table would repeat the
+    // section table below it with less in it. It appears only where the Owner
+    // column has something to say; example/doc covers that case.
+    expect(nested).not.toContain('List of all members');
     expect(nested).toContain('#### Public Attributes');
     expect(nested).toContain('##### nested_class_a');
 

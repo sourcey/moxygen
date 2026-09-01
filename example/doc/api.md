@@ -16,6 +16,8 @@
 
 ## Macros
 
+---
+
 {#pedal_power_modifier}
 
 ### PEDAL_POWER_MODIFIER
@@ -24,11 +26,15 @@
 #define PEDAL_POWER_MODIFIER 9000
 ```
 
+Defined in src/transport.h:47
+
 The modifier value if pedal power is used.
 
 This definition exists in the default namespace and is ungrouped. It is displayed on the root API page when grouped output is used.
 
 ## Enumerations
+
+---
 
 {#transporttype}
 
@@ -38,16 +44,17 @@ This definition exists in the default namespace and is ungrouped. It is displaye
 enum TransportType
 ```
 
-| Value | Description |
-|-------|-------------|
-| `Bycicle` | Bycicle type |
-| `RacingBike` | Racing bike type |
-| `RacingBike` | Mountain bike type |
+Defined in src/transport.h:35
 
 Enum class for transport types.
 
 This definition exists in the default namespace and is ungrouped. It is displayed on the root API page when grouped output is used.
 
+| Value | Description |
+|-------|-------------|
+| `Bycicle` | Bycicle type |
+| `RacingBike` | Racing bike type |
+| `RacingBike` | Mountain bike type |
 
 ## Definitions
 

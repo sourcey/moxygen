@@ -14,13 +14,6 @@ Defined in src/widget.h:9
 
 [Widget](#widget) documented via file-level grouping only.
 
-## List of all members
-
-| Name | Kind | Owner |
-|------|------|-------|
-| [`Widget`](#widget-1) | `function` | Declared here |
-| [`size`](#size) | `function` | Declared here |
-
 ## Public Methods
 
 | Return | Name | Description |

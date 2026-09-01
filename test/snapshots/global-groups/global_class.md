@@ -14,12 +14,6 @@ Defined in src/global.h:9
 
 This is a global class.
 
-## List of all members
-
-| Name | Kind | Owner |
-|------|------|-------|
-| [`global_class_a`](#global_class_a) | `variable` | Declared here |
-
 ## Public Attributes
 
 | Return | Name | Description |

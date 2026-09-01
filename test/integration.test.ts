@@ -551,6 +551,9 @@ describe('integration', () => {
     expect(api).toContain('> [!IMPORTANT]\n> Never call this from a signal handler.');
     // GitHub renders the Pandoc container syntax as literal text.
     expect(api).not.toContain(':::');
+    // An alert inside a list item sits at the item's content column, or it
+    // ends the list instead of belonging to it.
+    expect(api).toContain('  > [!NOTE]\n  > callers should not rely on the count');
   });
 
   it('renders macros by their real shape and keeps undocumented ones', async () => {

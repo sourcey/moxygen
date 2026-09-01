@@ -56,6 +56,19 @@ void flush(void);
        1. acquire
        2. verify
   2. close
+
+  Terms:
+
+  <dl>
+    <dt>pending</dt><dd>queued but not started</dd>
+    <dt>settled</dt><dd>finished either way</dd>
+  </dl>
+
+  Caveats:
+
+  - the queue may grow while draining
+    @note callers should not rely on the count
+  - draining twice is safe
 */
 void drain(void);
 

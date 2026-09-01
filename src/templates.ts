@@ -5,6 +5,7 @@ import { getAnchor, cleanId, stripMarkdownLinks } from './helpers.js';
 import type { AnchorMap } from './helpers.js';
 import { log } from './logger.js';
 import { formatTemplateParams, renderSignature } from './signature.js';
+import { sectionHasReturnColumn } from './vocabulary.js';
 import type { Compound, MoxygenOptions, SourceUrlRoute } from './types.js';
 
 const templates: Record<string, HandlebarsTemplateDelegate> = {};
@@ -319,11 +320,7 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
   // Not helper for conditionals
   Handlebars.registerHelper('not', (value: unknown) => !value);
 
-  // Whether a section should show the return/type column
-  Handlebars.registerHelper('hasReturnColumn', (section: string) => {
-    const noReturn = new Set(['enum', 'define', 'public-type', 'friend']);
-    return !noReturn.has(section);
-  });
+  Handlebars.registerHelper('hasReturnColumn', sectionHasReturnColumn);
 }
 
 /**

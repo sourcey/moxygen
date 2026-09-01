@@ -36,6 +36,36 @@ function currentContextName(context: XmlElement[]): string | undefined {
   return context[context.length - 1]?.['#name'];
 }
 
+const LIST_ELEMENTS = new Set(['orderedlist', 'itemizedlist', 'variablelist']);
+
+function listMarker(name: string | undefined): string {
+  return name === 'orderedlist' ? '1. ' : name === 'variablelist' ? ': ' : '* ';
+}
+
+function enclosingLists(context: XmlElement[]): XmlElement[] {
+  return context.filter((el) => LIST_ELEMENTS.has(el['#name'] ?? ''));
+}
+
+/**
+ * Indent for a list item, which Markdown measures against the marker of the
+ * item it nests under, so an ordered parent indents further than a bullet.
+ */
+function listIndent(context: XmlElement[]): string {
+  return enclosingLists(context)
+    .slice(0, -1)
+    .map((el) => ' '.repeat(listMarker(el['#name']).length))
+    .join('');
+}
+
+function insideList(context: XmlElement[]): boolean {
+  return LIST_ELEMENTS.has(currentContextName(context) ?? '');
+}
+
+/** Markdown needs exactly one newline between list items, never a blank one. */
+function endLine(text: string): string {
+  return text.endsWith('\n') ? text : `${text}\n`;
+}
+
 function headingLevel(context: XmlElement[]): number {
   const parent = context[context.length - 1];
   const match = parent?.['#name']?.match(/^sect([1-6])$/);
@@ -112,16 +142,12 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
       s = '\n```\n';
       break;
     case 'orderedlist':
-      context.push(el);
-      s = '\n\n';
-      break;
     case 'itemizedlist':
-      context.push(el);
-      s = '\n\n';
-      break;
     case 'variablelist':
+      // A nested list continues the item above it rather than starting a
+      // fresh block, so it opens on the next line, not after a blank one.
+      s = enclosingLists(context).length > 0 ? '\n' : '\n\n';
       context.push(el);
-      s = '\n\n';
       break;
     case 'varlistentry':
       s = '\n* ';
@@ -130,11 +156,7 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
       s = '**';
       break;
     case 'listitem':
-      s = currentContextName(context) === 'orderedlist'
-        ? '1. '
-        : currentContextName(context) === 'variablelist'
-          ? ': '
-        : '* ';
+      s = listIndent(context) + listMarker(currentContextName(context));
       break;
     case 'sp':
       s = ' ';
@@ -260,8 +282,12 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
       break;
     }
     case 'parameterlist':
-    case 'para':
       s += '\n\n';
+      break;
+    case 'para':
+      // A paragraph is a block on its own, except inside a list item, where a
+      // blank line would break the item away from its own list.
+      s = insideList(context) ? endLine(s) : `${s}\n\n`;
       break;
     case 'emphasis':
       s += '*';
@@ -296,19 +322,13 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
       s = md.safeLink(s, el.$?.url ?? '');
       break;
     case 'orderedlist':
-      context.pop();
-      s += '\n';
-      break;
     case 'itemizedlist':
-      context.pop();
-      s += '\n';
-      break;
     case 'variablelist':
       context.pop();
-      s += '\n';
+      s = endLine(s);
       break;
     case 'listitem':
-      s += '\n';
+      s = endLine(s);
       break;
     case 'term':
       s += '**';

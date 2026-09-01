@@ -4,19 +4,40 @@
     <compoundname>handlers</compoundname>
     <includes refid="macros_8h" local="no">macros.h</includes>
     <sectiondef kind="public-attrib">
-      <memberdef kind="variable" id="structhandlers_1a2edd8bed07fb12f754f9f167de9ed903" prot="public" static="no" mutable="no">
-        <type>void(*</type>
-        <definition>void(* handlers::retry) ()</definition>
-        <argsstring>)()</argsstring>
+      <memberdef kind="variable" id="structhandlers_1a996535b7879fb9713680e41af2b2791a" prot="public" static="no" mutable="no">
+        <type>int(*</type>
+        <definition>int(* handlers::retry) (int attempt, const char *reason)</definition>
+        <argsstring>)(int attempt, const char *reason)</argsstring>
         <name>retry</name>
         <qualifiedname>handlers::retry</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>Called when a retry is scheduled.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>attempt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the attempt number, starting at one </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reason</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>why the retry was scheduled </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>zero to stop retrying </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/macros.h" line="34" column="3" bodyfile="src/macros.h" bodystart="34" bodyend="-1"/>
+        <location file="src/macros.h" line="41" column="3" bodyfile="src/macros.h" bodystart="41" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -24,9 +45,9 @@
     <detaileddescription>
 <para>Registry of handler hooks. </para>
     </detaileddescription>
-    <location file="src/macros.h" line="33" column="1" bodyfile="src/macros.h" bodystart="33" bodyend="35"/>
+    <location file="src/macros.h" line="33" column="1" bodyfile="src/macros.h" bodystart="33" bodyend="42"/>
     <listofallmembers>
-      <member refid="structhandlers_1a2edd8bed07fb12f754f9f167de9ed903" prot="public" virt="non-virtual"><scope>handlers</scope><name>retry</name></member>
+      <member refid="structhandlers_1a996535b7879fb9713680e41af2b2791a" prot="public" virt="non-virtual"><scope>handlers</scope><name>retry</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

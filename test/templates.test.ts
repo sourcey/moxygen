@@ -167,6 +167,30 @@ describe('template helpers', () => {
     expect(output).toBe('handlers * fallback &registry');
   });
 
+  it('rebuilds function-pointer declarations from type, name and args', () => {
+    // Doxygen splits `int (*retry)(int n)` across three fields rather than
+    // giving it to us whole, and reports it as a variable.
+    const output = renderSignature({
+      kind: 'variable',
+      name: 'retry',
+      returnType: 'int(*',
+      argsstring: ')(int attempt, const char *reason)',
+    }).trim();
+
+    expect(output).toBe('int(* retry)(int attempt, const char *reason)');
+  });
+
+  it('leaves plain variables without an argument list alone', () => {
+    const output = renderSignature({
+      kind: 'variable',
+      name: 'registry',
+      returnType: 'handlers *',
+      argsstring: '',
+    }).trim();
+
+    expect(output).toBe('handlers * registry');
+  });
+
   it('renders typedefs as aliases instead of fake functions', () => {
     const output = renderSignature({
       kind: 'typedef',

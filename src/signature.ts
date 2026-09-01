@@ -62,6 +62,14 @@ export function renderSignature(member: Record<string, unknown>): string {
   }
 
   if (kind === 'variable' || kind === 'property') {
+    // A variable carrying an argument list is a function pointer. Doxygen
+    // splits `int (*retry)(int n)` into type `int(*`, name `retry` and
+    // argsstring `)(int n)`, so joining those three restores the declaration
+    // without having to parse C.
+    const argsstring = text(member.argsstring);
+    if (kind === 'variable' && argsstring) {
+      return `${text(member.returnType)} ${member.name}${argsstring}`;
+    }
     const initializer = kind === 'variable' ? text(member.initializer) : '';
     return [text(member.returnType), member.name, initializer].filter(Boolean).join(' ');
   }

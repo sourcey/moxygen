@@ -24,7 +24,7 @@ Registry of handler hooks.
 
 | Return | Name | Description |
 |--------|------|-------------|
-| `void(*` | [`retry`](#retry)  |  |
+| `int(*` | [`retry`](#retry)  | Called when a retry is scheduled. |
 
 ---
 
@@ -33,8 +33,20 @@ Registry of handler hooks.
 ### retry
 
 ```cpp
-void(* retry
+int(* retry)(int attempt, const char *reason)
 ```
 
-Defined in src/macros.h:34
+Defined in src/macros.h:41
+
+Called when a retry is scheduled.
+
+#### Returns
+zero to stop retrying
+
+#### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `attempt` |  | the attempt number, starting at one |
+| `reason` |  | why the retry was scheduled |
 

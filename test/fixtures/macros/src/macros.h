@@ -28,6 +28,27 @@
 void reset(int);
 
 /**
+  Drain the queue.
+
+  Ordering rules:
+
+  - first
+       - first.a
+       - first.b
+  - second
+       - second.a
+  - third
+
+  Steps:
+
+  1. open
+       1. acquire
+       2. verify
+  2. close
+*/
+void drain(void);
+
+/**
   Registry of handler hooks.
 */
 struct handlers {

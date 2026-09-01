@@ -1,0 +1,45 @@
+[
+  {
+    "title": "Loop",
+    "content": "demo::uv::Loop - uv - using demo::uv::Loop = typedef int - Alias used to model namespace-owned API entries.",
+    "anchor": "loop",
+    "category": "Types",
+    "symbolKind": "typedef",
+    "owner": "demo::uv",
+    "ownerKind": "namespace",
+    "qualifiedName": "demo::uv::Loop"
+  },
+  {
+    "title": "id",
+    "content": "demo::PacketStream::id - PacketStream - int demo::PacketStream::id - Returns a stable identifier.",
+    "anchor": "id",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::PacketStream",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::PacketStream::id"
+  },
+  {
+    "title": "attach",
+    "content": "demo::PeerSession::attach - PeerSession - void demo::PeerSession::attach - Attaches the session to demo::PacketStream.",
+    "anchor": "attach",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::PeerSession",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::PeerSession::attach"
+  },
+  {
+    "title": "bindLoop",
+    "content": "demo::PeerSession::bindLoop - PeerSession - void demo::PeerSession::bindLoop - Binds the session to demo::uv::Loop.",
+    "anchor": "bindloop",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::PeerSession",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::PeerSession::bindLoop"
+  }
+]

@@ -38,6 +38,20 @@ Five fixtures (`member-kinds`, `missing-tags`, `programlisting-language`,
 XML is hand authored to reach shapes Doxygen will not emit on demand, and it is
 edited directly.
 
+## Output snapshots
+
+`test/snapshots/` holds the full rendered Markdown for every reproducible
+fixture. The other suites assert on chosen lines, so a change outside those
+lines would otherwise land silently; these compare whole files.
+
+Any change to generated output makes them fail. Read the diff, and if the
+change is intended, update with `npx vitest run -u` and commit the new
+snapshots alongside the code. Treat an unexplained snapshot change as a bug
+rather than as noise to regenerate away.
+
+Modes are read from each fixture's `index.xml`, so a fixture gaining groups,
+pages or classes is covered without editing the test.
+
 ## Templates
 
 `templates/cpp/` and `templates/java/` are near-identical. `namespace.md` and

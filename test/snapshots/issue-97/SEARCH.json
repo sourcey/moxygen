@@ -1,0 +1,12 @@
+[
+  {
+    "title": "g1_a1",
+    "content": "g1::g1_a1 - g1 - int g1_a1",
+    "anchor": "g1_a1",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "g1",
+    "ownerKind": "group",
+    "qualifiedName": "g1::g1_a1"
+  }
+]

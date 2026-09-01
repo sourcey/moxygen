@@ -1,0 +1,22 @@
+[
+  {
+    "title": "GGROUP_DEFINE",
+    "content": "global_group::GGROUP_DEFINE - global_group - `define ``GGROUP_DEFINE` - This is a Global Group define.",
+    "anchor": "ggroup_define",
+    "category": "Macros",
+    "symbolKind": "define",
+    "owner": "global_group",
+    "ownerKind": "group",
+    "qualifiedName": "global_group::GGROUP_DEFINE"
+  },
+  {
+    "title": "nested_class_a",
+    "content": "nested_class::nested_class_a - nested_class - int nested_class::nested_class_a",
+    "anchor": "nested_class_a",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "nested_class",
+    "ownerKind": "class",
+    "qualifiedName": "nested_class::nested_class_a"
+  }
+]

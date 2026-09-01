@@ -1,0 +1,13 @@
+[
+  {
+    "title": "value",
+    "content": "demo::Plain::value - Plain - int demo::Plain::value - Returns a stable value.",
+    "anchor": "value",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::Plain",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Plain::value"
+  }
+]

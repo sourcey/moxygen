@@ -19,7 +19,8 @@ const DEFAULT_RENDER_CONTEXT: RenderContext = {
   headingBase: 1,
 };
 
-const MARKDOWN_LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
+const MARKDOWN_LINK = /\[([^\]]+)\]\(([^)]+)\)/;
+const MARKDOWN_LINKS = /\[([^\]]+)\]\(([^)]+)\)/g;
 
 /**
  * Render a type for a table cell.
@@ -34,11 +35,8 @@ function typeCell(type: string): string {
   const trimmed = (type || '').trim();
   if (!trimmed) return '';
 
-  MARKDOWN_LINK.lastIndex = 0;
   if (!MARKDOWN_LINK.test(trimmed)) return `\`${trimmed}\``;
-
-  MARKDOWN_LINK.lastIndex = 0;
-  return trimmed.replace(MARKDOWN_LINK, '[`$1`]($2)');
+  return trimmed.replace(MARKDOWN_LINKS, '[`$1`]($2)');
 }
 
 function headingLevel(relativeLevel: unknown, context: RenderContext): number {

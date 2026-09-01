@@ -52,18 +52,19 @@ const ADMONITIONS: Record<string, { container: string; alert: string }> = {
  * default; GitHub renders those as literal text and wants blockquote alerts,
  * where every line of the body carries the quote marker.
  */
-function renderAdmonition(kind: string, body: string, flavour: string): string {
+function renderAdmonition(kind: string, body: string, flavour: string, indent: string): string {
   const admonition = ADMONITIONS[kind];
   const prefixed = kind === 'deprecated' ? `**Deprecated.** ${body}` : body;
 
-  if (flavour !== 'github') {
-    return `\n:::${admonition.container}\n${prefixed}\n:::\n\n`;
-  }
+  const lines = flavour === 'github'
+    ? [`> [!${admonition.alert}]`, ...prefixed.trim().split('\n').map((line) => (line.trim() ? `> ${line}` : '>'))]
+    : [`:::${admonition.container}`, ...prefixed.split('\n'), ':::'];
 
-  const quoted = prefixed.trim().split('\n')
-    .map((line) => (line.trim() ? `> ${line}` : '>'))
-    .join('\n');
-  return `\n> [!${admonition.alert}]\n${quoted}\n\n`;
+  // Inside a list item the whole block has to sit at the item's content
+  // column, or it ends the list instead of belonging to it, and it closes on a
+  // single newline so the next item follows on.
+  const block = lines.map((line) => (line ? indent + line : line)).join('\n');
+  return `\n${block}\n${indent ? '' : '\n'}`;
 }
 
 function listMarker(name: string | undefined): string {
@@ -72,6 +73,13 @@ function listMarker(name: string | undefined): string {
 
 function enclosingLists(context: XmlElement[]): XmlElement[] {
   return context.filter((el) => LIST_ELEMENTS.has(el['#name'] ?? ''));
+}
+
+/** Column at which the content of the current list item continues. */
+function listContentIndent(context: XmlElement[]): string {
+  return enclosingLists(context)
+    .map((el) => ' '.repeat(listMarker(el['#name']).length))
+    .join('');
 }
 
 /**
@@ -178,7 +186,9 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
       context.push(el);
       break;
     case 'varlistentry':
-      s = '\n* ';
+      // The entry before this one already ended its line, so starting with a
+      // newline here would put a blank line between every term.
+      s = listIndent(context) + '* ';
       break;
     case 'term':
       s = '**';
@@ -300,7 +310,7 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
     case 'simplesect': {
       const closeKind = el.$?.kind;
       s = closeKind && ADMONITIONS[closeKind]
-        ? renderAdmonition(closeKind, s, parserOptions?.flavour ?? 'pandoc')
+        ? renderAdmonition(closeKind, s, parserOptions?.flavour ?? 'pandoc', listContentIndent(context))
         : `${s}\n\n`;
       context.pop();
       break;

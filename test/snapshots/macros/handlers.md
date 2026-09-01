@@ -10,7 +10,7 @@
 struct handlers
 ```
 
-Defined in src/macros.h:54
+Defined in src/macros.h:65
 
 Registry of handler hooks.
 
@@ -31,7 +31,7 @@ Registry of handler hooks.
 int(* retry)(int attempt, const char *reason)
 ```
 
-Defined in src/macros.h:62
+Defined in src/macros.h:73
 
 Called when a retry is scheduled.
 
@@ -57,7 +57,7 @@ struct handlers * fallback
 
 Type: struct [`handlers`](#handlers) *
 
-Defined in src/macros.h:65
+Defined in src/macros.h:76
 
 The registry consulted when this one has no handler.
 

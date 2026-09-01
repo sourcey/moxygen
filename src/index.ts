@@ -61,6 +61,7 @@ export const defaultOptions: MoxygenOptions = {
   anchors: true,
   htmlAnchors: false,
   language: 'cpp',
+  flavour: 'pandoc',
   templates: 'templates',
   titleSeparator: ' - ',
   quiet: false,

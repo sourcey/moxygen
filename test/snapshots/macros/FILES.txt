@@ -1,2 +1,3 @@
 api.md
 handlers.md
+page-deprecated.md

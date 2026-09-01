@@ -28,6 +28,17 @@
 void reset(int);
 
 /**
+  Flush pending work.
+
+  @note Flushing is best effort.
+  @remark Callers usually prefer drain().
+  @warning Blocks until the queue is empty.
+  @attention Never call this from a signal handler.
+  @deprecated Use drain() instead.
+*/
+void flush(void);
+
+/**
   Drain the queue.
 
   Ordering rules:

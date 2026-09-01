@@ -29,6 +29,8 @@ export interface MoxygenOptions {
   anchors: boolean;
   htmlAnchors: boolean;
   language: string;
+  /** Markdown dialect for admonitions: 'pandoc' containers or 'github' alerts. */
+  flavour: string;
   templates: string;
   /** Separator joining qualified name, owner, signature and summary in search snippets. */
   titleSeparator: string;

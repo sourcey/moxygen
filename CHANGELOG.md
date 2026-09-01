@@ -2,6 +2,18 @@
 
 Notable changes per release. Older history is in the git log.
 
+## 2.1.17 - 2026-09-01
+
+### Fixed
+
+- Function pointers document their parameters and render as declarations. `int (*retry)(int attempt, const char *reason)` previously printed as `int(* retry` with its `@param` list dropped, because parameters were collected only for a fixed set of member kinds and Doxygen reports a function pointer as a variable. Reported by @gkodinov in #131.
+- A member's own section links to its type, so a struct member pointing at another documented type can be followed without hunting back up to the summary table. Types with nothing to point at add nothing. Raised by @gkodinov in #130.
+
+### Changed
+
+- Member sections are consistent across class, namespace, group and index pages. Namespace, group and index pages gain the `Defined in` source links and separators that only class pages had, and enum value tables sit in the same place everywhere.
+- The all-members table appears only on classes that actually inherit members. Without inheritance its Owner column says nothing and it repeated the section table below it with less detail. Raised by @gkodinov in #130.
+
 ## 2.1.16 - 2026-08-28
 
 ### Fixed

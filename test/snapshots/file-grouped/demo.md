@@ -24,5 +24,7 @@
 Widget createWidget()
 ```
 
+Defined in src/widget.cpp:12
+
 Creates a default widget instance.
 

@@ -2,6 +2,7 @@
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.17.0" xml:lang="en-US">
   <compound refid="structhandlers" kind="struct"><name>handlers</name>
     <member refid="structhandlers_1a996535b7879fb9713680e41af2b2791a" kind="variable"><name>retry</name></member>
+    <member refid="structhandlers_1adb541f4c21033e417256fd5cab26e6b2" kind="variable"><name>fallback</name></member>
   </compound>
   <compound refid="macros_8h" kind="file"><name>macros.h</name>
     <member refid="macros_8h_1aecf13b8dc783db2202ca5c34fe117fc3" kind="define"><name>MAX_RETRIES</name></member>

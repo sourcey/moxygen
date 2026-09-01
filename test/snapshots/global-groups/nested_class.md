@@ -14,12 +14,6 @@ Defined in src/global.h:59
 
 This is a nested grouped class.
 
-## List of all members
-
-| Name | Kind | Owner |
-|------|------|-------|
-| [`nested_class_a`](#nested_class_a) | `variable` | Declared here |
-
 ## Public Attributes
 
 | Return | Name | Description |

@@ -14,12 +14,6 @@ Defined in src/base.h:9
 
 Packet pipeline primitive owned by the base module.
 
-## List of all members
-
-| Name | Kind | Owner |
-|------|------|-------|
-| [`id`](#id) | `function` | Declared here |
-
 ## Public Methods
 
 | Return | Name | Description |

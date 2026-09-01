@@ -39,6 +39,9 @@ struct handlers {
     @return zero to stop retrying
   */
   int (*retry)(int attempt, const char *reason);
+
+  /** The registry consulted when this one has no handler. */
+  struct handlers *fallback;
 } *registry;
 
 /**

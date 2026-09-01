@@ -28,5 +28,7 @@ This is the global group's description.
 #define GGROUP_DEFINE 1
 ```
 
+Defined in src/global.h:45
+
 This is a [Global Group](#globalgroup) define.
 

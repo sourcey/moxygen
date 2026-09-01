@@ -8,6 +8,8 @@
 
 ## Variables
 
+---
+
 {#a1}
 
 ### a1
@@ -15,6 +17,8 @@
 ```cpp
 int a1
 ```
+
+Defined in src/g1.h:4
 
 a1 is a top level 1
 

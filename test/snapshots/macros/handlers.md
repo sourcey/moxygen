@@ -14,17 +14,12 @@ Defined in src/macros.h:33
 
 Registry of handler hooks.
 
-## List of all members
-
-| Name | Kind | Owner |
-|------|------|-------|
-| [`retry`](#retry) | `variable` | Declared here |
-
 ## Public Attributes
 
 | Return | Name | Description |
 |--------|------|-------------|
 | `int(*` | [`retry`](#retry)  | Called when a retry is scheduled. |
+| struct [`handlers`](#handlers) * | [`fallback`](#fallback)  | The registry consulted when this one has no handler. |
 
 ---
 
@@ -49,4 +44,20 @@ zero to stop retrying
 |-----------|------|-------------|
 | `attempt` |  | the attempt number, starting at one |
 | `reason` |  | why the retry was scheduled |
+
+---
+
+{#fallback}
+
+### fallback
+
+```cpp
+struct handlers * fallback
+```
+
+Type: struct [`handlers`](#handlers) *
+
+Defined in src/macros.h:44
+
+The registry consulted when this one has no handler.
 

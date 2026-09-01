@@ -18,5 +18,7 @@
 using Loop = int
 ```
 
+Defined in src/uv.h:9
+
 Alias used to model namespace-owned API entries.
 

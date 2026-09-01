@@ -1,7 +1,7 @@
 [
   {
     "title": "GGROUP_DEFINE",
-    "content": "global_group::GGROUP_DEFINE - global_group - `define ``GGROUP_DEFINE` - This is a Global Group define.",
+    "content": "global_group::GGROUP_DEFINE - global_group - #define GGROUP_DEFINE 1 - This is a Global Group define.",
     "anchor": "ggroup_define",
     "category": "Macros",
     "symbolKind": "define",

@@ -480,7 +480,6 @@ function parseMembers(
         prot: '',
         static: '',
         virtual: '',
-        proto: '',
         briefdescription: '',
         detaileddescription: '',
         summary: '',
@@ -620,6 +619,15 @@ function parseMember(
     member.initializer = mdField(memberdef, 'initializer');
   }
 
+  if (memberdef.enumvalue) {
+    member.enumvalue = (memberdef.enumvalue as Array<Record<string, unknown>>).map((value) => ({
+      name: mdField(value, 'name'),
+      briefdescription: mdField(value, 'briefdescription'),
+      detaileddescription: mdField(value, 'detaileddescription'),
+      summary: mdSummary(value),
+    }));
+  }
+
   if (memberdef.location) {
     const locations = memberdef.location as Array<Record<string, Record<string, string>>>;
     const locationAttrs = locations?.[0]?.$;
@@ -697,122 +705,6 @@ function parseMember(
   member.prefixQualifiers = prefixQualifiers;
   member.qualifiers = qualifiers;
 
-  // Build legacy proto string (for classic templates)
-  let m: string[] = [];
-
-  switch (member.kind) {
-    case 'friend':
-      m.push(attrs.prot, ' ');
-      if (member.templateParams.length > 0) {
-        m.push('template<');
-        member.templateParams.forEach((tp, i) => {
-          if (i > 0) m.push(',');
-          m.push(tp.type);
-          if (tp.name) m.push(' ', tp.name);
-          if (tp.defaultValue) m.push(' = ', tp.defaultValue);
-        });
-        m.push('>  \n');
-      }
-      m.push('friend ');
-      if (member.returnType) m.push(member.returnType, ' ');
-      m.push(md.refLink(member.name, member.refid));
-      if (member.argsstring) {
-        m.push('(');
-        member.params.forEach((param, i) => {
-          if (i > 0) m.push(', ');
-          m.push(param.type);
-          if (param.name) m.push(' ', param.name);
-          if (param.defaultValue) m.push(' = ', param.defaultValue);
-        });
-        m.push(')');
-      }
-      for (const q of qualifiers) {
-        m.push(' ', q);
-      }
-      break;
-
-    case 'signal':
-    case 'slot':
-      m.push(`{${member.kind}} `);
-    // fallthrough
-    case 'function':
-      m.push(attrs.prot, ' ');
-      if (member.templateParams.length > 0) {
-        m.push('template<');
-        member.templateParams.forEach((tp, i) => {
-          if (i > 0) m.push(',');
-          m.push(tp.type);
-          if (tp.name) m.push(' ', tp.name);
-          if (tp.defaultValue) m.push(' = ', tp.defaultValue);
-        });
-        m.push('>  \n');
-      }
-      for (const q of prefixQualifiers) {
-        m.push(q, ' ');
-      }
-      if (member.isInline) m.push('inline', ' ');
-      if (member.isStatic) m.push('static', ' ');
-      if (member.isVirtual) m.push('virtual', ' ');
-      m.push(toMarkdown(memberdef.type), ' ');
-      if (member.isExplicit) m.push('explicit', ' ');
-      m.push(md.refLink(member.name, member.refid));
-      m.push('(');
-      member.params.forEach((param, i) => {
-        if (i > 0) m.push(', ');
-        m.push(param.type);
-        if (param.name) m.push(' ', param.name);
-        if (param.defaultValue) m.push(' = ', param.defaultValue);
-      });
-      m.push(')');
-      for (const q of qualifiers) {
-        m.push(' ', q);
-      }
-      break;
-
-    case 'variable':
-      m.push(attrs.prot, ' ');
-      if (member.isStatic) m.push('static', ' ');
-      if (attrs.mutable === 'yes') m.push('mutable', ' ');
-      m.push(toMarkdown(memberdef.type), ' ');
-      m.push(md.refLink(member.name, member.refid));
-      if (member.initializer) m.push(' ', member.initializer);
-      break;
-
-    case 'property':
-      m.push(`{${member.kind}} `);
-      m.push(toMarkdown(memberdef.type), ' ');
-      m.push(md.refLink(member.name, member.refid));
-      break;
-
-    case 'typedef':
-      if (/^using\b/.test(member.definition)) {
-        m.push('using ', md.refLink(member.name, member.refid), ' = ', toMarkdown(memberdef.type));
-      } else {
-        m.push('typedef ', toMarkdown(memberdef.type), ' ', md.refLink(member.name, member.refid));
-      }
-      break;
-
-    case 'enum':
-      member.enumvalue = [];
-      if (memberdef.enumvalue) {
-        for (const param of memberdef.enumvalue as Array<Record<string, unknown>>) {
-          member.enumvalue.push({
-            name: mdField(param, 'name'),
-            briefdescription: mdField(param, 'briefdescription'),
-            detaileddescription: mdField(param, 'detaileddescription'),
-            summary: mdSummary(param),
-          });
-        }
-      }
-      m.push(member.kind, ' ', md.refLink(member.name, member.refid));
-      break;
-
-    default:
-      m.push(member.kind, ' ', md.refLink(member.name, member.refid));
-      break;
-  }
-
-  member.proto = inline(m);
 }
 
 function assignToNamespace(compound: Compound, child: Compound): void {
@@ -893,7 +785,6 @@ function extractPageSections(page: Compound, elements: XmlElement[]): void {
         prot: '',
         static: '',
         virtual: '',
-        proto: '',
         briefdescription: '',
         detaileddescription: '',
         summary: '',
@@ -1013,7 +904,6 @@ function parseCompound(compound: Compound, compounddef: Record<string, unknown>)
     }
   }
 
-  compound.proto = inline([compound.kind, ' ', md.refLink(compound.name, compound.refid)]);
 
   if (compounddef.location) {
     const locations = compounddef.location as Array<Record<string, Record<string, string>>>;

@@ -82,7 +82,6 @@ export interface Member {
   prot: string;
   static: string;
   virtual: string;
-  proto: string;
   briefdescription: string;
   detaileddescription: string;
   summary: string;
@@ -164,7 +163,6 @@ export interface Compound {
   briefdescription: string;
   detaileddescription: string;
   summary: string;
-  proto: string;
   namespace: string;
   templateParams: Param[];
   groupid?: string;

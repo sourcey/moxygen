@@ -4,6 +4,7 @@ import Handlebars from 'handlebars';
 import { getAnchor, cleanId, stripMarkdownLinks } from './helpers.js';
 import type { AnchorMap } from './helpers.js';
 import { log } from './logger.js';
+import { formatTemplateParams, renderSignature } from './signature.js';
 import type { Compound, MoxygenOptions, SourceUrlRoute } from './types.js';
 
 const templates: Record<string, HandlebarsTemplateDelegate> = {};
@@ -114,19 +115,6 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
     return kept.join(' ').replace(/\s+/g, ' ').trim();
   };
 
-  const formatTemplateParams = (params: unknown): string => {
-    if (!Array.isArray(params) || params.length === 0) return '';
-    return `template<${params.map((param) => {
-      const record = param as Record<string, unknown>;
-      const type = stripMarkdownLinks(String(record.type ?? '')).trim();
-      const name = stripMarkdownLinks(String(record.name ?? '')).trim();
-      const defaultValue = stripMarkdownLinks(String(record.defaultValue ?? '')).trim();
-      return [
-        name ? `${type} ${name}` : type,
-        defaultValue ? ` = ${defaultValue}` : '',
-      ].join('');
-    }).filter(Boolean).join(', ')}>`;
-  };
 
   const sourceLabel = (record: Record<string, unknown>): string => {
     const location = typeof record.location === 'string' ? record.location : '';
@@ -207,75 +195,7 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
   });
 
   Handlebars.registerHelper('signature', function (this: Record<string, unknown>) {
-    const member = this as Record<string, unknown>;
-    const kind = member.kind as string;
-
-    if (kind === 'enum') {
-      return `enum ${member.name}`;
-    }
-    if (kind === 'typedef') {
-      const rt = stripMarkdownLinks(member.returnType as string).trim();
-      return rt ? `using ${member.name} = ${rt}` : String(member.definition ?? `using ${member.name}`);
-    }
-    if (kind === 'friend' && !String(member.argsstring ?? '').trim()) {
-      const templatePrefix = formatTemplateParams(member.templateParams);
-      const rt = stripMarkdownLinks(member.returnType as string).trim();
-      return [templatePrefix, 'friend', rt, stripMarkdownLinks(String(member.name ?? '')).trim()]
-        .filter(Boolean)
-        .join(' ');
-    }
-    if (kind === 'variable') {
-      // Signatures render inside a code fence, where markdown links stay
-      // literal, so an initializer carrying refs is flattened to its text.
-      const init = stripMarkdownLinks(String(member.initializer ?? '')).trim();
-      return init
-        ? `${stripMarkdownLinks(member.returnType as string)} ${member.name} ${init}`
-        : `${stripMarkdownLinks(member.returnType as string)} ${member.name}`;
-    }
-    if (kind === 'property') {
-      return `${stripMarkdownLinks(member.returnType as string)} ${member.name}`;
-    }
-    if (kind === 'define') {
-      // Object-like macros take no argument list at all, so parens are only
-      // correct when Doxygen reported macro parameters.
-      const macroParams = (member.params ?? []) as Array<{ name: string }>;
-      const args = macroParams.length
-        ? `(${macroParams.map((p) => p.name).filter(Boolean).join(', ')})`
-        : '';
-      const init = stripMarkdownLinks(String(member.initializer ?? '')).trim();
-      return `#define ${member.name}${args}${init ? ` ${init}` : ''}`;
-    }
-
-    // function/signal/slot
-    const parts: string[] = [];
-    if (kind === 'friend') parts.push('friend');
-    const tparams = member.templateParams as Array<{ type: string; name: string; defaultValue?: string }>;
-    const templatePrefix = formatTemplateParams(tparams);
-    if (templatePrefix) parts.push(templatePrefix);
-    const prefixQualifiers = member.prefixQualifiers as string[];
-    if (prefixQualifiers) parts.push(...prefixQualifiers);
-    if (member.isVirtual) parts.push('virtual');
-    if (member.isStatic) parts.push('static');
-    if (member.isInline) parts.push('inline');
-    if (member.isExplicit) parts.push('explicit');
-    const rt = member.returnType as string;
-    if (rt) parts.push(stripMarkdownLinks(rt));
-    const params = member.params as Array<{ type: string; name: string }>;
-    const paramStr = params
-      ? params.map((p) => {
-        const type = stripMarkdownLinks(p.type);
-        const defaultValue = stripMarkdownLinks(String((p as { defaultValue?: string }).defaultValue ?? '')).trim();
-        // Either half can be absent: unnamed parameters carry only a type.
-        const declaration = [type, p.name].filter(Boolean).join(' ');
-        return `${declaration}${defaultValue ? ` = ${defaultValue}` : ''}`;
-      }).join(', ')
-      : '';
-    parts.push(`${member.name}(${paramStr})`);
-    const qualifiers = member.qualifiers as string[];
-    if (qualifiers) {
-      for (const q of qualifiers) parts.push(q);
-    }
-    return parts.join(' ');
+    return renderSignature(this as Record<string, unknown>);
   });
 
   Handlebars.registerHelper('badges', function (this: Record<string, unknown>) {

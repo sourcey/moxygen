@@ -39,11 +39,11 @@ function typeCell(type: string): string {
   return trimmed.replace(MARKDOWN_LINKS, '[`$1`]($2)');
 }
 
-function headingLevel(relativeLevel: unknown, context: RenderContext): number {
+function headingLevel(relativeLevel: unknown, context: RenderContext, options: Pick<MoxygenOptions, 'maxHeadingLevel'>): number {
   const relative = Number(relativeLevel);
   const base = Number.isFinite(context.headingBase) ? context.headingBase : 1;
   const level = base + (Number.isFinite(relative) ? relative : 1) - 1;
-  return Math.min(Math.max(level, 1), 6);
+  return Math.min(Math.max(level, 1), options.maxHeadingLevel);
 }
 
 /**
@@ -57,7 +57,7 @@ export function setAnchorMap(map: AnchorMap | undefined): void {
 /**
  * Register Handlebars helpers for template rendering.
  */
-export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlAnchors' | 'sourceUrl'>): void {
+export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlAnchors' | 'sourceUrl' | 'maxHeadingLevel'>): void {
   const encodePath = (value: string): string =>
     value.split('/').map((part) => encodeURIComponent(part)).join('/');
 
@@ -162,7 +162,7 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
 
   Handlebars.registerHelper('headingMarker', (relativeLevel: unknown, helperOptions: Handlebars.HelperOptions) => {
     const context = (helperOptions.data?.renderContext ?? DEFAULT_RENDER_CONTEXT) as RenderContext;
-    return '#'.repeat(headingLevel(relativeLevel, context));
+    return '#'.repeat(headingLevel(relativeLevel, context, options));
   });
 
   Handlebars.registerHelper('eq', (a: unknown, b: unknown) => a === b);

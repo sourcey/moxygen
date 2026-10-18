@@ -2,7 +2,7 @@
 
 Notable changes per release. Older history is in the git log.
 
-## Unreleased
+## 2.2.0 - 2026-10-18
 
 ### Fixed
 

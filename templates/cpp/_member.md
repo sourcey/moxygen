@@ -23,28 +23,28 @@
 {{#if referencedBy}}
 {{headingMarker 4}} Referenced by
 
-{{#each referencedBy}}- {{linkedName name refid}}
+{{#each referencedBy}}- {{linkedRelation this}}
 {{/each}}
 
 {{/if}}
 {{#if references}}
 {{headingMarker 4}} References
 
-{{#each references}}- {{linkedName name refid}}
+{{#each references}}- {{linkedRelation this}}
 {{/each}}
 
 {{/if}}
 {{#if reimplements}}
 {{headingMarker 4}} Reimplements
 
-{{#each reimplements}}- {{linkedName name refid}}
+{{#each reimplements}}- {{linkedRelation this}}
 {{/each}}
 
 {{/if}}
 {{#if reimplementedBy}}
 {{headingMarker 4}} Reimplemented by
 
-{{#each reimplementedBy}}- {{linkedName name refid}}
+{{#each reimplementedBy}}- {{linkedRelation this}}
 {{/each}}
 
 {{/if}}

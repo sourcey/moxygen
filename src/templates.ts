@@ -6,7 +6,7 @@ import type { AnchorMap } from './helpers.js';
 import { log } from './logger.js';
 import { formatTemplateParams, renderSignature } from './signature.js';
 import { sectionHasReturnColumn } from './vocabulary.js';
-import type { Compound, MoxygenOptions, SourceUrlRoute } from './types.js';
+import type { Compound, MoxygenOptions, RelationRef, SourceUrlRoute } from './types.js';
 
 const templates: Record<string, HandlebarsTemplateDelegate> = {};
 let activeAnchorMap: AnchorMap | undefined;
@@ -301,6 +301,16 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
     const short = (name || '').split('::').pop() || name;
     if (refid) return `[\`${short}\`]({#ref ${refid} #})`;
     return `\`${short}\``;
+  });
+
+  // Related member: names it with the class that declares it, `Owner::name`,
+  // since an override shares its name with the member it overrides.
+  Handlebars.registerHelper('linkedRelation', (relation: RelationRef) => {
+    const short = (relation.name || '').split('::').pop() || relation.name;
+    const owner = relation.owner?.split('::').pop();
+    const label = owner ? `${owner}::${short}` : short;
+    if (relation.refid) return `[\`${label}\`]({#ref ${relation.refid} #})`;
+    return `\`${label}\``;
   });
 
   Handlebars.registerHelper('groupBreadcrumbs', (compound: Compound) => {

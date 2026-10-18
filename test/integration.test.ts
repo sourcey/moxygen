@@ -89,6 +89,14 @@ describe('integration', () => {
     expect(content).toContain('Standard bicycle class');
   });
 
+  it('names the class that declares an overridden or overriding member', async () => {
+    const bicycle = read(join(exampleOutputDir, 'api-bicycle.md'));
+    const racingBike = read(join(exampleOutputDir, 'api-racingbike.md'));
+
+    expect(bicycle).toMatch(/###### Reimplemented by\n\n- \[`RacingBike::PedalHarder`\]\(api-racingbike\.md#pedalharder-1\)/);
+    expect(racingBike).toMatch(/###### Reimplements\n\n- \[`Bicycle::PedalHarder`\]\(api-bicycle\.md#pedalharder\)/);
+  });
+
   it('recovers grouped output from file-level grouped fixtures', async () => {
     const outputDir = join(outputRoot, 'file-grouped');
 

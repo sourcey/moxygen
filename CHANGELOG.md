@@ -2,6 +2,12 @@
 
 Notable changes per release. Older history is in the git log.
 
+## Unreleased
+
+### Fixed
+
+- "Reimplements", "Reimplemented by", "References" and "Referenced by" name the class that declares the related member, `RacingBike::PedalHarder` rather than `PedalHarder`. Doxygen names the member alone, so an override read as the member itself.
+
 ## 2.1.19 - 2026-09-01
 
 ### Added

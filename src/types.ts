@@ -70,6 +70,8 @@ export interface EnumValue {
 export interface RelationRef {
   name: string;
   refid?: string;
+  /** Name of the compound that declares the related member, once resolved. */
+  owner?: string;
   compoundref?: string;
   startline?: string;
   endline?: string;

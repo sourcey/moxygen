@@ -283,6 +283,16 @@ function attachRelationshipSummaries(compounds: Compound[], references: Referenc
     );
     compound.allMembers = [...collectOwnAllMemberEntries(compound), ...inheritedEntries]
       .filter((entry) => entry.name && entry.refid);
+
+    // Doxygen names a related member by its own name only, so a relation to an
+    // override in another class reads as the member itself. Record the class
+    // that declares it.
+    for (const member of compound.members ?? []) {
+      for (const relation of [...member.references, ...member.referencedBy, ...member.reimplements, ...member.reimplementedBy]) {
+        const target = relation.refid ? (references[relation.refid] as Member | undefined) : undefined;
+        if (target?.parent) relation.owner = memberOwnerName(target.parent);
+      }
+    }
   }
 }
 

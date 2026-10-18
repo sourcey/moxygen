@@ -59,7 +59,7 @@ PedalHarder makes you go faster (usually).
 
 ###### Reimplemented by
 
-- [`PedalHarder`](api-racingbike.md#pedalharder-1)
+- [`RacingBike::PedalHarder`](api-racingbike.md#pedalharder-1)
 
 ---
 
@@ -81,7 +81,7 @@ RingBell rings the bell on the bike. Note that not all bikes have bells.
 
 ###### Reimplemented by
 
-- [`RingBell`](api-racingbike.md#ringbell-1)
+- [`RacingBike::RingBell`](api-racingbike.md#ringbell-1)
 
 ---
 

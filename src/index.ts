@@ -68,6 +68,7 @@ export const defaultOptions: MoxygenOptions = {
   frontmatter: false,
   filters: defaultFilters,
   inlineGroups: false,
+  maxHeadingLevel: 6,
 };
 
 // ---------------------------------------------------------------------------
@@ -96,6 +97,12 @@ function resolveOptions(options: Partial<MoxygenOptions> & { directory: string }
 
   if (!options.templates) {
     opts.templates = join(__dirname, '..', 'templates', opts.language);
+  }
+
+  if (opts.maxHeadingLevel < 1 || opts.maxHeadingLevel > 6) {
+    throw new Error(
+      "The `maxHeadingLevel` option must be between 1 and 6."
+    );
   }
 
   return opts;

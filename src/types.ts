@@ -41,6 +41,7 @@ export interface MoxygenOptions {
   frontmatter: boolean;
   filters: Filters;
   inlineGroups: boolean;
+  maxHeadingLevel: number;
 }
 
 export interface Filters {

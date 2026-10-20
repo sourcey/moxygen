@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { Command } from 'commander';
+import { Command,InvalidArgumentError } from 'commander';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,6 +9,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf8'));
 
 const program = new Command();
+
+function myParseInt(value : string, dummyPrevious: unknown) {
+  // parseInt takes a string and a radix
+  const parsedValue = parseInt(value, 10);
+  if (isNaN(parsedValue)) {
+    throw new InvalidArgumentError('Not a number.');
+  }
+  return parsedValue;
+}
 
 program
   .name('moxygen')
@@ -31,6 +40,7 @@ program
   .option('-L, --logfile [file]', 'output log messages to file (default: "moxygen.log")')
   .option('-I, --inline-groups', 'inline group members into the parent compound instead of generating separate files', false)
   .option('-q, --quiet', 'quiet mode', false)
+  .option('-Z, --max-heading-level <level>', 'set the maximum level for headings', myParseInt, 6)
   .action(async (directory: string, opts: Record<string, unknown>) => {
     try {
       await run({
@@ -50,6 +60,7 @@ program
         logfile: opts.logfile as string | boolean | undefined,
         quiet: opts.quiet as boolean,
         inlineGroups: opts.inlineGroups as boolean,
+	maxHeadingLevel: opts.maxHeadingLevel as number
       });
     } catch (err) {
       console.error(err instanceof Error ? err.message : err);

@@ -22,7 +22,7 @@
 {{/if}}
 {{/with}}
 
-{{#with (compoundsOfKind filtered.compounds "class" "struct" "interface") as |types|}}
+{{#with (compoundsOfKind filtered.compounds "class" "struct" "union" "interface") as |types|}}
 {{#if types}}
 {{headingMarker 2}} Classes
 

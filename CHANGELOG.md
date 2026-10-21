@@ -2,6 +2,12 @@
 
 Notable changes per release. Older history is in the git log.
 
+## Unreleased
+
+### Fixed
+
+- A namespace's and the index's types tables list unions with the classes and structs. A union had a page of its own that no table linked to.
+
 ## 2.2.1 - 2026-10-21
 
 ### Fixed

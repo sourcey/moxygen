@@ -19,6 +19,7 @@ const issue97XmlDir = join(import.meta.dirname, 'fixtures', 'issue-97', 'xml-out
 const globalGroupsXmlDir = join(import.meta.dirname, 'fixtures', 'global-groups', 'xml-out', 'xml');
 const macrosXmlDir = join(import.meta.dirname, 'fixtures', 'macros', 'xml-out', 'xml');
 const drawnLinksXmlDir = join(import.meta.dirname, 'fixtures', 'drawn-links', 'xml-out', 'xml');
+const globalScopeXmlDir = join(import.meta.dirname, 'fixtures', 'global-scope', 'xml-out', 'xml');
 
 const exampleOutputDir = join(outputRoot, 'example');
 
@@ -181,6 +182,48 @@ describe('integration', () => {
     const groupPage = pages.find((page) => page.kind === 'group' && page.slug === 'widget');
     expect(groupPage).toBeDefined();
     expect(groupPage!.markdown).toContain('| [`demo`](demo.html#demo) |');
+  });
+
+  it('pages global scope and only the namespaces with something to show', async () => {
+    const pages = await generate({ directory: globalScopeXmlDir, quiet: true });
+    const page = (slug: string) => pages.find((candidate) => candidate.slug === slug);
+    // An undocumented namespace holding only other namespaces wraps them and has no page.
+    expect(pages.map((candidate) => candidate.slug).sort()).toEqual(
+      ['Counter', 'Point', 'acme-net', 'acme-net-Connection', 'acme-net-detail', 'acme-net-detail-Buffer', 'globals'],
+    );
+    expect(page('acme-net')!.markdown).toContain('| [`detail`](acme-net-detail.html#detail) | Transport internals. |');
+
+    // Types outside every namespace have pages of their own, and the members beside them share one.
+    expect(page('Counter')!.markdown).toContain('A counter outside every namespace.');
+    expect(page('Point')!.kind).toBe('union');
+    const globals = page('globals')!;
+    expect(globals).toMatchObject({ title: 'Globals', kind: 'globals', description: 'Macros and functions at global scope.' });
+    expect(globals.markdown).toContain('# Globals');
+    expect(globals.markdown).toContain('| [`Point`](Point.html#point) | Two coordinates, stored either way. |');
+    expect(globals.markdown).toContain('| [`Counter`](Counter.html#counter) | A counter outside every namespace. |');
+    expect(globals.markdown).toContain('The largest count a [Counter](Counter.html#counter) holds.');
+    expect(globals.markdown).toContain('### reset_all');
+    expect(globals.searchEntries).toContainEqual(expect.objectContaining({ title: 'reset_all', ownerKind: 'globals', qualifiedName: 'reset_all' }));
+    expect(globals.searchEntries!.every((entry) => entry.owner === undefined)).toBe(true);
+
+    // With groups, what no group claims is still paged.
+    const grouped = await generate({ directory: globalGroupsXmlDir, groups: true, quiet: true });
+    expect(grouped.find((candidate) => candidate.slug === 'global_class')!.markdown).toContain('This is a global class.');
+    const groupedGlobals = grouped.find((candidate) => candidate.slug === 'globals')!;
+    expect(groupedGlobals.markdown).toContain('### GDEFINE');
+    expect(groupedGlobals.markdown).toContain('### mysql_tmpfile');
+    expect(groupedGlobals.markdown).not.toContain('nested_class');
+  });
+
+  it('writes no page for a namespace that only wraps others', async () => {
+    const outputDir = join(outputRoot, 'global-scope');
+    await run({ directory: globalScopeXmlDir, output: join(outputDir, '%s.md'), classes: true, anchors: true, quiet: true });
+
+    expect(existsSync(join(outputDir, 'acme.md'))).toBe(false);
+    const api = read(join(outputDir, 'api.md'));
+    expect(api).not.toContain('acme.md');
+    expect(api).toContain('| [`Point`](Point.md#point) | Two coordinates, stored either way. |');
+    expect(read(join(outputDir, 'acme-net.md'))).toContain('| [`detail`](acme-net-detail.md#detail) | Transport internals. |');
   });
 
   it('links every generated reference to the page and anchor its target is drawn at', async () => {

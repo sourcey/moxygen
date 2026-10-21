@@ -2,6 +2,12 @@
 
 # demo
 
+## Namespaces
+
+| Name | Description |
+|------|-------------|
+| [`json`](demo-json.md#json) | JSON helpers for the net module. |
+
 ## Classes
 
 | Name | Description |

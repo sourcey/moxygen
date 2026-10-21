@@ -18,5 +18,42 @@
     "owner": "nested_class",
     "ownerKind": "class",
     "qualifiedName": "nested_class::nested_class_a"
+  },
+  {
+    "title": "global_class_a",
+    "content": "global_class::global_class_a - global_class - int global_class::global_class_a",
+    "anchor": "global_class_a",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "global_class",
+    "ownerKind": "class",
+    "qualifiedName": "global_class::global_class_a"
+  },
+  {
+    "title": "GDEFINE",
+    "content": "GDEFINE - #define GDEFINE 1 - This is a global define.",
+    "anchor": "gdefine",
+    "category": "Macros",
+    "symbolKind": "define",
+    "ownerKind": "globals",
+    "qualifiedName": "GDEFINE"
+  },
+  {
+    "title": "mysql_tmpfile",
+    "content": "mysql_tmpfile - int mysql_tmpfile - Create a temporary file.",
+    "anchor": "mysql_tmpfile",
+    "category": "Functions",
+    "symbolKind": "function",
+    "ownerKind": "globals",
+    "qualifiedName": "mysql_tmpfile"
+  },
+  {
+    "title": "global_a",
+    "content": "global_a - global_class global_a - This is a global variable.",
+    "anchor": "global_a",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "ownerKind": "globals",
+    "qualifiedName": "global_a"
   }
 ]

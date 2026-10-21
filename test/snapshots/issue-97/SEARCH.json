@@ -8,5 +8,14 @@
     "owner": "g1",
     "ownerKind": "group",
     "qualifiedName": "g1::g1_a1"
+  },
+  {
+    "title": "a1",
+    "content": "a1 - int a1 - a1 is a top level 1",
+    "anchor": "a1",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "ownerKind": "globals",
+    "qualifiedName": "a1"
   }
 ]

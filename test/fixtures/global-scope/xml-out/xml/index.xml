@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.17.0" xml:lang="en-US">
+  <compound refid="classacme_1_1net_1_1detail_1_1_buffer" kind="class"><name>acme::net::detail::Buffer</name>
+    <member refid="classacme_1_1net_1_1detail_1_1_buffer_1ad47b84067f62309dc0929cf658b7b26f" kind="function"><name>clear</name></member>
+  </compound>
+  <compound refid="classacme_1_1net_1_1_connection" kind="class"><name>acme::net::Connection</name>
+    <member refid="classacme_1_1net_1_1_connection_1a45feecd9af8a7b8ab3999131f398c30c" kind="function"><name>open</name></member>
+  </compound>
+  <compound refid="class_counter" kind="class"><name>Counter</name>
+    <member refid="class_counter_1a507fcaf2d7f2afa7a2fe76eceac215e2" kind="function"><name>increment</name></member>
+  </compound>
+  <compound refid="union_point" kind="union"><name>Point</name>
+    <member refid="union_point_1a7feeba54ed850196ad914eecd48fc77f" kind="variable"><name>xy</name></member>
+    <member refid="union_point_1a98314207c7d1d538651da2f70ef6d8f8" kind="variable"><name>packed</name></member>
+  </compound>
+  <compound refid="namespaceacme" kind="namespace"><name>acme</name>
+  </compound>
+  <compound refid="namespaceacme_1_1net" kind="namespace"><name>acme::net</name>
+  </compound>
+  <compound refid="namespaceacme_1_1net_1_1detail" kind="namespace"><name>acme::net::detail</name>
+  </compound>
+  <compound refid="scope_8h" kind="file"><name>scope.h</name>
+    <member refid="scope_8h_1a277c30e018e59330653ed193e5ba1bbe" kind="define"><name>COUNTER_MAX</name></member>
+    <member refid="scope_8h_1a265da85056f5eee8bcc6ade9b333480c" kind="function"><name>reset_all</name></member>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+</doxygenindex>

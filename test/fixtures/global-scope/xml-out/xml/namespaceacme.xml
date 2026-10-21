@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceacme" kind="namespace" language="C++">
+    <compoundname>acme</compoundname>
+    <innernamespace refid="namespaceacme_1_1net">acme::net</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/scope.h" line="4" column="1"/>
+  </compounddef>
+</doxygen>

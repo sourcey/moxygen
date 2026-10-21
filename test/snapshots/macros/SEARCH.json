@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "title": "retry",
+    "content": "handlers::retry - handlers - int(* handlers::retry) (int attempt, const char *reason) - Called when a retry is scheduled.",
+    "anchor": "retry",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "handlers",
+    "ownerKind": "struct",
+    "qualifiedName": "handlers::retry"
+  },
+  {
+    "title": "fallback",
+    "content": "handlers::fallback - handlers - struct handlers* handlers::fallback - The registry consulted when this one has no handler.",
+    "anchor": "fallback",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "handlers",
+    "ownerKind": "struct",
+    "qualifiedName": "handlers::fallback"
+  },
+  {
+    "title": "MAX_RETRIES",
+    "content": "MAX_RETRIES - #define MAX_RETRIES 5 - The maximum number of retries.",
+    "anchor": "max_retries",
+    "category": "Macros",
+    "symbolKind": "define",
+    "ownerKind": "globals",
+    "qualifiedName": "MAX_RETRIES"
+  },
+  {
+    "title": "CLAMP",
+    "content": "CLAMP - #define CLAMP(VALUE, LO, HI) ((VALUE) < (LO) ? (LO) : ((VALUE) > (HI) ? (HI) : (VALUE))) - Clamp a value into an inclusive range.",
+    "anchor": "clamp",
+    "category": "Macros",
+    "symbolKind": "define",
+    "ownerKind": "globals",
+    "qualifiedName": "CLAMP"
+  },
+  {
+    "title": "UNREACHABLE",
+    "content": "UNREACHABLE - #define UNREACHABLE() __builtin_unreachable() - Mark a code path as unreachable.",
+    "anchor": "unreachable",
+    "category": "Macros",
+    "symbolKind": "define",
+    "ownerKind": "globals",
+    "qualifiedName": "UNREACHABLE"
+  },
+  {
+    "title": "UNDOCUMENTED_FLAG",
+    "content": "UNDOCUMENTED_FLAG - #define UNDOCUMENTED_FLAG 1",
+    "anchor": "undocumented_flag",
+    "category": "Macros",
+    "symbolKind": "define",
+    "ownerKind": "globals",
+    "qualifiedName": "UNDOCUMENTED_FLAG"
+  },
+  {
+    "title": "RETRY_HOOK",
+    "content": "RETRY_HOOK - #define RETRY_HOOK registry->retry - Shorthand for the registry retry hook. Its initializer references another documented symbol, so Doxygen emits a cross-reference inside the initializer.",
+    "anchor": "retry_hook",
+    "category": "Macros",
+    "symbolKind": "define",
+    "ownerKind": "globals",
+    "qualifiedName": "RETRY_HOOK"
+  },
+  {
+    "title": "reset",
+    "content": "reset - void reset - Reset the retry counter.",
+    "anchor": "reset",
+    "category": "Functions",
+    "symbolKind": "function",
+    "ownerKind": "globals",
+    "qualifiedName": "reset"
+  },
+  {
+    "title": "flush",
+    "content": "flush - void flush - Flush pending work.",
+    "anchor": "flush",
+    "category": "Functions",
+    "symbolKind": "function",
+    "ownerKind": "globals",
+    "qualifiedName": "flush"
+  },
+  {
+    "title": "drain",
+    "content": "drain - void drain - Drain the queue.",
+    "anchor": "drain",
+    "category": "Functions",
+    "symbolKind": "function",
+    "ownerKind": "globals",
+    "qualifiedName": "drain"
+  },
+  {
+    "title": "configure",
+    "content": "configure - struct handlers * configure - Configure a handler registry.",
+    "anchor": "configure",
+    "category": "Functions",
+    "symbolKind": "function",
+    "ownerKind": "globals",
+    "qualifiedName": "configure"
+  },
+  {
+    "title": "registry",
+    "content": "registry - struct handlers * registry",
+    "anchor": "registry",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "ownerKind": "globals",
+    "qualifiedName": "registry"
+  }
+]

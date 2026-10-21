@@ -45,3 +45,13 @@ for (const page of pages) {
   console.log(page.markdown);
 }
 ```
+
+Each page's `kind` says what it documents:
+
+| `kind` | Page |
+|--------|------|
+| `group` | A `@defgroup` module, when the XML has groups |
+| `namespace` | A namespace with a description, members or types of its own; one that only wraps others has no page |
+| `class`, `struct`, `union`, `interface` | A type, in a namespace or at global scope |
+| `globals` | The functions, variables and macros at global scope that no group claims |
+| `page` | A Doxygen `@page` |

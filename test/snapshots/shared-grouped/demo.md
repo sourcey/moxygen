@@ -2,6 +2,12 @@
 
 # demo
 
+## Namespaces
+
+| Name | Description |
+|------|-------------|
+| [`uv`](demo-uv.md#uv) |  |
+
 ## Classes
 
 | Name | Description |

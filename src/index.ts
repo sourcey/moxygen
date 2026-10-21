@@ -10,7 +10,7 @@ import { log } from './logger.js';
 import { loadIndex } from './parser.js';
 import * as templates from './templates.js';
 import { setAnchorMap } from './templates.js';
-import type { AllMemberEntry, Compound, Filters, InheritedMemberGroup, Member, MoxygenOptions, References } from './types.js';
+import type { AllMemberEntry, Compound, Filters, InheritedMemberGroup, Member, MoxygenOptions, References, SectionGroup } from './types.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -115,6 +115,7 @@ async function loadAndPrepare(opts: MoxygenOptions): Promise<{ root: Compound; r
 export interface GeneratedPage {
   slug: string;
   title: string;
+  /** The Doxygen compound kind, or `globals` for the page of members at global scope. */
   kind: string;
   module?: string;
   namespace?: string;
@@ -605,6 +606,7 @@ export async function generate(
 
   // First pass: filter and prepare all compounds
   const allCompounds: Compound[] = [];
+  let namespacePages = new Set<Compound>();
 
   if (useGroups) {
     const seenPrep = new Set<string>();
@@ -662,7 +664,19 @@ export async function generate(
         allCompounds.push(child);
       }
     }
+    namespacePages = pagedNamespaces(rootCompounds);
   }
+
+  // Global scope, as run() documents it: a type outside every namespace and group has a
+  // page of its own, and the members no group claims share one page.
+  const globalTypes = collectGlobalTypes(root);
+  for (const compound of globalTypes) {
+    filterChildren(compound, opts.filters);
+    prepareCompound(compound);
+    allCompounds.push(compound);
+  }
+  const globals = prepareGlobals(root, globalTypes, opts);
+  if (globals) allCompounds.push(root);
 
   // Build clean anchor map and slug map across all compounds
   const anchorMap = buildCleanAnchorMap(allCompounds);
@@ -713,12 +727,16 @@ export async function generate(
       .filter((c) => !isJunkCompound(c));
 
     for (const comp of rootCompounds) {
-      emitPage(comp);
+      if (namespacePages.has(comp)) emitPage(comp);
       for (const child of toFilteredArray(comp)) {
-        emitPage(child);
+        // A nested namespace is drawn in its own turn.
+        if (child.kind !== 'namespace') emitPage(child);
       }
     }
   }
+
+  for (const compound of globalTypes) emitPage(compound);
+  if (globals) files.draw(root, `${GLOBALS_SLUG}.html`, () => [templates.render(root)]);
 
   // Doxygen @page entries (skip auto-generated ones from source READMEs)
   for (const page of toArray(root, 'compounds', 'page') as Compound[]) {
@@ -746,6 +764,17 @@ export async function generate(
       continue;
     }
     if (!contents[0]) continue;
+    if (compound === root) {
+      pages.push({
+        slug: GLOBALS_SLUG,
+        title: root.title as string,
+        kind: 'globals',
+        description: globalsDescription(root.filtered.sections),
+        searchEntries: collectSearchEntries(root, opts.titleSeparator, anchorMap),
+        markdown: renderCompound(root, contents, references, opts, anchorMap, slugMap, pagePathMap, links),
+      });
+      continue;
+    }
     const meta = extractResolvedMeta(compound, references, opts, anchorMap, slugMap, pagePathMap, links);
     const moduleName = modules.get(compound);
     if (moduleName) meta.module = moduleName;
@@ -866,8 +895,9 @@ function collectSearchEntries(compound: Compound, separator: string, anchorMap?:
       anchor: anchorMap?.get(member.refid),
       category: searchCategoryForKind(member.kind),
       symbolKind: member.kind,
-      owner,
-      ownerKind: compound.kind,
+      // A member at global scope has no owner; its page is the globals page.
+      owner: owner || undefined,
+      ownerKind: compound.kind === 'index' ? 'globals' : compound.kind,
       namespace,
       qualifiedName,
     });
@@ -930,18 +960,66 @@ function collectClassOutputCompounds(root: Compound): Compound[] {
   );
 }
 
-function collectRootIndexCompounds(root: Compound, groups: Compound[]): Compound[] {
+const GLOBALS_SLUG = 'globals';
+
+/** Types declared outside every namespace and group; a nested type is drawn with its owner. */
+function collectGlobalTypes(root: Compound): Compound[] {
+  return Object.values(root.compounds).filter((compound) =>
+    isClassOutputCompound(compound) && compound.kind !== 'namespace' && !compound.namespace && !compound.groupid);
+}
+
+/** Prepare the root as the page of global members no group claims, and say whether it has any. */
+function prepareGlobals(root: Compound, globalTypes: Compound[], opts: MoxygenOptions): boolean {
+  root.filtered.members = filterNoise(
+    filterCollection(root.members, 'section', opts.filters.members) as Member[],
+  ).filter((member) => !member.groupid);
+  if (!root.filtered.members.length) return false;
+  root.filtered.compounds = globalTypes;
+  root.filtered.sections = groupMembersBySection(root);
+  root.title = 'Globals';
+  return true;
+}
+
+function globalsDescription(sections: SectionGroup[]): string {
+  const labels = sections.map((section) => section.label.toLowerCase());
+  const list = labels.length > 1 ? `${labels.slice(0, -1).join(', ')} and ${labels[labels.length - 1]}` : labels[0];
+  return `${list.charAt(0).toUpperCase()}${list.slice(1)} at global scope.`;
+}
+
+/**
+ * Namespaces are parsed flat. One with no description, members or types of its own only
+ * wraps others and has no page; each paged namespace lists the paged ones nearest below it.
+ */
+function pagedNamespaces(namespaces: Compound[]): Set<Compound> {
+  const paged = namespaces.filter((namespace) => namespace.briefdescription || namespace.detaileddescription ||
+    namespace.filtered.members.length || namespace.filtered.compounds.length);
+  const byName = new Map(paged.map((namespace) => [namespace.fullname, namespace]));
+  for (const namespace of paged) {
+    const parts = namespace.fullname.split('::');
+    for (let length = parts.length - 1; length > 0; length -= 1) {
+      const owner = byName.get(parts.slice(0, length).join('::'));
+      if (owner) {
+        owner.filtered.compounds.push(namespace);
+        break;
+      }
+    }
+  }
+  return new Set(paged);
+}
+
+function collectRootIndexCompounds(root: Compound, groups: Compound[], namespacePages?: Set<Compound>): Compound[] {
   const topLevelGroups = groups.filter((group) => group.parent?.kind !== 'group');
   const rootCompounds = Object.values(root.compounds)
-    .filter((compound) => isClassOutputCompound(compound) && !compound.groupid);
+    .filter((compound) => isClassOutputCompound(compound) && !compound.groupid &&
+      (compound.kind !== 'namespace' || !namespacePages || namespacePages.has(compound)));
   return uniqueCompounds([...topLevelGroups, ...rootCompounds]);
 }
 
-function prepareRootIndex(root: Compound, groups: Compound[], opts: MoxygenOptions): void {
+function prepareRootIndex(root: Compound, groups: Compound[], opts: MoxygenOptions, namespacePages?: Set<Compound>): void {
   root.filtered.members = filterNoise(
     filterCollection(root.members, 'section', opts.filters.members) as Member[],
   );
-  root.filtered.compounds = collectRootIndexCompounds(root, groups);
+  root.filtered.compounds = collectRootIndexCompounds(root, groups, namespacePages);
   root.filtered.sections = groupMembersBySection(root);
 }
 
@@ -1034,10 +1112,15 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
     }
   }
 
+  let namespacePages: Set<Compound> | undefined;
   if (opts.classes) {
     for (const comp of classOutputCompounds) {
       filterChildren(comp, opts.filters);
       prepareCompound(comp);
+    }
+    namespacePages = pagedNamespaces(classOutputCompounds.filter((compound) => compound.kind === 'namespace'));
+    classOutputCompounds = classOutputCompounds.filter((compound) => compound.kind !== 'namespace' || namespacePages!.has(compound));
+    for (const comp of classOutputCompounds) {
       allCompounds.push(comp);
       pagePathMap = ensurePathMap(pagePathMap);
       addCompoundPath(pagePathMap, comp, opts);
@@ -1045,7 +1128,7 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
   }
 
   if (splitOutput) {
-    prepareRootIndex(root, groups, opts);
+    prepareRootIndex(root, groups, opts, namespacePages);
     rootBodyCompounds = opts.classes
       ? []
       : root.filtered.compounds.filter((compound) => compound.kind !== 'group');

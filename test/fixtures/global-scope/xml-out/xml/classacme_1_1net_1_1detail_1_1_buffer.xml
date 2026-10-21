@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classacme_1_1net_1_1detail_1_1_buffer" kind="class" language="C++" prot="public">
+    <compoundname>acme::net::detail::Buffer</compoundname>
+    <includes refid="scope_8h" local="no">scope.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classacme_1_1net_1_1detail_1_1_buffer_1ad47b84067f62309dc0929cf658b7b26f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void acme::net::detail::Buffer::clear</definition>
+        <argsstring>()</argsstring>
+        <name>clear</name>
+        <qualifiedname>acme::net::detail::Buffer::clear</qualifiedname>
+        <briefdescription>
+<para>Empties the buffer. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/scope.h" line="17" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A buffer of bytes. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/scope.h" line="13" column="1" bodyfile="src/scope.h" bodystart="14" bodyend="18"/>
+    <listofallmembers>
+      <member refid="classacme_1_1net_1_1detail_1_1_buffer_1ad47b84067f62309dc0929cf658b7b26f" prot="public" virt="non-virtual"><scope>acme::net::detail::Buffer</scope><name>clear</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

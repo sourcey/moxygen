@@ -1,4 +1,4 @@
-{{headingMarker 1}} API Reference
+{{headingMarker 1}} {{#if title}}{{title}}{{else}}API Reference{{/if}}
 
 {{#with (compoundsOfKind filtered.compounds "group") as |groups|}}
 {{#if groups}}

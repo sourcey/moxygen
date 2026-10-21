@@ -6,6 +6,8 @@ Notable changes per release. Older history is in the git log.
 
 ### Fixed
 
+- `generate()` documents global scope as the CLI does. A class, struct or union outside every namespace and group has a page of its own, and the functions, variables and macros no group claims share a Globals page, whose `kind` is `globals` and whose search entries name `globals` as their owner's kind. A project without namespaces or groups, such as a C library, generated no pages at all, and with groups, what no group claimed was left out.
+- A namespace with no description, members or types of its own, one that only wraps others such as `acme` around `acme::net`, has no page, where it read as an empty one, and the index no longer lists it. A namespace page lists the namespaces nested in it.
 - A namespace's and the index's types tables list unions with the classes and structs. A union had a page of its own that no table linked to.
 
 ## 2.2.1 - 2026-10-21

@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classacme_1_1net_1_1_connection" kind="class" language="C++" prot="public">
+    <compoundname>acme::net::Connection</compoundname>
+    <includes refid="scope_8h" local="no">scope.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classacme_1_1net_1_1_connection_1a45feecd9af8a7b8ab3999131f398c30c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void acme::net::Connection::open</definition>
+        <argsstring>()</argsstring>
+        <name>open</name>
+        <qualifiedname>acme::net::Connection::open</qualifiedname>
+        <briefdescription>
+<para>Opens the connection. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/scope.h" line="27" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A connection to a peer. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/scope.h" line="23" column="1" bodyfile="src/scope.h" bodystart="24" bodyend="28"/>
+    <listofallmembers>
+      <member refid="classacme_1_1net_1_1_connection_1a45feecd9af8a7b8ab3999131f398c30c" prot="public" virt="non-virtual"><scope>acme::net::Connection</scope><name>open</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

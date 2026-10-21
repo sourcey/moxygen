@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_counter" kind="class" language="C++" prot="public">
+    <compoundname>Counter</compoundname>
+    <includes refid="scope_8h" local="no">scope.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_counter_1a507fcaf2d7f2afa7a2fe76eceac215e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Counter::increment</definition>
+        <argsstring>()</argsstring>
+        <name>increment</name>
+        <qualifiedname>Counter::increment</qualifiedname>
+        <briefdescription>
+<para>Adds one. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/scope.h" line="39" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A counter outside every namespace. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/scope.h" line="35" column="1" bodyfile="src/scope.h" bodystart="36" bodyend="40"/>
+    <listofallmembers>
+      <member refid="class_counter_1a507fcaf2d7f2afa7a2fe76eceac215e2" prot="public" virt="non-virtual"><scope>Counter</scope><name>increment</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

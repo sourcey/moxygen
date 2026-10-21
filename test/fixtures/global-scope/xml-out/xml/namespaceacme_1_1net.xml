@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceacme_1_1net" kind="namespace" language="C++">
+    <compoundname>acme::net</compoundname>
+    <innerclass refid="classacme_1_1net_1_1_connection" prot="public">acme::net::Connection</innerclass>
+    <innernamespace refid="namespaceacme_1_1net_1_1detail">acme::net::detail</innernamespace>
+    <briefdescription>
+<para>Networking for the library. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/scope.h" line="7" column="1"/>
+  </compounddef>
+</doxygen>

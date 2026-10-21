@@ -1,0 +1,72 @@
+[
+  {
+    "title": "open",
+    "content": "acme::net::Connection::open - Connection - void acme::net::Connection::open - Opens the connection.",
+    "anchor": "open",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "acme::net::Connection",
+    "ownerKind": "class",
+    "namespace": "acme::net",
+    "qualifiedName": "acme::net::Connection::open"
+  },
+  {
+    "title": "clear",
+    "content": "acme::net::detail::Buffer::clear - detail::Buffer - void acme::net::detail::Buffer::clear - Empties the buffer.",
+    "anchor": "clear",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "acme::net::detail::Buffer",
+    "ownerKind": "class",
+    "namespace": "acme::net::detail",
+    "qualifiedName": "acme::net::detail::Buffer::clear"
+  },
+  {
+    "title": "xy",
+    "content": "Point::xy - Point - int Point::xy[2] - Each coordinate.",
+    "anchor": "xy",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "Point",
+    "ownerKind": "union",
+    "qualifiedName": "Point::xy"
+  },
+  {
+    "title": "packed",
+    "content": "Point::packed - Point - long Point::packed - Both coordinates in one word.",
+    "anchor": "packed",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "Point",
+    "ownerKind": "union",
+    "qualifiedName": "Point::packed"
+  },
+  {
+    "title": "increment",
+    "content": "Counter::increment - Counter - void Counter::increment - Adds one.",
+    "anchor": "increment",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "Counter",
+    "ownerKind": "class",
+    "qualifiedName": "Counter::increment"
+  },
+  {
+    "title": "COUNTER_MAX",
+    "content": "COUNTER_MAX - #define COUNTER_MAX 1024 - The largest count a Counter holds.",
+    "anchor": "counter_max",
+    "category": "Macros",
+    "symbolKind": "define",
+    "ownerKind": "globals",
+    "qualifiedName": "COUNTER_MAX"
+  },
+  {
+    "title": "reset_all",
+    "content": "reset_all - void reset_all - Resets every counter.",
+    "anchor": "reset_all",
+    "category": "Functions",
+    "symbolKind": "function",
+    "ownerKind": "globals",
+    "qualifiedName": "reset_all"
+  }
+]

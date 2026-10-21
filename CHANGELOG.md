@@ -2,6 +2,14 @@
 
 Notable changes per release. Older history is in the git log.
 
+## Unreleased
+
+### Fixed
+
+- A reference links to the page and anchor its target is drawn at. Pages are drawn before any reference is resolved, so a member of a namespace shared by several groups links to the group page that shows it rather than the last group to list the namespace, a namespace with a page of its own is linked there rather than on the group page that lists it, and an enum value links to its enum instead of a raw Doxygen id.
+- A reference to something no page shows, such as a protected type the filters leave out, reads as its name rather than linking to an anchor that does not exist.
+- Inline code that is a single reference, such as `` `Buffer` `` in a brief, links the code (`` [`Buffer`](…) ``) rather than printing the link's Markdown inside the code. A reference within longer code reads as code.
+
 ## 2.2.0 - 2026-10-18
 
 ### Fixed

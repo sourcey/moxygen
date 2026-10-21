@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="base_8h" kind="file" language="C++">
+    <compoundname>base.h</compoundname>
+    <includes local="no">map</includes>
+    <includes local="no">vector</includes>
+    <includedby refid="module__base_8h" local="yes">src/module_base.h</includedby>
+    <includedby refid="net_8h" local="yes">src/net.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>src/base.h</label>
+        <link refid="base_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>map</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>src/base.h</label>
+        <link refid="base_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>src/module_base.h</label>
+        <link refid="module__base_8h"/>
+      </node>
+      <node id="4">
+        <label>src/module_net.h</label>
+        <link refid="module__net_8h"/>
+      </node>
+      <node id="3">
+        <label>src/net.h</label>
+        <link refid="net_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classdemo_1_1_stream" prot="public">demo::Stream</innerclass>
+    <innernamespace refid="namespacedemo">demo</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9" refid="namespacedemo" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacedemo" kindref="compound">demo</ref><sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12" refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref><sp/>=<sp/>std::vector&lt;char&gt;;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8" kindref="member">Mode</ref></highlight></codeline>
+<codeline lineno="16"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="17" refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8ae16b5b7f26f54214445cbe38d72c2828" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8ae16b5b7f26f54214445cbe38d72c2828" kindref="member">Fast</ref>,<sp/></highlight></codeline>
+<codeline lineno="18" refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8ac6eea0560cd6f377e78dff2c85cc9122" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8ac6eea0560cd6f377e78dff2c85cc9122" kindref="member">Safe</ref><sp/><sp/></highlight></codeline>
+<codeline lineno="19"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="classdemo_1_1_stream" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classdemo_1_1_stream" kindref="compound">Stream</ref></highlight></codeline>
+<codeline lineno="23"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="26" refid="classdemo_1_1_stream_1a9039d15643befea25991bb48b8504d32" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classdemo_1_1_stream_1a9039d15643befea25991bb48b8504d32" kindref="member">read</ref>(<ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref>&amp;<sp/>out);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="29" refid="classdemo_1_1_stream_1a006489bbe110e5433179cf7634adb2d1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="classdemo_1_1_stream_1a006489bbe110e5433179cf7634adb2d1" kindref="member">Channels</ref><sp/>=<sp/>std::map&lt;int,<sp/>Stream*&gt;;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="classdemo_1_1_stream_1a67803b026d4b6bd626bc5bb7b9cd8822" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classdemo_1_1_stream_1a006489bbe110e5433179cf7634adb2d1" kindref="member">Channels</ref><sp/><ref refid="classdemo_1_1_stream_1a67803b026d4b6bd626bc5bb7b9cd8822" kindref="member">channels</ref>;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>demo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/base.h"/>
+  </compounddef>
+</doxygen>

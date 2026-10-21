@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classdemo_1_1_socket" kind="class" language="C++" prot="public">
+    <compoundname>demo::Socket</compoundname>
+    <includes refid="net_8h" local="no">net.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classdemo_1_1_socket_1a6f2f8bb0911b6ce4435182cabf1a91f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void demo::Socket::send</definition>
+        <argsstring>(Buffer &amp;data)</argsstring>
+        <name>send</name>
+        <qualifiedname>demo::Socket::send</qualifiedname>
+        <param>
+          <type><ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref> &amp;</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+<para>Sends a <computeroutput><ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref></computeroutput> in <computeroutput><ref refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8ac6eea0560cd6f377e78dff2c85cc9122" kindref="member">Mode::Safe</ref></computeroutput>, as <computeroutput><ref refid="classdemo_1_1_socket_1a6f2f8bb0911b6ce4435182cabf1a91f3" kindref="member">send</ref>(<ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref>&amp;)</computeroutput> and a <computeroutput><ref refid="namespacedemo_1_1json_1a9c5af6ca4b39b9f2b8873f744f799372" kindref="member">json::Value</ref></computeroutput> do. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/net.h" line="23" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Sends packets. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/net.h" line="19" column="1" bodyfile="src/net.h" bodystart="20" bodyend="24"/>
+    <listofallmembers>
+      <member refid="classdemo_1_1_socket_1a6f2f8bb0911b6ce4435182cabf1a91f3" prot="public" virt="non-virtual"><scope>demo::Socket</scope><name>send</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.17.0" xml:lang="en-US">
+  <compound refid="classdemo_1_1_socket" kind="class"><name>demo::Socket</name>
+    <member refid="classdemo_1_1_socket_1a6f2f8bb0911b6ce4435182cabf1a91f3" kind="function"><name>send</name></member>
+  </compound>
+  <compound refid="classdemo_1_1_stream" kind="class"><name>demo::Stream</name>
+    <member refid="classdemo_1_1_stream_1a006489bbe110e5433179cf7634adb2d1" kind="typedef"><name>Channels</name></member>
+    <member refid="classdemo_1_1_stream_1a67803b026d4b6bd626bc5bb7b9cd8822" kind="variable"><name>channels</name></member>
+    <member refid="classdemo_1_1_stream_1a9039d15643befea25991bb48b8504d32" kind="function"><name>read</name></member>
+  </compound>
+  <compound refid="namespacedemo" kind="namespace"><name>demo</name>
+    <member refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8" kind="enum"><name>Mode</name></member>
+    <member refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8ae16b5b7f26f54214445cbe38d72c2828" kind="enumvalue"><name>Fast</name></member>
+    <member refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8ac6eea0560cd6f377e78dff2c85cc9122" kind="enumvalue"><name>Safe</name></member>
+    <member refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kind="typedef"><name>Buffer</name></member>
+    <member refid="namespacedemo_1abf8c110e429c86cc26d409348d96256c" kind="function"><name>parse</name></member>
+  </compound>
+  <compound refid="namespacedemo_1_1json" kind="namespace"><name>demo::json</name>
+    <member refid="namespacedemo_1_1json_1a9c5af6ca4b39b9f2b8873f744f799372" kind="typedef"><name>Value</name></member>
+  </compound>
+  <compound refid="base_8h" kind="file"><name>base.h</name>
+  </compound>
+  <compound refid="module__base_8h" kind="file"><name>module_base.h</name>
+  </compound>
+  <compound refid="module__net_8h" kind="file"><name>module_net.h</name>
+  </compound>
+  <compound refid="net_8h" kind="file"><name>net.h</name>
+  </compound>
+  <compound refid="group__base" kind="group"><name>base</name>
+  </compound>
+  <compound refid="group__net" kind="group"><name>net</name>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+</doxygenindex>

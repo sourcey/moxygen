@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="net_8h" kind="file" language="C++">
+    <compoundname>net.h</compoundname>
+    <includes refid="base_8h" local="yes">base.h</includes>
+    <includedby refid="module__net_8h" local="yes">src/module_net.h</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>base.h</label>
+        <link refid="base_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/net.h</label>
+        <link refid="net_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>map</label>
+      </node>
+      <node id="4">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>src/module_net.h</label>
+        <link refid="module__net_8h"/>
+      </node>
+      <node id="1">
+        <label>src/net.h</label>
+        <link refid="net_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classdemo_1_1_socket" prot="public">demo::Socket</innerclass>
+    <innernamespace refid="namespacedemo">demo</innernamespace>
+    <innernamespace refid="namespacedemo_1_1json">demo::json</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="base_8h" kindref="compound">base.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacedemo" kindref="compound">demo</ref><sp/>{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11" refid="namespacedemo_1_1json" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacedemo_1_1json" kindref="compound">json</ref><sp/>{</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespacedemo_1_1json_1a9c5af6ca4b39b9f2b8873f744f799372" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespacedemo_1_1json_1a9c5af6ca4b39b9f2b8873f744f799372" kindref="member">Value</ref><sp/>=<sp/>std::vector&lt;char&gt;;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>json</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="classdemo_1_1_socket" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classdemo_1_1_socket" kindref="compound">Socket</ref></highlight></codeline>
+<codeline lineno="20"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="23" refid="classdemo_1_1_socket_1a6f2f8bb0911b6ce4435182cabf1a91f3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classdemo_1_1_socket_1a6f2f8bb0911b6ce4435182cabf1a91f3" kindref="member">send</ref>(<ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref>&amp;<sp/>data);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="namespacedemo_1abf8c110e429c86cc26d409348d96256c" refkind="member"><highlight class="normal"><ref refid="namespacedemo_1_1json_1a9c5af6ca4b39b9f2b8873f744f799372" kindref="member">json::Value</ref><sp/><ref refid="namespacedemo_1abf8c110e429c86cc26d409348d96256c" kindref="member">parse</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref>&amp;<sp/>data);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>demo</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/net.h"/>
+  </compounddef>
+</doxygen>

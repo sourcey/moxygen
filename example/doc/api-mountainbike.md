@@ -8,7 +8,7 @@ Mountain bike module contains the `MountainBike` class. Mountain bikes are a kin
 
 | Name | Description |
 |------|-------------|
-| [`MountainBike`](#mountainbike) | Mountain bike implementation of a `[Bicycle](api-bicycle.md#bicycle)`. |
+| [`MountainBike`](#mountainbike) | Mountain bike implementation of a [`Bicycle`](api-bicycle.md#bicycle). |
 
 
 ## Class Definitions
@@ -29,7 +29,7 @@ Defined in src/mountainbike.h:20
 
 > **Inherits:** [`Bicycle`](api-bicycle.md#bicycle)
 
-Mountain bike implementation of a `[Bicycle](api-bicycle.md#bicycle)`.
+Mountain bike implementation of a [`Bicycle`](api-bicycle.md#bicycle).
 
 [MountainBike](#mountainbike) is an implementation of a [Bicycle](api-bicycle.md#bicycle) providing a bike for cycling on rough terrain. Mountain bikes are pretty cool because they have stuff like **Suspension** (and you can even adjust it using SetSuspension). If you're looking for a bike for use on the road, you might be better off using a [RacingBike](api-racingbike.md#racingbike) though.
 

@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classdemo_1_1_stream" kind="class" language="C++" prot="public">
+    <compoundname>demo::Stream</compoundname>
+    <includes refid="base_8h" local="no">base.h</includes>
+    <sectiondef kind="protected-type">
+      <memberdef kind="typedef" id="classdemo_1_1_stream_1a006489bbe110e5433179cf7634adb2d1" prot="protected" static="no">
+        <type>std::map&lt; int, <ref refid="classdemo_1_1_stream" kindref="compound">Stream</ref> * &gt;</type>
+        <definition>using demo::Stream::Channels = std::map&lt;int, Stream*&gt;</definition>
+        <argsstring></argsstring>
+        <name>Channels</name>
+        <qualifiedname>demo::Stream::Channels</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/base.h" line="29" column="5" bodyfile="src/base.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classdemo_1_1_stream_1a67803b026d4b6bd626bc5bb7b9cd8822" prot="protected" static="no" mutable="no">
+        <type><ref refid="classdemo_1_1_stream_1a006489bbe110e5433179cf7634adb2d1" kindref="member">Channels</ref></type>
+        <definition>Channels demo::Stream::channels</definition>
+        <argsstring></argsstring>
+        <name>channels</name>
+        <qualifiedname>demo::Stream::channels</qualifiedname>
+        <briefdescription>
+<para>Open channels by id. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/base.h" line="32" column="14" bodyfile="src/base.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classdemo_1_1_stream_1a9039d15643befea25991bb48b8504d32" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void demo::Stream::read</definition>
+        <argsstring>(Buffer &amp;out)</argsstring>
+        <name>read</name>
+        <qualifiedname>demo::Stream::read</qualifiedname>
+        <param>
+          <type><ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref> &amp;</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+<para>Reads into a <computeroutput><ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref></computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/base.h" line="26" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Reads packets in a <computeroutput><ref refid="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8" kindref="member">Mode</ref></computeroutput>. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/base.h" line="22" column="1" bodyfile="src/base.h" bodystart="23" bodyend="33"/>
+    <listofallmembers>
+      <member refid="classdemo_1_1_stream_1a006489bbe110e5433179cf7634adb2d1" prot="protected" virt="non-virtual"><scope>demo::Stream</scope><name>Channels</name></member>
+      <member refid="classdemo_1_1_stream_1a67803b026d4b6bd626bc5bb7b9cd8822" prot="protected" virt="non-virtual"><scope>demo::Stream</scope><name>channels</name></member>
+      <member refid="classdemo_1_1_stream_1a9039d15643befea25991bb48b8504d32" prot="public" virt="non-virtual"><scope>demo::Stream</scope><name>read</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,95 @@
+[
+  {
+    "title": "parse",
+    "content": "net::parse - net - json::Value demo::parse - Parses a `json::Value` from a `Buffer`.",
+    "anchor": "parse",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "net",
+    "ownerKind": "group",
+    "qualifiedName": "net::parse"
+  },
+  {
+    "title": "Value",
+    "content": "demo::json::Value - json - using demo::json::Value = std::vector<char> - A parsed JSON document.",
+    "anchor": "value",
+    "category": "Types",
+    "symbolKind": "typedef",
+    "owner": "demo::json",
+    "ownerKind": "namespace",
+    "qualifiedName": "demo::json::Value"
+  },
+  {
+    "title": "send",
+    "content": "demo::Socket::send - Socket - void demo::Socket::send - Sends a `Buffer` in `Mode::Safe`, as `send(Buffer&)` and a `json::Value` do.",
+    "anchor": "send",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::Socket",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Socket::send"
+  },
+  {
+    "title": "Mode",
+    "content": "base::Mode - base - enum Mode - How a stream reads.",
+    "anchor": "mode",
+    "category": "Enums",
+    "symbolKind": "enum",
+    "owner": "base",
+    "ownerKind": "group",
+    "qualifiedName": "base::Mode"
+  },
+  {
+    "title": "Fast",
+    "content": "base::Mode::Fast - base - Mode - Skips the checks.",
+    "anchor": "mode",
+    "category": "Enum Values",
+    "symbolKind": "enumvalue",
+    "owner": "base::Mode",
+    "ownerKind": "enum",
+    "qualifiedName": "base::Mode::Fast"
+  },
+  {
+    "title": "Safe",
+    "content": "base::Mode::Safe - base - Mode - Checks every packet.",
+    "anchor": "mode",
+    "category": "Enum Values",
+    "symbolKind": "enumvalue",
+    "owner": "base::Mode",
+    "ownerKind": "enum",
+    "qualifiedName": "base::Mode::Safe"
+  },
+  {
+    "title": "Buffer",
+    "content": "base::Buffer - base - using demo::Buffer = std::vector<char> - Bytes owned by the base module.",
+    "anchor": "buffer",
+    "category": "Types",
+    "symbolKind": "typedef",
+    "owner": "base",
+    "ownerKind": "group",
+    "qualifiedName": "base::Buffer"
+  },
+  {
+    "title": "read",
+    "content": "demo::Stream::read - Stream - void demo::Stream::read - Reads into a `Buffer`.",
+    "anchor": "read",
+    "category": "Functions",
+    "symbolKind": "function",
+    "owner": "demo::Stream",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Stream::read"
+  },
+  {
+    "title": "channels",
+    "content": "demo::Stream::channels - Stream - Channels demo::Stream::channels - Open channels by id.",
+    "anchor": "channels",
+    "category": "Variables",
+    "symbolKind": "variable",
+    "owner": "demo::Stream",
+    "ownerKind": "class",
+    "namespace": "demo",
+    "qualifiedName": "demo::Stream::channels"
+  }
+]

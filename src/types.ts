@@ -61,6 +61,8 @@ export interface DocListItem {
 }
 
 export interface EnumValue {
+  /** Doxygen's id for the value; a reference to it lands on its enum. */
+  refid?: string;
   name: string;
   briefdescription: string;
   detaileddescription: string;

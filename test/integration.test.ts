@@ -18,6 +18,7 @@ const memberKindsXmlDir = join(import.meta.dirname, 'fixtures', 'member-kinds', 
 const issue97XmlDir = join(import.meta.dirname, 'fixtures', 'issue-97', 'xml-out', 'xml');
 const globalGroupsXmlDir = join(import.meta.dirname, 'fixtures', 'global-groups', 'xml-out', 'xml');
 const macrosXmlDir = join(import.meta.dirname, 'fixtures', 'macros', 'xml-out', 'xml');
+const drawnLinksXmlDir = join(import.meta.dirname, 'fixtures', 'drawn-links', 'xml-out', 'xml');
 
 const exampleOutputDir = join(outputRoot, 'example');
 
@@ -152,7 +153,7 @@ describe('integration', () => {
     expect(classContent).toContain('Returns a stable value.');
   });
 
-  it('renders grouped overview links as same-page anchors', async () => {
+  it('links a grouped overview to each namespace where it is drawn', async () => {
     const outputDir = join(outputRoot, 'file-grouped-links');
 
     await run({
@@ -164,6 +165,7 @@ describe('integration', () => {
       sourceRoot: fileGroupedSourceDir,
     });
 
+    // One file per module draws the namespace on the module's own page.
     const markdownMirror = read(join(outputDir, 'widget.md'));
     expect(markdownMirror).toContain('| [`demo`](#demo) |');
 
@@ -175,9 +177,44 @@ describe('integration', () => {
       sourceRoot: fileGroupedSourceDir,
     });
 
+    // Generated pages give the namespace a page of its own, so the overview links there.
     const groupPage = pages.find((page) => page.kind === 'group' && page.slug === 'widget');
     expect(groupPage).toBeDefined();
-    expect(groupPage!.markdown).toContain('| [`demo`](#demo) |');
+    expect(groupPage!.markdown).toContain('| [`demo`](demo.html#demo) |');
+  });
+
+  it('links every generated reference to the page and anchor its target is drawn at', async () => {
+    const pages = await generate({ directory: drawnLinksXmlDir, quiet: true });
+    const page = (slug: string) => pages.find((candidate) => candidate.slug === slug)!.markdown;
+    const drawn = new Map(pages.map((candidate) => [
+      `${candidate.slug}.html`,
+      new Set([...candidate.markdown.matchAll(/<a id="([^"]+)"><\/a>/g)].map(([, id]) => id)),
+    ]));
+    for (const candidate of pages) {
+      for (const [, href] of candidate.markdown.matchAll(/\]\(([^)\s]*#[^)\s]+)\)/g)) {
+        const [path, anchor] = href.split('#');
+        expect(drawn.get(path || `${candidate.slug}.html`)?.has(anchor), `${candidate.slug}: ${href}`).toBe(true);
+      }
+    }
+    // A namespace and its members are linked on the namespace's own page, not the module page that lists it.
+    expect(page('net')).toContain('| [`json`](demo-json.html#json) |');
+    expect(page('net')).toContain('Parses a [`json::Value`](demo-json.html#value) from a [`Buffer`](base.html#buffer).');
+    // An enum value lands on its enum, wherever the enum is drawn.
+    expect(page('demo-Socket')).toContain('in [`Mode::Safe`](base.html#mode)');
+    expect(page('demo-Stream')).toContain('Reads packets in a [`Mode`](base.html#mode).');
+    // A type no page draws has nowhere to land, so it reads as its name.
+    expect(page('demo-Stream')).toContain('| `Channels` | [`channels`](#channels)');
+  });
+
+  it('links a reference that is a whole code span, and keeps one within longer code as code', async () => {
+    const pages = await generate({ directory: drawnLinksXmlDir, quiet: true });
+    const socket = pages.find((page) => page.slug === 'demo-Socket')!.markdown;
+    expect(socket).toContain('Sends a [`Buffer`](base.html#buffer) in');
+    expect(socket).toContain('as `send(Buffer&)` and a');
+    // Markdown draws no link inside code, so no code span holds one.
+    const spans = (markdown: string) => markdown.replace(/^```[^]*?^```/gm, '').split('\n')
+      .flatMap((line) => line.split('`').filter((_, index) => index % 2 === 1));
+    for (const candidate of pages) expect(spans(candidate.markdown).filter((span) => span.includes(']('))).toEqual([]);
   });
 
   it('writes grouped output, page output, and root globals in one run', async () => {

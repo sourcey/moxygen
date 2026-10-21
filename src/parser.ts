@@ -144,7 +144,7 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
   // Opening
   switch (el['#name']) {
     case 'ref':
-      if (currentContextName(context) === 'programlisting') {
+      if (currentContextName(context) === 'programlisting' || currentContextName(context) === 'computeroutput') {
         return s + toMarkdown(el.$$, context, options);
       }
       return s + md.refLink(toMarkdown(el.$$, context, options), el.$?.refid ?? '');
@@ -158,9 +158,20 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
       s = '**';
       break;
     case 'parametername':
-    case 'computeroutput':
       s = '`';
       break;
+    case 'computeroutput': {
+      // Markdown has no link inside code, so a reference that is the whole
+      // span links the span, and one within longer code reads as code.
+      const children = (el.$$ ?? []).filter((child) => child['#name'] !== '__text__' || trim(child._ ?? ''));
+      if (children.length === 1 && children[0]['#name'] === 'ref') {
+        return md.refLink(`\`${toMarkdown(children[0].$$, context, options)}\``, children[0].$?.refid ?? '');
+      }
+      context.push(el);
+      const code = toMarkdown(el.$$, context, options);
+      context.pop();
+      return `\`${code}\``;
+    }
     case 'parameterlist':
       if (options.skipParameterLists) return '';
       s = `\n#### ${parameterListTitle(el.$?.kind)}\n`;
@@ -331,9 +342,6 @@ function toMarkdown(element: unknown, context: XmlElement[] = [], options: Markd
       break;
     case 'parameteritem':
       s += '\n';
-      break;
-    case 'computeroutput':
-      s += '`';
       break;
     case 'parametername':
       s += '` ';
@@ -675,6 +683,7 @@ function parseMember(
 
   if (memberdef.enumvalue) {
     member.enumvalue = (memberdef.enumvalue as Array<Record<string, unknown>>).map((value) => ({
+      refid: (value.$ as Record<string, string> | undefined)?.id,
       name: mdField(value, 'name'),
       briefdescription: mdField(value, 'briefdescription'),
       detaileddescription: mdField(value, 'detaileddescription'),

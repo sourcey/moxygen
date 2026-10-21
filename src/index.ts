@@ -5,7 +5,7 @@ import { toArray, toFilteredArray, filterChildren, filterCollection, filterNoise
 import { renderSignature } from './signature.js';
 import { searchCategoryForKind } from './vocabulary.js';
 import { writeCompound, renderCompound, compoundPath, writeFile, buildCleanAnchorMap, safePathSegment, stripMarkdownLinks } from './helpers.js';
-import type { AnchorMap, PagePathMap, SlugMap } from './helpers.js';
+import type { AnchorMap, PageLinks, PagePathMap, SlugMap } from './helpers.js';
 import { log } from './logger.js';
 import { loadIndex } from './parser.js';
 import * as templates from './templates.js';
@@ -179,6 +179,7 @@ function extractResolvedMeta(
   anchorMap?: AnchorMap,
   slugMap?: SlugMap,
   pagePathMap?: PagePathMap,
+  links?: PageLinks,
 ): CompoundMeta {
   const description = renderCompound(
     compound,
@@ -188,6 +189,7 @@ function extractResolvedMeta(
     anchorMap,
     slugMap,
     pagePathMap,
+    links,
   );
   return extractMeta(compound, description);
 }
@@ -673,34 +675,18 @@ export async function generate(
   const pagePathMap = useGroups ? buildGroupedPagePathMap(groups) : undefined;
   attachRelationshipSummaries(allCompounds, references);
 
-  // Second pass: render (dedup by refid)
+  // Second pass: draw every page (dedup by refid), noting where each target lands.
   const seen = new Set<string>();
+  const files = new DrawnFiles();
+  const modules = new Map<Compound, string>();
 
   function emitPage(compound: Compound, moduleName?: string): void {
     if (seen.has(compound.refid)) return;
     seen.add(compound.refid);
     if (isJunkCompound(compound)) return;
 
-    const md = templates.render(compound);
-    if (!md) return;
-    const meta = extractResolvedMeta(compound, references, opts, anchorMap, slugMap, pagePathMap);
-    if (moduleName) meta.module = moduleName;
-
-    if (compound.kind === 'group') {
-      pages.push({
-        ...meta,
-        title: compound.shortname || compound.name,
-        module: compound.name,
-        searchEntries: collectSearchEntries(compound, opts.titleSeparator, anchorMap),
-        markdown: renderCompound(compound, [md], references, opts, anchorMap, slugMap, pagePathMap),
-      });
-    } else {
-      pages.push({
-        ...meta,
-        searchEntries: collectSearchEntries(compound, opts.titleSeparator, anchorMap),
-        markdown: renderCompound(compound, [md], references, opts, anchorMap, slugMap, pagePathMap),
-      });
-    }
+    files.draw(compound, `${slugify(compound.name)}.html`, () => [templates.render(compound)]);
+    if (moduleName) modules.set(compound, moduleName);
   }
 
   if (useGroups) {
@@ -739,17 +725,37 @@ export async function generate(
     if (isJunkPage(page)) continue;
     const pageCompounds = toFilteredArray(page, 'compounds');
     pageCompounds.unshift(page);
-    const content = templates.renderArray(pageCompounds);
-    const markdown = renderCompound(page, content, references, opts, anchorMap);
-    const meta = extractResolvedMeta(page, references, opts, anchorMap);
-    if (markdown) {
-      pages.push({
-        slug: page.name,
-        title: shortname(page.name),
-        kind: 'page',
-        description: meta.description,
-        markdown,
-      });
+    files.draw(page, `${page.name}.html`, () => templates.renderArray(pageCompounds));
+  }
+
+  // Third pass: resolve every page's references against where targets landed.
+  for (const { compound, path, contents } of files.drawn) {
+    const links: PageLinks = { path, targets: files.targets };
+    if (compound.kind === 'page') {
+      const markdown = renderCompound(compound, contents, references, opts, anchorMap, undefined, undefined, links);
+      const meta = extractResolvedMeta(compound, references, opts, anchorMap, undefined, undefined, links);
+      if (markdown) {
+        pages.push({
+          slug: compound.name,
+          title: shortname(compound.name),
+          kind: 'page',
+          description: meta.description,
+          markdown,
+        });
+      }
+      continue;
+    }
+    if (!contents[0]) continue;
+    const meta = extractResolvedMeta(compound, references, opts, anchorMap, slugMap, pagePathMap, links);
+    const moduleName = modules.get(compound);
+    if (moduleName) meta.module = moduleName;
+    const markdown = renderCompound(compound, contents, references, opts, anchorMap, slugMap, pagePathMap, links);
+    const searchEntries = collectSearchEntries(compound, opts.titleSeparator, anchorMap);
+
+    if (compound.kind === 'group') {
+      pages.push({ ...meta, title: compound.shortname || compound.name, module: compound.name, searchEntries, markdown });
+    } else {
+      pages.push({ ...meta, searchEntries, markdown });
     }
   }
 
@@ -1074,25 +1080,27 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
   setAnchorMap(anchorMap);
   attachRelationshipSummaries(allCompounds, references);
 
-  // --- Pass 2: render + write ---
+  // --- Pass 2: draw every file, noting where each target lands ---
+  const files = new DrawnFiles();
   if (splitOutput) {
     if (writeRootIndex) {
-      const contents = renderCompoundPage(root, rootBodyCompounds);
-      contents.push('Generated by [Moxygen](https://0state.com/moxygen)');
-      writeWithOptionalFrontmatter(root, contents, references, opts, anchorMap, pagePathMap);
+      files.draw(root, compoundPath(root, opts), () => [
+        ...renderCompoundPage(root, rootBodyCompounds),
+        'Generated by [Moxygen](https://0state.com/moxygen)',
+      ]);
     }
 
     if (opts.groups) {
       for (const group of groups) {
         const compounds = toFilteredArray(group, 'compounds')
           .filter((compound) => compound.kind !== 'group' && !opts.classes && compound.groupid === group.id);
-        writeWithOptionalFrontmatter(group, renderCompoundPage(group, compounds), references, opts, anchorMap, pagePathMap);
+        files.draw(group, compoundPath(group, opts), () => renderCompoundPage(group, compounds));
       }
     }
 
     if (opts.classes) {
       for (const comp of classOutputCompounds) {
-        writeWithOptionalFrontmatter(comp, [templates.render(comp, { headingBase: 1 })], references, opts, anchorMap, pagePathMap);
+        files.draw(comp, compoundPath(comp, opts), () => [templates.render(comp, { headingBase: 1 })]);
       }
     }
   } else {
@@ -1117,9 +1125,10 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
     if (!opts.noindex) {
       compounds.unshift(root);
     }
-    const contents = templates.renderArray(compounds);
-    contents.push('Generated by [Moxygen](https://0state.com/moxygen)');
-    writeWithOptionalFrontmatter(root, contents, references, opts, anchorMap);
+    files.draw(root, compoundPath(root, opts), () => [
+      ...templates.renderArray(compounds),
+      'Generated by [Moxygen](https://0state.com/moxygen)',
+    ]);
   }
 
   if (opts.pages) {
@@ -1130,8 +1139,44 @@ export async function run(options: Partial<MoxygenOptions> & { directory: string
     for (const page of doxyPages) {
       const compounds = toFilteredArray(page, 'compounds');
       compounds.unshift(page);
-      writeWithOptionalFrontmatter(page, templates.renderArray(compounds), references, opts, anchorMap, pagePathMap);
+      files.draw(page, compoundPath(page, opts), () => templates.renderArray(compounds));
     }
+  }
+
+  // --- Pass 3: resolve each file's references against where targets landed, and write ---
+  for (const { compound, path, contents } of files.drawn) {
+    writeWithOptionalFrontmatter(compound, contents, references, opts, anchorMap, pagePathMap, { path, targets: files.targets });
+  }
+}
+
+/**
+ * Pages drawn before any reference is resolved, with the page and anchor each
+ * target landed at, so every reference links to where its target is drawn.
+ */
+class DrawnFiles {
+  readonly targets: PageLinks['targets'] = new Map();
+  readonly drawn: { compound: Compound; path: string; contents: (string | undefined)[] }[] = [];
+
+  draw(compound: Compound, path: string, render: () => (string | undefined)[]): (string | undefined)[] {
+    templates.recordAnchors((refid, anchor) => this.land(refid, path, anchor));
+    let contents: (string | undefined)[];
+    try {
+      contents = render();
+    } finally {
+      templates.recordAnchors(undefined);
+    }
+    // A section or \anchor in a description is drawn under its own id.
+    for (const content of contents) {
+      for (const [, html, pandoc] of content?.matchAll(/<a id="([^"]+)"><\/a>|\{#([^\s}]+)\}/g) ?? []) {
+        this.land(html ?? pandoc, path, html ?? pandoc);
+      }
+    }
+    this.drawn.push({ compound, path, contents });
+    return contents;
+  }
+
+  private land(refid: string, path: string, anchor: string): void {
+    if (!this.targets.has(refid)) this.targets.set(refid, { path, anchor });
   }
 }
 
@@ -1150,16 +1195,17 @@ function writeWithOptionalFrontmatter(
   options: MoxygenOptions,
   anchorMap?: AnchorMap,
   pagePathMap?: PagePathMap,
+  links?: PageLinks,
 ): void {
   if (options.frontmatter) {
     const filepath = compoundPath(compound, options);
-    const body = renderCompound(compound, contents, references, options, anchorMap, undefined, pagePathMap);
+    const body = renderCompound(compound, contents, references, options, anchorMap, undefined, pagePathMap, links);
     const fm = generateFrontmatter(
-      extractResolvedMeta(compound, references, options, anchorMap, undefined, pagePathMap),
+      extractResolvedMeta(compound, references, options, anchorMap, undefined, pagePathMap, links),
     );
     writeFile(filepath, [fm, body]);
   } else {
-    writeCompound(compound, contents, references, options, anchorMap, pagePathMap);
+    writeCompound(compound, contents, references, options, anchorMap, pagePathMap, links);
   }
 }
 

@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespacedemo" kind="namespace" language="C++">
+    <compoundname>demo</compoundname>
+    <innerclass refid="classdemo_1_1_socket" prot="public">demo::Socket</innerclass>
+    <innerclass refid="classdemo_1_1_stream" prot="public">demo::Stream</innerclass>
+    <innernamespace refid="namespacedemo_1_1json">demo::json</innernamespace>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Mode</name>
+        <qualifiedname>demo::Mode</qualifiedname>
+        <enumvalue id="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8ae16b5b7f26f54214445cbe38d72c2828" prot="public">
+          <name>Fast</name>
+          <briefdescription>
+<para>Skips the checks. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespacedemo_1a86b8f1261fbc144883b77c8ad95974a8ac6eea0560cd6f377e78dff2c85cc9122" prot="public">
+          <name>Safe</name>
+          <briefdescription>
+<para>Checks every packet. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>How a stream reads. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/base.h" line="15" column="1" bodyfile="src/base.h" bodystart="16" bodyend="19"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" prot="public" static="no">
+        <type>std::vector&lt; char &gt;</type>
+        <definition>using demo::Buffer = std::vector&lt;char&gt;</definition>
+        <argsstring></argsstring>
+        <name>Buffer</name>
+        <qualifiedname>demo::Buffer</qualifiedname>
+        <briefdescription>
+<para>Bytes owned by the base module. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/base.h" line="12" column="1" bodyfile="src/base.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespacedemo_1abf8c110e429c86cc26d409348d96256c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespacedemo_1_1json_1a9c5af6ca4b39b9f2b8873f744f799372" kindref="member">json::Value</ref></type>
+        <definition>json::Value demo::parse</definition>
+        <argsstring>(const Buffer &amp;data)</argsstring>
+        <name>parse</name>
+        <qualifiedname>demo::parse</qualifiedname>
+        <param>
+          <type>const <ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref> &amp;</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+<para>Parses a <computeroutput><ref refid="namespacedemo_1_1json_1a9c5af6ca4b39b9f2b8873f744f799372" kindref="member">json::Value</ref></computeroutput> from a <computeroutput><ref refid="namespacedemo_1a29cf0632c72968ce7d073a0137fbfeff" kindref="member">Buffer</ref></computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/net.h" line="27" column="13" declfile="src/net.h" declline="27" declcolumn="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/base.h" line="9" column="1"/>
+  </compounddef>
+</doxygen>

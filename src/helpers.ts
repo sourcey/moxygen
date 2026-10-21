@@ -7,6 +7,18 @@ import type { Compound, Member, MoxygenOptions, References } from './types.js';
 export type AnchorMap = Map<string, string>;
 export type PagePathMap = Map<string, string>;
 
+/** The page and anchor a reference's target is drawn at. */
+export interface LinkTarget {
+  path: string;
+  anchor: string;
+}
+
+/** The page being resolved, and where every drawn target landed. */
+export interface PageLinks {
+  path: string;
+  targets: Map<string, LinkTarget>;
+}
+
 /**
  * Wrap code segments in backticks, preserving markdown links and line breaks.
  */
@@ -155,7 +167,10 @@ export function resolveRefs(
   anchorMap?: AnchorMap,
   slugMap?: SlugMap,
   pagePathMap?: PagePathMap,
+  links?: PageLinks,
 ): string {
+  if (links) return resolveDrawnRefs(content, links);
+
   function anchor(refid: string): string {
     return anchorMap?.get(refid) ?? refid;
   }
@@ -244,6 +259,45 @@ export function resolveRefs(
 }
 
 /**
+ * Point each reference at the page and anchor its target was drawn at. A
+ * target no page draws (a private member, an undocumented symbol) has nowhere
+ * to land, so its link reads as its text.
+ */
+function resolveDrawnRefs(content: string, links: PageLinks): string {
+  const href = (refid: string): string | undefined => {
+    const target = links.targets.get(refid);
+    if (!target) return undefined;
+    if (target.path === links.path) return `#${target.anchor}`;
+    return `${relative(dirname(links.path), target.path).replace(/\\/g, '/')}#${target.anchor}`;
+  };
+  let out = '';
+  let done = 0;
+  for (const match of content.matchAll(/\]\(\{#ref ([^ ]+) #\}\)/g)) {
+    const close = match.index;
+    const open = openingBracket(content, close, done);
+    const target = href(match[1]);
+    if (open === -1) {
+      out += content.slice(done, close) + (target ? `](${target})` : ']');
+    } else {
+      out += content.slice(done, open) + (target ? `${content.slice(open, close)}](${target})` : content.slice(open + 1, close));
+    }
+    done = close + match[0].length;
+  }
+  out += content.slice(done);
+  return out.replace(/\{#ref ([^ ]+) #\}/g, (_, refid: string) => href(refid) ?? '#');
+}
+
+/** The `[` that a link text's closing `]` pairs with, or -1. */
+function openingBracket(content: string, close: number, floor: number): number {
+  let depth = 1;
+  for (let i = close - 1; i >= floor; i--) {
+    if (content[i] === ']') depth++;
+    else if (content[i] === '[' && --depth === 0) return i;
+  }
+  return -1;
+}
+
+/**
  * Calculate the output file path for a compound.
  */
 export function compoundPath(compound: Compound, options: MoxygenOptions): string {
@@ -279,9 +333,10 @@ export function renderCompound(
   anchorMap?: AnchorMap,
   slugMap?: SlugMap,
   pagePathMap?: PagePathMap,
+  links?: PageLinks,
 ): string {
   const resolved = contents.map((content) =>
-    content ? resolveRefs(content, compound, references, options, anchorMap, slugMap, pagePathMap) : '',
+    content ? resolveRefs(content, compound, references, options, anchorMap, slugMap, pagePathMap, links) : '',
   );
   return resolved.filter(Boolean).join('');
 }
@@ -296,9 +351,10 @@ export function writeCompound(
   options: MoxygenOptions,
   anchorMap?: AnchorMap,
   pagePathMap?: PagePathMap,
+  links?: PageLinks,
 ): void {
   const filepath = compoundPath(compound, options);
-  const output = renderCompound(compound, contents, references, options, anchorMap, undefined, pagePathMap);
+  const output = renderCompound(compound, contents, references, options, anchorMap, undefined, pagePathMap, links);
   writeFile(filepath, [output]);
 }
 

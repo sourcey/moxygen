@@ -6,10 +6,11 @@ import type { AnchorMap } from './helpers.js';
 import { log } from './logger.js';
 import { formatTemplateParams, renderSignature } from './signature.js';
 import { sectionHasReturnColumn } from './vocabulary.js';
-import type { Compound, MoxygenOptions, RelationRef, SourceUrlRoute } from './types.js';
+import type { Compound, Member, MoxygenOptions, RelationRef, SourceUrlRoute } from './types.js';
 
 const templates: Record<string, HandlebarsTemplateDelegate> = {};
 let activeAnchorMap: AnchorMap | undefined;
+let activeRecorder: ((refid: string, anchor: string) => void) | undefined;
 
 export interface RenderContext {
   headingBase: number;
@@ -52,6 +53,14 @@ function headingLevel(relativeLevel: unknown, context: RenderContext): number {
  */
 export function setAnchorMap(map: AnchorMap | undefined): void {
   activeAnchorMap = map;
+}
+
+/**
+ * Hear of every anchor a render draws, by the refid it stands for. An enum's
+ * values are drawn in its own section, so a reference to one lands there too.
+ */
+export function recordAnchors(recorder: ((refid: string, anchor: string) => void) | undefined): void {
+  activeRecorder = recorder;
 }
 
 /**
@@ -279,8 +288,12 @@ export function registerHelpers(options: Pick<MoxygenOptions, 'anchors' | 'htmlA
   });
 
   // Clean anchor: generates a readable anchor, using the anchor map for consistency
-  Handlebars.registerHelper('cleanAnchor', (refid: string, name: string) => {
+  Handlebars.registerHelper('cleanAnchor', function (this: Partial<Member>, refid: string, name: string) {
     const id = activeAnchorMap?.get(refid) ?? cleanId(name || refid);
+    activeRecorder?.(refid, id);
+    for (const value of this.enumvalue ?? []) {
+      if (value.refid) activeRecorder?.(value.refid, id);
+    }
     return getAnchor(id, options);
   });
 

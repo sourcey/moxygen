@@ -2,6 +2,12 @@
 
 Notable changes per release. Older history is in the git log.
 
+## 2.2.3 - 2026-10-29
+
+### Fixed
+
+- Point package metadata and generated documentation attribution at `auscaster.com/moxygen`. Update maintained repository-link examples to the auscaster owner.
+
 ## 2.2.2 - 2026-10-21
 
 ### Fixed

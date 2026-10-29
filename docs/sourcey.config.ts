@@ -2,7 +2,7 @@ import { defineConfig, markdown } from "sourcey";
 
 export default defineConfig({
   name: "Moxygen",
-  siteUrl: "https://0state.com",
+  siteUrl: "https://auscaster.com",
   baseUrl: "/moxygen/docs",
   prettyUrls: "strip",
   theme: {

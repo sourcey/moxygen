@@ -33,7 +33,7 @@ Requires Node.js 20+.
 
 ## Usage
 
-1. Add `GENERATE_XML=YES` to your `Doxyfile` (see [Icey's Doxyfile](https://github.com/nilstate/icey/blob/main/Doxyfile) for a real-world example)
+1. Add `GENERATE_XML=YES` to your `Doxyfile` (see [Icey's Doxyfile](https://github.com/auscaster/icey/blob/main/Doxyfile) for a real-world example)
 2. Run `doxygen` to generate the XML documentation
 3. Run `moxygen` pointing to the XML output directory
 
@@ -177,7 +177,7 @@ npm run example
 
 ## More Information
 
-For more details, visit [0state.com/moxygen](https://0state.com/moxygen).
+For more details, visit [auscaster.com/moxygen](https://auscaster.com/moxygen).
 
 ## Licence
 

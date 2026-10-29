@@ -217,7 +217,7 @@ describe('template helpers', () => {
     registerHelpers({
       anchors: true,
       htmlAnchors: false,
-      sourceUrl: 'https://github.com/nilstate/icey/blob/main',
+      sourceUrl: 'https://github.com/auscaster/icey/blob/main',
     });
 
     const output = renderSource({
@@ -226,7 +226,7 @@ describe('template helpers', () => {
     }).trim();
 
     expect(output).toBe(
-      'src/base/include/icy/queue.h:353|https://github.com/nilstate/icey/blob/main/src/base/include/icy/queue.h#L353',
+      'src/base/include/icy/queue.h:353|https://github.com/auscaster/icey/blob/main/src/base/include/icy/queue.h#L353',
     );
   });
 
@@ -234,7 +234,7 @@ describe('template helpers', () => {
     registerHelpers({
       anchors: true,
       htmlAnchors: false,
-      sourceUrl: ({ path }) => path.startsWith('src/graft/') ? undefined : 'https://github.com/nilstate/icey/blob/main',
+      sourceUrl: ({ path }) => path.startsWith('src/graft/') ? undefined : 'https://github.com/auscaster/icey/blob/main',
     });
 
     const output = renderSource({
@@ -250,8 +250,8 @@ describe('template helpers', () => {
       anchors: true,
       htmlAnchors: false,
       sourceUrl: [
-        { prefix: 'src/', url: 'https://github.com/nilstate/icey/blob/main/{fullPath}' },
-        { prefix: 'src/pacm/', url: 'https://github.com/nilstate/pacm/blob/main/{path}#L{line}' },
+        { prefix: 'src/', url: 'https://github.com/auscaster/icey/blob/main/{fullPath}' },
+        { prefix: 'src/pacm/', url: 'https://github.com/auscaster/pacm/blob/main/{path}#L{line}' },
         { prefix: 'src/graft/' },
       ],
     });
@@ -270,11 +270,11 @@ describe('template helpers', () => {
     }).trim();
 
     expect(pacm).toBe(
-      'src/pacm/include/icy/pacm/package.h:35|https://github.com/nilstate/pacm/blob/main/include/icy/pacm/package.h#L35',
+      'src/pacm/include/icy/pacm/package.h:35|https://github.com/auscaster/pacm/blob/main/include/icy/pacm/package.h#L35',
     );
     expect(graft).toBe('src/graft/include/icy/graft/graft.h:94|');
     expect(base).toBe(
-      'src/base/include/icy/queue.h:353|https://github.com/nilstate/icey/blob/main/src/base/include/icy/queue.h#L353',
+      'src/base/include/icy/queue.h:353|https://github.com/auscaster/icey/blob/main/src/base/include/icy/queue.h#L353',
     );
   });
 });

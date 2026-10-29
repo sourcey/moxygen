@@ -1,6 +1,6 @@
 {
   "name": "moxygen",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Doxygen XML to Markdown converter",
   "type": "module",
   "main": "dist/index.js",
@@ -33,7 +33,7 @@
     "type": "git",
     "url": "git+https://github.com/sourcey/moxygen.git"
   },
-  "homepage": "https://0state.com/moxygen",
+  "homepage": "https://auscaster.com/moxygen",
   "keywords": [
     "doxygen",
     "markdown",
